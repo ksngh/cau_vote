@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>학생 정보 결과</title>
+</head>
+<body>
+<h1>제출된 학생 정보</h1>
+<p>학생 PK: <span th:text="${student.studentPk}"></span></p>
+<p>학생 ID: <span th:text="${student.studentId}"></span></p>
+<p>전공: <span th:text="${student.majority}"></span></p>
+<p>이름: <span th:text="${student.name}"></span></p>
+<p>역할: <span th:text="${student.role}"></span></p>
+<p>회원 정보: <span th:text="${student.member}"></span></p>
+</body>
+</html>
