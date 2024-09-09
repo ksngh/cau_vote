@@ -6,19 +6,34 @@ import jakarta.persistence.Id;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.UUID;
+
 
 @Entity
-@Setter
 @Getter
 public class Student {
 
     @Id
-    private String studentPk;
+    private UUID studentPk;
     private int studentId;
+    private String email;
     private String majority;
     private String name;
     private String role;
-    private String member;
+    private String memberType;
 
-    // Getters and Setters
+    public Student(UUID studentPk,String email, String name, String role) {
+        this.studentPk = studentPk;
+        this.name = name;
+        this.role = role;
+        this.email = email;
+    }
+
+    public void setStudentInfo(int studentId, String majority, String name,String memberType) {
+        this.studentId = studentId;
+        this.majority = majority;
+        this.name = name;
+        this.memberType = memberType;
+    }
+
 }

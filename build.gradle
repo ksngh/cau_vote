@@ -36,6 +36,13 @@ dependencies {
 // https://mvnrepository.com/artifact/org.springframework.data/spring-data-jpa
 	implementation 'org.springframework.data:spring-data-jpa:3.3.3'
 
+
+	implementation 'org.springframework.security:spring-security-oauth2-client:6.3.3'
+
+	implementation 'org.springframework.boot:spring-boot-starter-security:3.3.3'
+
+
+
 }
 
 tasks.named('test') {

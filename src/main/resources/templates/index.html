@@ -5,27 +5,6 @@
     <title>Title</title>
 </head>
 <body>
-<h1>학생 정보 입력</h1>
-<form action="#" th:action="@{/student}" th:object="${student}" method="post">
-    <label>학생 PK:</label>
-    <input type="text" th:field="*{studentPk}" /><br/>
-
-    <label>학생 ID:</label>
-    <input type="number" th:field="*{studentId}" /><br/>
-
-    <label>전공:</label>
-    <input type="text" th:field="*{majority}" /><br/>
-
-    <label>이름:</label>
-    <input type="text" th:field="*{name}" /><br/>
-
-    <label>역할:</label>
-    <input type="text" th:field="*{role}" /><br/>
-
-    <label>회원 정보:</label>
-    <input type="text" th:field="*{member}" /><br/>
-
-    <button type="submit">제출</button>
-</form>
+<a href="/oauth2/authorization/kakao">Kakao로 로그인하기</a>
 </body>
 </html>

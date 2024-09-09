@@ -29,4 +29,13 @@ public class StudentService {
     public void deleteById(UUID id) {
         studentRepository.deleteById(id);
     }
+
+    public Student update(Student student) {
+        return studentRepository.save(student);
+    }
+
+    public Student findByEmail(String email) {
+        return studentRepository.findByEmail(email).orElse(null);
+    }
+
 }
