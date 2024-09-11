@@ -2,13 +2,17 @@ package caugarde.vote.controller;
 
 import caugarde.vote.model.entity.Student;
 import caugarde.vote.service.StudentService;
+import com.nimbusds.jose.proc.SecurityContext;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+
+import java.security.Security;
 
 @Controller
 @RequiredArgsConstructor
@@ -19,6 +23,7 @@ public class HomeController {
 
     @GetMapping("/test")
     public String test() {
+        log.info(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
         return "polling";
     }
 }

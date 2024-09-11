@@ -4,13 +4,14 @@ package caugarde.vote.model.entity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import lombok.Getter;
-import lombok.Setter;
+import lombok.NoArgsConstructor;
 
 import java.util.UUID;
 
 
 @Entity
 @Getter
+@NoArgsConstructor
 public class Student {
 
     @Id
@@ -22,18 +23,17 @@ public class Student {
     private String role;
     private String memberType;
 
-    public Student(UUID studentPk,String email, String name, String role) {
+    public Student(UUID studentPk,String email) {
         this.studentPk = studentPk;
-        this.name = name;
-        this.role = role;
         this.email = email;
     }
 
-    public void setStudentInfo(int studentId, String majority, String name,String memberType) {
+    public void setStudentInfo(int studentId, String majority, String name,String memberType,String role) {
         this.studentId = studentId;
         this.majority = majority;
         this.name = name;
         this.memberType = memberType;
+        this.role = role;
     }
 
 }

@@ -1,5 +1,6 @@
 package caugarde.vote.config;
 
+import caugarde.vote.common.CustomAuthenticationSuccessHandler;
 import caugarde.vote.service.OAuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
@@ -62,7 +63,8 @@ public class SecurityConfig{
                 .oauth2Login((oauth2) -> oauth2
                         .loginProcessingUrl("/oauth/kakao/callback")
                         .userInfoEndpoint(userInfoEndpoint -> userInfoEndpoint
-                                .userService(oAuthService)));
+                                .userService(oAuthService))
+                        .successHandler(new CustomAuthenticationSuccessHandler()));
 
         return http.build();
 

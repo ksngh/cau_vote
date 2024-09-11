@@ -4,6 +4,7 @@ import caugarde.vote.model.constant.CustomOAuthUser;
 import caugarde.vote.model.entity.Student;
 import caugarde.vote.repository.StudentRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
@@ -11,6 +12,7 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -18,7 +20,6 @@ import java.util.UUID;
 @Service
 public class OAuthService extends DefaultOAuth2UserService {
 
-    private final StudentService studentService;
     private final StudentRepository studentRepository;
 
     @Override
@@ -26,21 +27,21 @@ public class OAuthService extends DefaultOAuth2UserService {
 
         OAuth2User oAuth2User = super.loadUser(userRequest);
 
-        String name = oAuth2User.getName();
-        String email = oAuth2User.getAttribute("email");
+        Map<String,Object> kakaoAccount = oAuth2User.getAttribute("kakao_account");
+        String email = (String) kakaoAccount.get("email");
 
-        Optional<Student> existData = studentRepository.findByEmail(oAuth2User.getAttribute("email"));
 
-        UUID uuid = UUID.randomUUID();
+        Optional<Student> studentOptional = studentRepository.findByEmail(email);
 
-        if (existData.isEmpty()) {
-
-            Student student = new Student(uuid,name,"ROLE_USER",email);
-
-            studentService.save(student);
-
+        if (studentOptional.isPresent()) {
+            return new CustomOAuthUser(studentOptional.get().getStudentPk(), email,true,oAuth2User.getAttributes()) ;
+        } else {
+            UUID uuid = UUID.randomUUID();
+            Student student = new Student(uuid,email);
+            studentRepository.save(student);
+            return new CustomOAuthUser(uuid,email,false,oAuth2User.getAttributes());
         }
-        return new CustomOAuthUser(uuid,name, List.of(() -> "ROLE_USER"));
+
 
     }
 
