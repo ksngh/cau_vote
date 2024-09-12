@@ -34,7 +34,7 @@ dependencies {
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 	implementation 'mysql:mysql-connector-java:8.0.33'
 // https://mvnrepository.com/artifact/org.springframework.data/spring-data-jpa
-	implementation 'org.springframework.data:spring-data-jpa:3.3.3'
+//	implementation 'org.springframework.data:spring-data-jpa:3.3.3'
 
 
 	implementation 'org.springframework.security:spring-security-oauth2-client:6.3.3'

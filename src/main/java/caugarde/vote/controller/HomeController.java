@@ -1,6 +1,9 @@
 package caugarde.vote.controller;
 
+import caugarde.vote.model.entity.Authority;
 import caugarde.vote.model.entity.Student;
+import caugarde.vote.model.enums.Role;
+import caugarde.vote.service.AuthorityService;
 import caugarde.vote.service.StudentService;
 import com.nimbusds.jose.proc.SecurityContext;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +19,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import java.security.Security;
+import java.util.UUID;
 
 @Controller
 @RequiredArgsConstructor
@@ -23,9 +27,13 @@ import java.security.Security;
 public class HomeController {
 
     private final StudentService studentService;
+    private final AuthorityService authorityService;
 
     @GetMapping("/poll")
     public String poll(@AuthenticationPrincipal OAuth2User user) {
+        Authority authority = new Authority(UUID.randomUUID(), Role.USER);
+        log.info(String.valueOf(authority.getRole()));
+        authorityService.save(authority);
 
         return "polling";
     }
