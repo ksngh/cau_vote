@@ -29,4 +29,9 @@ public class HomeController {
 
         return "polling";
     }
+
+    @GetMapping("/posting")
+    public String posting(@AuthenticationPrincipal OAuth2User user) {
+        return "posting";
+    }
 }

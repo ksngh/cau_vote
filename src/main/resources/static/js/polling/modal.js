@@ -1,18 +1,3 @@
-function toggleContent(card) {
-    const content = card.querySelector('.content');
-    content.style.display = (content.style.display === 'block') ? 'none' : 'block';
-}
-
-document.querySelectorAll('input[type="radio"]').forEach((radio) => {
-    radio.addEventListener('click', (event) => {
-        event.stopPropagation(); // 클릭 이벤트가 부모 요소로 전파되는 것을 막음
-    });
-});
-
-function vote(button) {
-    alert("참석에 투표하였습니다!");
-};
-
 // 모달 요소와 버튼 요소
 const modal = document.getElementById("myModal");
 const btn = document.getElementById("openModal");
