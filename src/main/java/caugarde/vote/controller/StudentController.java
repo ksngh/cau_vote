@@ -14,6 +14,4 @@ public class StudentController {
         return "signup";
     }
 
-
-
 }

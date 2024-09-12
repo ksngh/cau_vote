@@ -5,16 +5,28 @@
 </head>
 <body>
 <h1>signup</h1>
-<form th:action="@{/signup}" method="post">
   <div>
-    <label for="username">아이디:</label>
-    <input type="text" id="username" name="username"/>
+    <label for="studentId">학번:</label>
+    <input type="text" id="studentId" name="studentId"/>
   </div>
   <div>
-    <label for="password">비밀번호:</label>
-    <input type="password" id="password" name="password"/>
+    <label for="name">이름:</label>
+    <input type="text" id="name" name="name"/>
   </div>
-  <button type="submit">로그인</button>
-</form>
+  <div>
+    <label for="majority">전공:</label>
+    <input type="text" id="majority" name="majority"/>
+  </div>
+<div>
+  <label>회원 유형:</label>
+  <label>
+    <input type="radio" name="memberType" value="신입" checked> 신입 부원
+  </label>
+  <label>
+    <input type="radio" name="memberType" value="기존"> 기존 부원
+  </label>
+</div>
+  <button>회원가입</button>
+<script src="/js/student/signup.js"></script>
 </body>
 </html>

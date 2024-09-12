@@ -8,12 +8,11 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.UUID;
 
+@Getter
 public class CustomOAuthUser implements OAuth2User {
 
-    @Getter
     private final UUID id; // 사용자 ID
     private final String email; // 사용자 닉네임// OAuth2 사용자 속성
-    @Getter
     private final Boolean isSignedIn;
     private final Map<String, Object> attributes;
 

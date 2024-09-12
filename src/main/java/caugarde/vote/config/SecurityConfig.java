@@ -51,13 +51,6 @@ public class SecurityConfig{
         http
                 .formLogin(AbstractHttpConfigurer::disable);
 
-
-        // 세션을 사용하지 않기 때문에 STATELESS로 설정
-        http
-                .sessionManagement(sessionManagement ->
-                        sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                );
-
         //oauth
         http
                 .oauth2Login((oauth2) -> oauth2

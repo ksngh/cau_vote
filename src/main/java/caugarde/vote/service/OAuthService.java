@@ -30,7 +30,6 @@ public class OAuthService extends DefaultOAuth2UserService {
         Map<String,Object> kakaoAccount = oAuth2User.getAttribute("kakao_account");
         String email = (String) kakaoAccount.get("email");
 
-
         Optional<Student> studentOptional = studentRepository.findByEmail(email);
 
         if (studentOptional.isPresent()) {
