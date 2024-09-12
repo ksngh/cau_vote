@@ -2,19 +2,22 @@ package caugarde.vote.model.entity;
 
 import jakarta.persistence.*;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.sql.Timestamp;
 import java.util.Set;
+import java.util.UUID;
 
 @Entity
 @Table(name = "VOTE")
 @NoArgsConstructor
+@Getter
 public class Vote {
 
     @Id
     @Column(name = "VOTE_PK", nullable = false)
-    private String votePk;
+    private UUID votePk;
 
     @Column(name = "TITLE")
     private String title;
@@ -23,19 +26,19 @@ public class Vote {
     private String content;
 
     @Column(name = "START_DATE")
-    private java.util.Date startDate;
+    private Timestamp startDate;
 
     @Column(name = "SUBMIT_DATE")
-    private java.util.Date submitDate;
+    private Timestamp submitDate;
 
     @Column(name = "LIMIT_PEOPLE")
-    private Integer limitPeople;
+    private int limitPeople;
 
     @OneToMany(mappedBy = "vote")
     private Set<StudentVote> studentVotes;
 
     @Builder
-    public Vote(String votePk, String title, String content, Timestamp startDate, Timestamp submitDate, int limitPeople) {
+    public Vote(UUID votePk, String title, String content, Timestamp startDate, Timestamp submitDate, int limitPeople) {
         this.votePk = votePk;
         this.title = title;
         this.content = content;

@@ -1,24 +1,25 @@
-package caugarde.vote.model.dto.request;
+package caugarde.vote.model.dto.response;
 
+import lombok.Builder;
 import lombok.Getter;
 
 import java.sql.Timestamp;
-import java.util.UUID;
 
 @Getter
-public class VoteRequestDTO {
+public class VoteResponseDTO {
 
     private final String title;
     private final String content;
-    private final int limitPeople;
     private final Timestamp startDate;
     private final Timestamp submitDate;
+    private final int limitPeople;
 
-    public VoteRequestDTO(String title, String content, int limitPeople, Timestamp startDate, Timestamp submitDate) {
+    @Builder
+    public VoteResponseDTO(String title, String content, Timestamp startDate, Timestamp submitDate, int limitPeople) {
         this.title = title;
         this.content = content;
-        this.limitPeople = limitPeople;
         this.startDate = startDate;
         this.submitDate = submitDate;
+        this.limitPeople = limitPeople;
     }
 }
