@@ -1,5 +1,6 @@
 package caugarde.vote.service;
 
+import caugarde.vote.model.dto.request.VoteRequestDTO;
 import caugarde.vote.model.entity.Vote;
 import caugarde.vote.repository.VoteRepository;
 import jakarta.transaction.Transactional;
@@ -18,6 +19,17 @@ public class VoteService {
 
     public void save(Vote vote) {
         voteRepository.save(vote);
+    }
+
+    public void generatePoll(VoteRequestDTO voteRequestDTO) {
+        Vote vote = Vote.builder()
+                .votePk(String.valueOf(UUID.randomUUID()))
+                .title()
+                .content()
+                .limitPeople()
+                .startDate()
+                .submitDate()
+                .build();
     }
 
     public List<Vote> findAll() {

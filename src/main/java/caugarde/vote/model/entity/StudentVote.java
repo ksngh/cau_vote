@@ -1,24 +1,23 @@
 package caugarde.vote.model.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 
 @Entity
+@Table(name = "STUDENT_VOTE")
 public class StudentVote {
+
     @Id
+    @Column(name = "STUDENT_VOTE_PK", nullable = false)
     private String studentVotePk;
 
     @ManyToOne
-    @JoinColumn(name = "vote_fk")
-    private Vote vote;
-
-    @ManyToOne
-    @JoinColumn(name = "student_fk")
+    @JoinColumn(name = "STUDENT_FK", nullable = false)
     private Student student;
 
-    private int choice;
+    @ManyToOne
+    @JoinColumn(name = "VOTE_FK", nullable = false)
+    private Vote vote;
 
-    // Getters and Setters
+    @Column(name = "CHOICE")
+    private int choice;
 }

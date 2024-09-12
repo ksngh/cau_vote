@@ -25,7 +25,7 @@ public class HomeController {
     private final StudentService studentService;
 
     @GetMapping("/poll")
-    public String test(@AuthenticationPrincipal OAuth2User user) {
+    public String poll(@AuthenticationPrincipal OAuth2User user) {
 
         return "polling";
     }
