@@ -4,7 +4,7 @@ import caugarde.vote.model.enums.Role;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.Type;
+
 
 import java.util.Set;
 import java.util.UUID;

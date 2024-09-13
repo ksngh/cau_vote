@@ -31,10 +31,6 @@ public class HomeController {
 
     @GetMapping("/poll")
     public String poll(@AuthenticationPrincipal OAuth2User user) {
-        Authority authority = new Authority(UUID.randomUUID(), Role.USER);
-        log.info(String.valueOf(authority.getRole()));
-        authorityService.save(authority);
-
         return "polling";
     }
 

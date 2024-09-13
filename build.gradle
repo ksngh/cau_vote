@@ -32,9 +32,9 @@ dependencies {
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-	implementation 'mysql:mysql-connector-java:8.0.33'
-// https://mvnrepository.com/artifact/org.springframework.data/spring-data-jpa
-//	implementation 'org.springframework.data:spring-data-jpa:3.3.3'
+	implementation 'org.mariadb.jdbc:mariadb-java-client:3.4.1'
+
+	implementation 'org.springframework.data:spring-data-jpa:3.3.3'
 
 
 	implementation 'org.springframework.security:spring-security-oauth2-client:6.3.3'

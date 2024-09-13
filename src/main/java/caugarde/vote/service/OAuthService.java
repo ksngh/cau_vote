@@ -35,10 +35,7 @@ public class OAuthService extends DefaultOAuth2UserService {
         if (studentOptional.isPresent()) {
             return new CustomOAuthUser(studentOptional.get().getStudentPk(), email,true,oAuth2User.getAttributes()) ;
         } else {
-            UUID uuid = UUID.randomUUID();
-            Student student = new Student(uuid,email);
-            studentRepository.save(student);
-            return new CustomOAuthUser(uuid,email,false,oAuth2User.getAttributes());
+            return new CustomOAuthUser(UUID.randomUUID(),email,false,oAuth2User.getAttributes());
         }
 
 
