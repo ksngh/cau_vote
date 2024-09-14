@@ -8,6 +8,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -60,9 +61,14 @@ public class VoteService {
         voteRepository.save(vote);
     }
 
-    public List<Vote> findAll() {
+    public List<Vote> getAllVotes() {
         return voteRepository.findAll();
     }
+
+    public List<VoteResponseDTO> votesToDTO(List<Vote> votes) {
+        return votes.stream().map(VoteResponseDTO::new).toList();
+    }
+
     public Vote findById(UUID id) {
         return voteRepository.findById(id).orElse(null);
     }

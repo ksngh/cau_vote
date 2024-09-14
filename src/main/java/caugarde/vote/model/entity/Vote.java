@@ -1,9 +1,7 @@
 package caugarde.vote.model.entity;
 
 import jakarta.persistence.*;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.sql.Timestamp;
 import java.util.Set;
@@ -13,6 +11,7 @@ import java.util.UUID;
 @Table(name = "VOTE")
 @NoArgsConstructor
 @Getter
+@ToString
 public class Vote {
 
     @Id

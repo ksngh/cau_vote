@@ -10,6 +10,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -18,6 +20,13 @@ import java.util.UUID;
 public class VoteRestController {
 
     private final VoteService voteService;
+
+    @GetMapping()
+    public ResponseEntity<List<VoteResponseDTO>> getAllVotes() {
+        List<Vote> votes = voteService.getAllVotes();
+        List<VoteResponseDTO> voteResponseDTOS = voteService.votesToDTO(votes);
+        return ResponseEntity.ok(voteResponseDTOS);
+    }
 
     @GetMapping("/{id}")
     public ResponseEntity<VoteResponseDTO> showVote(@PathVariable UUID id) {
