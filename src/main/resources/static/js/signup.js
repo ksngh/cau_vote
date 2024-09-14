@@ -38,6 +38,6 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     // 버튼 클릭 시 signup 함수 호출
-    const button = document.querySelector("button");
+    const button = document.getElementById("signup-button");
     button.addEventListener("click", signup);
 });

@@ -27,7 +27,7 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
         CustomOAuthUser user = (CustomOAuthUser) authentication.getPrincipal();
 
         if (user.getIsSignedIn()) {
-            response.sendRedirect("/test");
+            response.sendRedirect("/poll");
         } else {
             response.sendRedirect("/student/signup");
         }
