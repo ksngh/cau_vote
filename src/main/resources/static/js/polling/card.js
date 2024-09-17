@@ -10,7 +10,6 @@ document.querySelectorAll('input[type="radio"]').forEach((radio) => {
 });
 
 
-
 function openCard(card) {
     // 카드의 ID 가져오기
     const id = card.getAttribute('data-id');

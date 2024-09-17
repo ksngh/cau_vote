@@ -52,6 +52,6 @@ INSERT INTO vote (vote_pk, title, limit_people, start_date, submit_date, content
 🔥개인 사정으로 급하게 늦참, 불참시에 홍유나에게 개인톡 부탁드립니다.');
 
 -- STUDENT_VOTE 테이블에 더미 데이터 삽입
-INSERT INTO student_vote (student_vote_pk, choice, student_fk, vote_fk) VALUES
+INSERT INTO student_vote (student_vote_pk, student_fk, vote_fk) VALUES
                                                                             (UUID(), 1, (SELECT student_pk FROM student LIMIT 1), (SELECT vote_pk FROM vote LIMIT 1)),
-(UUID(), 2, (SELECT student_pk FROM student LIMIT 1 OFFSET 1), (SELECT vote_pk FROM vote LIMIT 1 OFFSET 1));
+(UUID(), (SELECT student_pk FROM student LIMIT 1 OFFSET 1), (SELECT vote_pk FROM vote LIMIT 1 OFFSET 1));

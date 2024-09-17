@@ -1,6 +1,10 @@
 package caugarde.vote.service;
 
+import caugarde.vote.model.constant.CustomOAuthUser;
+import caugarde.vote.model.dto.request.StudentRequestDTO;
+import caugarde.vote.model.entity.Authority;
 import caugarde.vote.model.entity.Student;
+import caugarde.vote.model.enums.Role;
 import caugarde.vote.repository.StudentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,6 +20,21 @@ public class StudentService {
 
     public void save(Student student) {
         studentRepository.save(student);
+    }
+
+    public void signUp(CustomOAuthUser user, StudentRequestDTO studentRequestDTO,Authority authority) {
+
+        Student student = Student.builder()
+                .studentPk(user.getId())
+                .email(user.getEmail())
+                .studentId(studentRequestDTO.getStudentId())
+                .majority(studentRequestDTO.getMajority())
+                .memberType(studentRequestDTO.getMemberType())
+                .name(studentRequestDTO.getName())
+                .authority(authority)
+                .build();
+
+        save(student);
     }
 
     public List<Student> findAll() {

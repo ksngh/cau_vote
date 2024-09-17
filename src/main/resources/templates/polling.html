@@ -43,13 +43,13 @@
                         시간 : 17:30 ~ 21:30 <br>
                         시작 10분전에 와서 준비 완료하기</p>
                     <label>
-                        <input type="radio" name="attendance" value="참석"> 참석
+                        <input type="radio" name="choice" value="참석"> 참석
                     </label><br>
                     <label>
-                        <input type="radio" name="attendance" value="불참석"> 불참석
+                        <input type="radio" name="choice" value="불참석"> 불참석
                     </label><br>
                     <label>
-                        <input type="radio" name="attendance" value="미정"> 미정
+                        <input type="radio" name="choice" value="미정"> 미정
                     </label><br><br>
                     <button onclick="vote(this)">투표</button>
 
@@ -76,6 +76,7 @@
 <script th:src="@{/js/polling/card.js}"></script>
 <script th:src="@{/js/generate-card.js}"></script>
 <script th:src="@{/js/polling/modal.js}"></script>
+<script th:src="@{/js/generate-modal.js}"></script>
 
 </body>
 </html>

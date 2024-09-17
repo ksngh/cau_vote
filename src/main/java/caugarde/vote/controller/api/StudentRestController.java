@@ -29,22 +29,8 @@ public class StudentRestController {
 
     @PostMapping()
     public ResponseEntity<?> signUp(@AuthenticationPrincipal CustomOAuthUser user, @RequestBody StudentRequestDTO studentRequestDTO) {
-
-        Authority authority = authorityService.findByRole(Role.USER);
-
-        Student student = Student.builder()
-                .studentPk(user.getId())
-                .email(user.getEmail())
-                .studentId(studentRequestDTO.getStudentId())
-                .majority(studentRequestDTO.getMajority())
-                .memberType(studentRequestDTO.getMemberType())
-                .name(studentRequestDTO.getName())
-                .authority(authority)
-                .build();
-
-        studentService.save(student);
-
-        return ResponseEntity.ok(new MessageResponseDTO(student + SuccessMessage.CREATE.getMessage()));
+        studentService.signUp(user, studentRequestDTO, authorityService.findByRole(Role.USER));
+        return ResponseEntity.ok(new MessageResponseDTO("student" + SuccessMessage.CREATE.getMessage()));
     }
 
 }

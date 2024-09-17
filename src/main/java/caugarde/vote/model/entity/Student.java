@@ -57,4 +57,5 @@ public class Student {
         this.authority = authority;
         this.memberType = memberType;
     }
+
 }
