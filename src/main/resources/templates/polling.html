@@ -7,11 +7,13 @@
     <link th:href="@{/css/polling.css}" rel="stylesheet">  <!-- 외부 CSS 파일 연결 -->
 </head>
 <body>
-<div style="text-align: center">
-    <h4>
-        CAU FENCING POLLING SYSTEM
-    </h4>
+<div style="text-align: center; display: flex; align-items: center; justify-content: center;">
+    <h4 style="margin: 10px; margin-left: 40px;">CAU FENCING POLLING</h4>
+    <a href="https://kauth.kakao.com/oauth/authorize" style="margin-left: 40px;">
+        Login
+    </a>
 </div>
+
 
     <ul id="voteContainer">
         <li>
@@ -55,10 +57,7 @@
 
                     <button id="openModal">투표한 사람들</button>
 
-                    <!-- 모달 -->
-
-
-                </div>
+                    </div>
             </div>
 
             <div id="myModal" class="modal">

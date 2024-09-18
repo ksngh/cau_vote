@@ -1,5 +1,4 @@
 function getModalInfo(id) {
-    console.log(id);
     fetch(`api/student/vote/${id}`, {
         method: 'GET',
         headers: {

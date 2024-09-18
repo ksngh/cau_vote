@@ -29,7 +29,6 @@ document.addEventListener("DOMContentLoaded", function() {
                 return response.json();
             })
             .then(data => {
-                console.log('Success:', data);
                 window.location.href = "/poll"; // 원하는 URL로 이동
             })
             .catch(error => {
