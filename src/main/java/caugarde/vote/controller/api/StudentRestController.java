@@ -12,10 +12,7 @@ import caugarde.vote.service.StudentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 
@@ -31,6 +28,11 @@ public class StudentRestController {
     public ResponseEntity<?> signUp(@AuthenticationPrincipal CustomOAuthUser user, @RequestBody StudentRequestDTO studentRequestDTO) {
         studentService.signUp(user, studentRequestDTO, authorityService.findByRole(Role.USER));
         return ResponseEntity.ok(new MessageResponseDTO("student" + SuccessMessage.CREATE.getMessage()));
+    }
+
+    @GetMapping()
+    public ResponseEntity<?> validateMember() {
+        return ResponseEntity.ok().body("");
     }
 
 }

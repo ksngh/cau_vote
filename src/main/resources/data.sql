@@ -5,7 +5,7 @@ INSERT INTO authority (authority_pk, role) VALUES
 
 -- ADMIN 테이블에 더미 데이터 삽입
 INSERT INTO admin (admin_pk, id, password, authority_fk) VALUES
-                                                             (UUID(), 'admin1', '1234', (SELECT authority_pk FROM authority WHERE role = 'ADMIN')));
+                                                             (UUID(), 'admin1', '1234', 4c282e2a-73aa-11ef-9173-b025aa3c7fb9);
 
 -- STUDENT 테이블에 더미 데이터 삽입
 INSERT INTO student (student_pk, email, majority, member_type, name, student_id, authority_fk) VALUES
