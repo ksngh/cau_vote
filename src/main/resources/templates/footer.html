@@ -1,10 +1,16 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-
-</body>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<th:block th:fragment="footerLayout">
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta charset="UTF-8">
+        <title>Header</title>
+        <link th:href="@{/css/header.css}" rel="stylesheet"> <!-- 외부 CSS 파일 연결 -->
+    </head>
+    <body>
+    <div style="display: flex; align-items: center; justify-content: center;">
+        <a>Made By 성호킴</a>
+    </div>
+    </body>
+</th:block>
 </html>

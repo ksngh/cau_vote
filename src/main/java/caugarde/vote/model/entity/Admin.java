@@ -18,8 +18,8 @@ public class Admin {
     @JoinColumn(name = "AUTHORITY_FK", nullable = false)
     private Authority authority;
 
-    @Column(name = "ID")
-    private String id;
+    @Column(name = "USERNAME")
+    private String username;
 
     @Column(name = "PASSWORD")
     private String password;

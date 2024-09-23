@@ -55,10 +55,14 @@ public class SecurityConfig {
         //form 로그인(admin)
         http.formLogin(formLogin -> {
                     formLogin
-                            .loginPage("/admin/login") // 사용자 정의 로그인 페이지
+                            .loginPage("/admin/login")
+                            .permitAll()// 사용자 정의 로그인 페이지
+                            .loginProcessingUrl("/loginProcess")
+                            .usernameParameter("username")
+                            .passwordParameter("password")
                             .permitAll() // 로그인 페이지에는 모든 사용자 접근 허용
-                            .defaultSuccessUrl("/")
-                            .failureUrl("/admin/login");
+                            .successHandler(new AdminAuthenticationSuccessHandler())
+                            .failureHandler(new AdminAuthenticationFailureHandler());
                 });
 //                .logout(logoutConfigurer -> {
 //                    logoutConfigurer

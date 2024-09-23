@@ -66,7 +66,7 @@ function vote(id) {
             alert(data.message);
     }).catch(error => {
         console.error('Error:', error);
-        alert('서버와의 연결에 문제가 발생했습니다.');
+        alert('로그인 후 이용해주세요.');
     });
 }
 
