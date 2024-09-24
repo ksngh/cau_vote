@@ -82,4 +82,8 @@ public class StudentVoteService {
         Vote vote = voteRepository.findById(id).orElse(null);
         studentVoteRepository.deleteByVote(vote);
     }
+
+    public List<StudentVote> getByStudent(Student student) {
+        return studentVoteRepository.findByStudent(student);
+    }
 }

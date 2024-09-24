@@ -1,8 +1,8 @@
-getCardInfo()
+getMyCardInfo()
 
-function getCardInfo() {
+function getMyCardInfo() {
 
-    fetch('api/vote', {
+    fetch('api/vote/mypage', {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json'
@@ -16,7 +16,7 @@ function getCardInfo() {
     })
         .then(data => {
             for (let i = 0; i < data.length; i++) {
-                generateCard(data[i]);
+                generateMyCard(data[i]);
             }
         })
         .catch(error => {
@@ -25,53 +25,29 @@ function getCardInfo() {
         });
 }
 
-function generateCard(data) {
-
-
-    const currentDate = new Date();
-    const submitDate = new Date(data.submitDate);
-    const startDate = new Date(data.startDate);
-
-    let dividerClass = '';
-    let isBlurred = false; // 블러 처리 여부
-    let hideButtons = false; // 버튼 숨김 여부
-    let voteInfo ='';
-
-    if (currentDate > submitDate) {
-        dividerClass = 'finishedVote';
-        isBlurred = true; // 마감된 투표는 블러 처리
-        hideButtons = true; // 버튼 숨김
-        voteInfo = "마감된 투표 입니다."
-    } else if (currentDate < startDate) {
-        dividerClass = 'upcomingVote';
-        isBlurred = true; // 예정된 투표는 블러 처리
-        hideButtons = true; // 버튼 숨김
-        voteInfo = "투표 예정일 : " + formatDate(startDate);
-    } else {
-        dividerClass = 'ongoingVote';
-        voteInfo = "투표 마감일 : " + formatDate(submitDate);
-    }
+function generateMyCard(data) {
 
     // 카드 요소 생성
     const card = document.createElement('li');
-    card.className = 'card' + (isBlurred ? ' blurred' : '');
+    card.className = 'card';
     card.setAttribute('data-id', data.uuid); // 고유 ID 추가
     card.setAttribute('onclick', 'toggleContent(this)');
 
     // 카드 내용 구성
     card.innerHTML = `
         <h3 style="display: inline;">${data.title}</h3>
-        <p>${voteInfo}</p>
+        <p>${data.submitDate}</p>
+        <p style="color: red; display: inline;"><strong> 마감</strong></p>
         <div class="content">
             <p>${data.content}</p>
-            <button onclick=vote("${data.uuid}") style="${hideButtons ? 'display:none;' : ''}">참석</button>
-            <button onclick=cancel("${data.uuid}") style="${hideButtons ? 'display:none;' : ''}">취소</button>
+            <button onclick=Vote("${data.uuid}")>참석</button>
+            <button onclick=cancel("${data.uuid}")>취소</button>
             <button onclick=openVoteModal("${data.uuid}")>투표한 사람들</button>
         </div>
     `;
 
     // 생성된 카드를 컨테이너에 추가
-    document.getElementById(dividerClass).appendChild(card);
+    document.getElementById('voteContainer').appendChild(card);
 }
 
 function vote(id) {
@@ -87,7 +63,7 @@ function vote(id) {
             throw new Error('투표 생성에 실패했습니다: ' + response.statusText);
         }
     }).then(data => {
-            alert(data.message);
+        alert(data.message);
     }).catch(error => {
         console.error('Error:', error);
         alert('로그인 후 이용해주세요.');
@@ -112,14 +88,4 @@ function cancel(id){
         console.error('Error:', error);
         alert('서버와의 연결에 문제가 발생했습니다.');
     });
-}
-
-function formatDate(date) {
-    const year = date.getFullYear();
-    const month = date.getMonth() + 1; // 월은 0부터 시작하므로 1을 더함
-    const day = date.getDate();
-    const hours = date.getHours();
-    const minutes = date.getMinutes().toString().padStart(2, '0'); // 2자리로 포맷
-
-    return `${year}년 ${month}월 ${day}일 ${hours}시 ${minutes}분`;
 }

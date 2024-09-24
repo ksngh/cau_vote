@@ -92,3 +92,42 @@ ul {
         padding: 5px; /* 패딩 더 줄이기 */
     }
 }
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+}
+
+.hamburger {
+    font-size: 30px;
+    cursor: pointer;
+}
+
+.menu {
+    display: none; /* 기본적으로 숨김 */
+    flex-direction: column;
+    position: absolute;
+    top: 60px; /* 햄버거 메뉴 아래 위치 */
+    right: 10px;
+    background-color: rgba(68, 68, 68, 0.3);
+    border-radius: 5px;
+    z-index: 1000; /* 메뉴가 다른 요소 위에 표시되도록 */
+}
+
+.menu a {
+    color: black;
+    padding: 10px 15px;
+    text-decoration: none;
+    display: block;
+}
+
+.menu a:hover {
+    background-color: #444;
+}
+
+.menu.active {
+    display: flex; /* 메뉴가 활성화되면 표시 */
+}
+

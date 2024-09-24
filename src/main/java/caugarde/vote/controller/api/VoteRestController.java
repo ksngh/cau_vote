@@ -1,13 +1,20 @@
 package caugarde.vote.controller.api;
 
+import caugarde.vote.model.constant.CustomOAuthUser;
 import caugarde.vote.model.dto.request.VoteRequestDTO;
 import caugarde.vote.model.dto.response.MessageResponseDTO;
 import caugarde.vote.model.dto.response.VoteResponseDTO;
+import caugarde.vote.model.entity.Student;
+import caugarde.vote.model.entity.StudentVote;
 import caugarde.vote.model.entity.Vote;
 import caugarde.vote.model.enums.SuccessMessage;
+import caugarde.vote.service.StudentService;
+import caugarde.vote.service.StudentVoteService;
 import caugarde.vote.service.VoteService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -20,6 +27,8 @@ import java.util.UUID;
 public class VoteRestController {
 
     private final VoteService voteService;
+    private final StudentVoteService studentVoteService;
+    private final StudentService studentService;
 
     @GetMapping()
     public ResponseEntity<List<VoteResponseDTO>> getAllVotes() {
@@ -49,8 +58,17 @@ public class VoteRestController {
     // 수정 필요함.. 참조 테이블 먼저 지워야 한다.
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteVote(@PathVariable UUID id) {
+        studentVoteService.deleteByVote(id);
         voteService.deleteById(id);
         return ResponseEntity.ok(new MessageResponseDTO(SuccessMessage.DELETE.getMessage()));
+    }
+
+    @GetMapping("/mypage")
+    public ResponseEntity<List<VoteResponseDTO>> getMyVotes(@AuthenticationPrincipal CustomOAuthUser user) {
+        Student student = studentService.findById(user.getId());
+        List<StudentVote> studentVotes = studentVoteService.getByStudent(student);
+        List<VoteResponseDTO> voteResponseDTOS = voteService.getVotesByStudentVotes(studentVotes);
+        return ResponseEntity.ok(voteResponseDTOS);
     }
 
 }

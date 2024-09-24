@@ -1,11 +1,9 @@
 package caugarde.vote.controller.api;
 
 import caugarde.vote.model.constant.CustomOAuthUser;
-import caugarde.vote.model.dto.request.StudentVoteRequestDTO;
 import caugarde.vote.model.dto.response.MessageResponseDTO;
 import caugarde.vote.model.dto.response.StudentVoteResponseDTO;
 import caugarde.vote.model.entity.Student;
-import caugarde.vote.model.entity.StudentVote;
 import caugarde.vote.model.enums.SuccessMessage;
 import caugarde.vote.service.StudentVoteService;
 import lombok.RequiredArgsConstructor;
