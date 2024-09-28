@@ -12,6 +12,7 @@ import caugarde.vote.service.StudentService;
 import caugarde.vote.service.StudentVoteService;
 import caugarde.vote.service.VoteService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.core.user.OAuth2User;
@@ -19,8 +20,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/vote")
@@ -55,10 +58,8 @@ public class VoteRestController {
         return ResponseEntity.ok(new MessageResponseDTO("vote" + SuccessMessage.UPDATE.getMessage()));
     }
 
-    // 수정 필요함.. 참조 테이블 먼저 지워야 한다.
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteVote(@PathVariable UUID id) {
-        studentVoteService.deleteByVote(id);
         voteService.deleteById(id);
         return ResponseEntity.ok(new MessageResponseDTO(SuccessMessage.DELETE.getMessage()));
     }

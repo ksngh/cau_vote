@@ -20,7 +20,7 @@ public class Student {
     @Column(name = "STUDENT_PK", nullable = false)
     private UUID studentPk;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "AUTHORITY_FK", nullable = false)
     private Authority authority;
 

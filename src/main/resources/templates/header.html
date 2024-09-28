@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+            xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <th:block th:fragment="headerLayout">
     <head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,18 +9,27 @@
         <link th:href="@{/css/header.css}" rel="stylesheet"> <!-- 외부 CSS 파일 연결 -->
     </head>
     <body>
-        <div style="display: flex; align-items: center; justify-content: center;">
-            <h4><a href="/" style="text-decoration: none; color: inherit;">CAU FENCING POLLING</a></h4>
-            <div class="navbar">
-                <div class="hamburger" id="hamburger">
-                    &#9776; <!-- 햄버거 아이콘 -->
-                </div>
-                <div class="menu" id="menu">
-                    <a href="oauth2/authorization/kakao">로그인</a>
-                    <a href="/">관리자 로그인</a>
-                </div>
-            </div>
+    <nav id="nav-header" class="header-container">
+        <h3><a href="/" style="text-decoration: none; color: inherit;">CHUNG-ANG GARDE</a></h3>
+        <button id="loginBtn" class="login-button">로그인</button>
+    </nav>
+    <div class="menu">
+        <ul id="menu">
+        </ul>
+    </div>
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <span class="close" id="closeBtn">&times;</span>
+            <ul>
+            <li>
+                <a href="oauth2/authorization/kakao">로그인</a><br>
+            </li>
+            <li>
+                <a href = "/admin/login">관리자 로그인</a>
+            </li>
+            </ul>
         </div>
+    </div>
     <script src="/js/header.js"></script>
     </body>
 </th:block>

@@ -19,4 +19,5 @@ public class StudentController {
         return "mypage";
     }
 
+
 }

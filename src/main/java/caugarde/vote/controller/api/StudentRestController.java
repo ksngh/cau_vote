@@ -1,6 +1,8 @@
 package caugarde.vote.controller.api;
 
 import caugarde.vote.model.constant.CustomOAuthUser;
+import caugarde.vote.model.constant.CustomUserDetails;
+import caugarde.vote.model.dto.response.StudentResponseDTO;
 import caugarde.vote.model.enums.Role;
 import caugarde.vote.model.enums.SuccessMessage;
 import caugarde.vote.model.dto.request.StudentRequestDTO;
@@ -11,7 +13,10 @@ import caugarde.vote.service.AuthorityService;
 import caugarde.vote.service.StudentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
@@ -32,7 +37,8 @@ public class StudentRestController {
 
     @GetMapping()
     public ResponseEntity<?> validateMember() {
-        return ResponseEntity.ok().body("");
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return ResponseEntity.ok().body(studentService.userToStudentResponseDTO(authentication));
     }
 
 }

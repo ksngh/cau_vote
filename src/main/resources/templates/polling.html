@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" lang="en">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      lang="en">
 <th:block th:replace="~{header::headerLayout}"></th:block>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -21,8 +23,6 @@
             <h3 style="text-align: center">마감된 투표</h3>
         </div>
     </ul>
-<a href="/posting">투표생성</a>
-
 
 <script th:src="@{/js/polling/card.js}"></script>
 <script th:src="@{/js/generate-card.js}"></script>

@@ -4,16 +4,17 @@ import caugarde.vote.model.dto.request.VoteRequestDTO;
 import caugarde.vote.model.dto.response.VoteResponseDTO;
 import caugarde.vote.model.entity.StudentVote;
 import caugarde.vote.model.entity.Vote;
-import caugarde.vote.repository.StudentRepository;
 import caugarde.vote.repository.StudentVoteRepository;
 import caugarde.vote.repository.VoteRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -21,7 +22,6 @@ import java.util.UUID;
 public class VoteService {
 
     private final VoteRepository voteRepository;
-    private final StudentRepository studentRepository;
     private final StudentVoteRepository studentVoteRepository;
 
     public void save(VoteRequestDTO voteRequestDTO) {
@@ -79,11 +79,16 @@ public class VoteService {
     }
 
     public void deleteById(UUID id) {
+        Vote vote = voteRepository.findById(id).orElse(null);
+        studentVoteRepository.deleteByVote(vote);
         voteRepository.deleteById(id);
     }
 
     public List<VoteResponseDTO> getVotesByStudentVotes(List<StudentVote> studentVotes){
-        List<Vote> votes = voteRepository.findAllByStudentVotes(studentVotes);
-        return votesToDTO(votes);
+
+        return studentVotes.stream()
+                .map(StudentVote::getVote)
+                .map(VoteResponseDTO::new)
+                .toList();
     }
 }

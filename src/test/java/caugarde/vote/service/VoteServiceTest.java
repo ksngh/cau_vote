@@ -32,4 +32,8 @@ class VoteServiceTest {
         System.out.println(voteResponseDTOS.toString());
     }
 
+    @Test
+    void getVotesByStudentVotes() {
+
+    }
 }

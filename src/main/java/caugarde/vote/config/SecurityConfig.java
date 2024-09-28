@@ -9,6 +9,7 @@ import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
@@ -46,10 +47,19 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests(authorizeHttpRequests -> authorizeHttpRequests
                                 .requestMatchers(
-                                        "/", "/review/{id}", "/submit", "/api/**", "/registration",
-                                        "/api/submit", "/view/common/header", "/project/", "/project/write").permitAll()
+                                        "/",
+                                        "/oauth2/authorization/kakao",
+                                        "/oauth/kakao/callback")
+                                .permitAll()
+                                .requestMatchers(
+                                        "/mypage"
+                                )
+                                .hasRole("USER")
+                                .requestMatchers(
+                                        ("/admin/**")
+                                )
+                                .hasRole("ADMIN")
                                 .anyRequest().permitAll()
-                        // authenticated()
                 );
 
         //form 로그인(admin)
@@ -57,18 +67,14 @@ public class SecurityConfig {
                     formLogin
                             .loginPage("/admin/login")
                             .permitAll()// 사용자 정의 로그인 페이지
-                            .loginProcessingUrl("/loginProcess")
+                            .loginProcessingUrl("/admin/loginProcess")
+                            .permitAll()
                             .usernameParameter("username")
                             .passwordParameter("password")
-                            .permitAll() // 로그인 페이지에는 모든 사용자 접근 허용
                             .successHandler(new AdminAuthenticationSuccessHandler())
                             .failureHandler(new AdminAuthenticationFailureHandler());
                 });
-//                .logout(logoutConfigurer -> {
-//                    logoutConfigurer
-//                            .logoutUrl("/logout") // 로그아웃 URL
-//                            .logoutSuccessUrl("/login?logout=true"); // 로그아웃 성공 후 리다이렉트 URL
-//                });
+
 
         //oauth
         http
@@ -78,6 +84,11 @@ public class SecurityConfig {
                                 .userService(oAuthService))
                         .successHandler(new CustomAuthenticationSuccessHandler()));
 
+        http.logout((logout) -> logout
+                .logoutUrl("/logout")
+                .logoutSuccessUrl("/")
+                .permitAll());
+
         return http.build();
 
     }
@@ -86,7 +97,5 @@ public class SecurityConfig {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
-
 
 }

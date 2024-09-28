@@ -22,12 +22,6 @@ public class Authority {
     @Column(name = "ROLE")
     private Role role;
 
-    @OneToMany(mappedBy = "authority")
-    private Set<Student> students;
-
-    @OneToMany(mappedBy = "authority")
-    private Set<Admin> admins;
-
     public Authority(UUID authorityPk, Role role) {
         this.authorityPk = authorityPk;
         this.role = role;

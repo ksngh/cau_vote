@@ -14,7 +14,7 @@ public class Admin {
     @Column(name = "ADMIN_PK", nullable = false)
     private UUID adminPk;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "AUTHORITY_FK", nullable = false)
     private Authority authority;
 

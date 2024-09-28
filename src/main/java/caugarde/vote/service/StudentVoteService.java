@@ -86,4 +86,5 @@ public class StudentVoteService {
     public List<StudentVote> getByStudent(Student student) {
         return studentVoteRepository.findByStudent(student);
     }
+
 }

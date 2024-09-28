@@ -21,7 +21,7 @@ document.addEventListener("DOMContentLoaded", function() {
             submitDate: submitDate
         };
 
-        fetch('api/vote', {
+        fetch('/api/vote', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

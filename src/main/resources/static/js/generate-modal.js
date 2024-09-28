@@ -69,5 +69,6 @@ function generateModal(data) {
 
 // 카드 생성 시 모달 열기
 function openVoteModal(uuid) {
+    event.stopPropagation();
     getModalInfo(uuid); // UUID를 사용하여 데이터 요청
 }

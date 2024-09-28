@@ -1,6 +1,22 @@
 package caugarde.vote.model.enums;
 
-public enum Role {
-    ADMIN,
-    USER// 필요한 역할 추가
+import lombok.Getter;
+import org.springframework.security.core.GrantedAuthority;
+
+@Getter
+public enum Role implements GrantedAuthority {
+
+    ADMIN("ROLE_ADMIN"),
+    USER("ROLE_USER");
+
+    private final String auth;
+
+    Role(String auth) {
+        this.auth = auth;
+    }
+
+    @Override
+    public String getAuthority() {
+        return auth;
+    }
 }
