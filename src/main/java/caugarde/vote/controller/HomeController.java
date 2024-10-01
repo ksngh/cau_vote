@@ -19,9 +19,6 @@ public class HomeController {
 
 	@GetMapping()
 	public String poll() {
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-		System.out.println(authentication.getAuthorities());
 		return "polling";
 	}
 }

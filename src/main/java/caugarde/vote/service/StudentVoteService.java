@@ -87,4 +87,8 @@ public class StudentVoteService {
         return studentVoteRepository.findByStudent(student);
     }
 
+    public int countByVote(Vote vote){
+        return studentVoteRepository.findByVote(vote).size();
+    }
+
 }

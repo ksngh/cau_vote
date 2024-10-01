@@ -1,6 +1,9 @@
 getCardInfo();
+let isRequestInProgress = false;
 
 function getCardInfo() {
+    if (isRequestInProgress) return; // 요청 중이면 종료
+    isRequestInProgress = true;
 
     fetch('api/vote', {
         method: 'GET',
@@ -22,10 +25,13 @@ function getCardInfo() {
         .catch(error => {
             console.error('Error:', error);
             alert('서버와의 연결에 문제가 발생했습니다.');
+        })
+        .finally(() => {
+            isRequestInProgress = false; // 요청 완료 후 상태 초기화
         });
 }
 
-function generateCard(data) {
+async function generateCard(data) {
 
 
     const currentDate = new Date();
@@ -35,8 +41,9 @@ function generateCard(data) {
     let dividerClass = '';
     let isBlurred = false; // 블러 처리 여부
     let hideButtons = false; // 버튼 숨김 여부
-    let hidePeople =false;
-    let voteInfo ='';
+    let hidePeople = false;
+    let voteInfo = '';
+    const attendanceNum = "참여 인원 : " + await fetchVoteCount(data.uuid) + "/" + data.limitPeople;
 
     if (currentDate > submitDate) {
         dividerClass = 'finishedVote';
@@ -60,27 +67,35 @@ function generateCard(data) {
     card.setAttribute('data-id', data.uuid); // 고유 ID 추가
     card.setAttribute('onclick', 'toggleContent(this)');
 
-    // 카드 내용 구성
-    card.innerHTML = `
-        <h3 style="display: inline;">${data.title}</h3>
-        <p>${voteInfo}</p>
-        <div class="content" id="card-content">
-            <p>${data.content}</p>
-            <button onclick=vote("${data.uuid}") style="${hideButtons ? 'display:none;' : ''}">참석</button>
-            <button onclick=cancel("${data.uuid}") style="${hideButtons ? 'display:none;' : ''}">취소</button>
-            <button onclick=openVoteModal("${data.uuid}") style="${hidePeople ? 'display:none;' : ''}">참여 인원</button>
-        </div>
-    `;
 
     fetch('/api/student')
         .then(response => response.json())
         .then(userData => {
             if (userData && userData.role === "ROLE_ADMIN") {
-                const cardContent = card.querySelector('#card-content');
-                cardContent.insertAdjacentHTML("beforeend", `
-                    <button onclick="updateCard('${data.uuid}')">수정</button>
-                    <button onclick="deleteCard('${data.uuid}')">삭제</button>
-                `);
+                card.innerHTML = `
+                    <h3 style="display: inline;">${data.title}</h3>
+                    <p>${voteInfo}</p>
+                    <p>${attendanceNum}</p>
+                    <div class="content" id="card-content">
+                        <p>${data.content}</p>
+                        <button onclick=openVoteModal("${data.uuid}") style="${hidePeople ? 'display:none;' : ''}">참여 인원</button>
+                        <button onclick=updateCard('${data.uuid}')>수정</button>
+                        <button onclick=deleteCard('${data.uuid}')>삭제</button>
+                    </div>
+                `;
+            } else {
+                // 카드 내용 구성
+                card.innerHTML = `
+                    <h3 style="display: inline;">${data.title}</h3>
+                    <p>${voteInfo}</p>
+                    <p>${attendanceNum}</p>
+                    <div class="content" id="card-content">
+                        <p>${data.content}</p>
+                        <button onclick=vote("${data.uuid}") style="${hideButtons ? 'display:none;' : ''}">참석</button>
+                        <button onclick=cancel("${data.uuid}") style="${hideButtons ? 'display:none;' : ''}">취소</button>
+                        <button onclick=openVoteModal("${data.uuid}") style="${hidePeople ? 'display:none;' : ''}">참여 인원</button>
+                    </div>
+                `;
             }
         })
         .catch(error => console.error('Error fetching user status:', error));
@@ -90,7 +105,7 @@ function generateCard(data) {
 }
 
 function vote(id) {
-    fetch(`api/student/vote/${id}`,{
+    fetch(`api/student/vote/${id}`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -102,15 +117,16 @@ function vote(id) {
             throw new Error('투표 생성에 실패했습니다: ' + response.statusText);
         }
     }).then(data => {
-            alert(data.message);
+        alert(data.message);
+        window.location.reload();
     }).catch(error => {
         console.error('Error:', error);
         alert('로그인 후 이용해주세요.');
     });
 }
 
-function cancel(id){
-    fetch(`api/student/vote/choice/${id}`,{
+function cancel(id) {
+    fetch(`api/student/vote/choice/${id}`, {
         method: 'DELETE',
         headers: {
             'Content-Type': 'application/json'
@@ -123,6 +139,8 @@ function cancel(id){
         }
     }).then(data => {
         alert("투표가 취소되었습니다.");
+        location.reload();
+
     }).catch(error => {
         console.error('Error:', error);
         alert('서버와의 연결에 문제가 발생했습니다.');
@@ -139,13 +157,13 @@ function formatDate(date) {
     return `${year}년 ${month}월 ${day}일 ${hours}시 ${minutes}분`;
 }
 
-function updateCard(id){
+function updateCard(id) {
     window.location.href = `/admin/posting/${id}`
 }
 
-function deleteCard(id){
+function deleteCard(id) {
 
-    fetch(`api/vote/${id}`,{
+    fetch(`api/vote/${id}`, {
         method: 'DELETE'
     }).then(response => {
         if (response.ok) {
@@ -160,4 +178,18 @@ function deleteCard(id){
         console.error('Error:', error);
         alert('서버와의 연결에 문제가 발생했습니다.');
     });
+}
+
+async function fetchVoteCount(id) {
+    try {
+        const response = await fetch(`api/student/vote/count/${id}`);
+
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        const data = await response.json(); // JSON 형식으로 변환
+        return data.countStudentVote; // StudentVoteCountResponseDTO 객체 반환
+    } catch (error) {
+        console.error('Error fetching vote count:', error);
+    }
 }

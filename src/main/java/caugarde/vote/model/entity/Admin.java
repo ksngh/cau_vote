@@ -1,13 +1,17 @@
 package caugarde.vote.model.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.util.UUID;
 
 @Entity
 @Table(name = "ADMIN")
 @Getter
+@AllArgsConstructor
+@NoArgsConstructor
 public class Admin {
 
     @Id
@@ -23,6 +27,7 @@ public class Admin {
 
     @Column(name = "PASSWORD")
     private String password;
+
 
     // Getters and Setters
 }
