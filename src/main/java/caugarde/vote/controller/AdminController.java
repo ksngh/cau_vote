@@ -21,8 +21,8 @@ public class AdminController {
     }
 
     @GetMapping("/posting/{id}")
-    public String posting(@PathVariable UUID id) {
-        return "posting";
+    public String update() {
+        return "update";
     }
 
     @GetMapping("/login")

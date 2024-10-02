@@ -1,5 +1,5 @@
-getCardInfo();
 let isRequestInProgress = false;
+getCardInfo();
 
 function getCardInfo() {
     if (isRequestInProgress) return; // 요청 중이면 종료
