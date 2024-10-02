@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <th:block th:fragment="headerLayout">
     <head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -20,15 +19,16 @@
     <div id="loginModal" class="modal">
         <div class="modal-content">
             <span class="close" id="closeBtn">&times;</span>
-            <ul>
-                <li>
-                    <p>카카오톡으로 회원가입 / 로그인</p>
-                    <a href="oauth2/authorization/kakao" style="display: inline-block;">
-                        <img src="/images/kakao_login.png" alt="카카오 로그인" style="width: 40%; height: auto;" />
-                    </a><br>
+            <ul style="list-style: none; padding: 0; margin: 20px auto; width: 100%; max-width: 400px; display: flex; flex-direction: column; align-items: center;">
+                <li style="margin-bottom: 15px;">
+                    <a href="oauth2/authorization/kakao" style="padding: 10px 15px; color: black; text-decoration: none; border-radius: 5px; transition: all 0.3s;">
+                        회원가입 / 로그인
+                    </a>
                 </li>
                 <li>
-                    <a href = "/admin/login">관리자 로그인</a>
+                    <a href="/admin/login" style="padding: 10px 15px; color: black; text-decoration: none; border-radius: 5px; transition: all 0.3s;">
+                        관리자 로그인
+                    </a>
                 </li>
             </ul>
         </div>

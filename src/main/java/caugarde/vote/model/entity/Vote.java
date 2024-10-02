@@ -22,7 +22,7 @@ public class Vote {
     @Column(name = "TITLE")
     private String title;
 
-    @Column(name = "CONTENT")
+    @Column(name = "CONTENT", length = 1000)
     private String content;
 
     @Column(name = "START_DATE")

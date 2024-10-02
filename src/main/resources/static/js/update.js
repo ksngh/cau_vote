@@ -82,9 +82,12 @@ function rendering() {
                 const title = document.getElementById('title').value;
                 const content = document.getElementById('content').value;
                 const limitPeople = document.getElementById('limitPeople').value;
-                const startDate = document.getElementById('startDate').value;
-                const submitDate = document.getElementById('submitDate').value;
+                const startDateInput = document.getElementById('startDate').value;
+                const submitDateInput = document.getElementById('submitDate').value;
 
+// 초를 포함한 올바른 형식으로 변환
+                const startDate = new Date(startDateInput).toISOString();
+                const submitDate = new Date(submitDateInput).toISOString();
                 const voteData = {
                     title: title,
                     content: content,

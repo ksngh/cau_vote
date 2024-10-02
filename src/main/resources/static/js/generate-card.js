@@ -77,7 +77,7 @@ async function generateCard(data) {
                     <p>${voteInfo}</p>
                     <p>${attendanceNum}</p>
                     <div class="content" id="card-content">
-                        <p>${data.content}</p>
+                        <p style="white-space: pre-line;">${data.content}</p>
                         <button onclick=openVoteModal("${data.uuid}") style="${hidePeople ? 'display:none;' : ''}">참여 인원</button>
                         <button onclick=updateCard('${data.uuid}')>수정</button>
                         <button onclick=deleteCard('${data.uuid}')>삭제</button>
@@ -142,8 +142,7 @@ function cancel(id) {
         location.reload();
 
     }).catch(error => {
-        console.error('Error:', error);
-        alert('서버와의 연결에 문제가 발생했습니다.');
+        alert("로그인 후 이용해주세요.");
     });
 }
 

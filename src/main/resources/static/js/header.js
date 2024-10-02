@@ -24,7 +24,6 @@ function checkUserStatus() {
     fetch('/api/student')
         .then(response => response.json())
         .then(data => {
-            console.log(data);
             if (data.name) {
                 // 로그인한 경우 햄버거 버튼 표시
                 const nav = document.getElementById('nav-header');

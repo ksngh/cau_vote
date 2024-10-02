@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html xmlns:th="http://www.thymeleaf.org"
+      lang="en">
+<th:block th:replace="~{header::headerLayout}"></th:block>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -23,7 +25,7 @@
     <label for="submitDate">마감 날짜:</label>
     <input type="datetime-local" id="submitDate" name="submitDate" required><br><br>
 
-    <button id="update-poll" type="button">생성</button>
+    <button id="generate-poll" type="button">생성</button>
 
 <script src="/js/posting.js"></script>
 </body>

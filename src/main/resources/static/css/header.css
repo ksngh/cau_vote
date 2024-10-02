@@ -103,6 +103,10 @@ ul {
 .hamburger {
     font-size: 30px;
     cursor: pointer;
+    position: fixed; /* 고정 위치 */
+    top: 20px;
+    right: 20px; /* 오른쪽 상단 */
+    z-index: 1000; /* 다른 요소 위에 표시 */
 }
 
 .menu-trigger {
@@ -124,11 +128,20 @@ ul {
 }
 
 .menu {
-    display: none; /* 기본적으로 메뉴 숨김 */
+    position: fixed; /* 고정 위치 */
+    top: 0;
+    right: -300px; /* 화면 밖으로 초기 위치 설정 */
+    width: 200px; /* 메뉴 너비 */
+    height: 100%; /* 전체 높이 */
+    background-color: white; /* 메뉴 배경색 */
+    color: white; /* 글자색 */
+    padding: 20px;
+    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.5); /* 그림자 */
+    transition: right 0.3s ease; /* 부드러운 전환 */
 }
 
 .menu.active {
-    display: block; /* 활성화 시 메뉴 보임 */
+    right: 0; /* 활성화 시 오른쪽으로 이동 */
 }
 
 .header-container {
