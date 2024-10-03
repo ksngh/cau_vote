@@ -1,22 +1,28 @@
 package caugarde.vote.config;
 
+import caugarde.vote.common.AdminAuthenticationFailureHandler;
+import caugarde.vote.common.AdminAuthenticationSuccessHandler;
 import caugarde.vote.common.CustomAuthenticationSuccessHandler;
 import caugarde.vote.service.OAuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
-public class SecurityConfig{
+public class SecurityConfig {
 
     private final OAuthService oAuthService;
 
@@ -41,15 +47,34 @@ public class SecurityConfig{
         http
                 .authorizeHttpRequests(authorizeHttpRequests -> authorizeHttpRequests
                                 .requestMatchers(
-                                        "/","/review/{id}","/submit","/api/**","/registration",
-                                        "/api/submit","/view/common/header","/project/","/project/write").permitAll()
+                                        "/",
+                                        "/oauth2/authorization/kakao",
+                                        "/oauth/kakao/callback")
+                                .permitAll()
+                                .requestMatchers(
+                                        "/mypage"
+                                )
+                                .hasRole("USER")
+                                .requestMatchers(
+                                        ("/admin/**")
+                                )
+                                .hasRole("ADMIN")
                                 .anyRequest().permitAll()
-                        // authenticated()
                 );
 
-        //form 로그인 disable
-        http
-                .formLogin(AbstractHttpConfigurer::disable);
+        //form 로그인(admin)
+        http.formLogin(formLogin -> {
+                    formLogin
+                            .loginPage("/admin/login")
+                            .permitAll()// 사용자 정의 로그인 페이지
+                            .loginProcessingUrl("/admin/loginProcess")
+                            .permitAll()
+                            .usernameParameter("username")
+                            .passwordParameter("password")
+                            .successHandler(new AdminAuthenticationSuccessHandler())
+                            .failureHandler(new AdminAuthenticationFailureHandler());
+                });
+
 
         //oauth
         http
@@ -59,9 +84,18 @@ public class SecurityConfig{
                                 .userService(oAuthService))
                         .successHandler(new CustomAuthenticationSuccessHandler()));
 
+        http.logout((logout) -> logout
+                .logoutUrl("/logout")
+                .logoutSuccessUrl("/")
+                .permitAll());
+
         return http.build();
 
+    }
 
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 
 }

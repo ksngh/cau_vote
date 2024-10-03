@@ -29,8 +29,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 return response.json();
             })
             .then(data => {
-                console.log('Success:', data);
-                window.location.href = "/poll"; // 원하는 URL로 이동
+                window.location.href = "/"; // 원하는 URL로 이동
             })
             .catch(error => {
                 console.error('Error:', error);
@@ -38,6 +37,6 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     // 버튼 클릭 시 signup 함수 호출
-    const button = document.querySelector("button");
+    const button = document.getElementById("signup-button");
     button.addEventListener("click", signup);
 });

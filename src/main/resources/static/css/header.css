@@ -1,0 +1,208 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap');
+
+/* 폰트 적용 */
+body {
+    font-family: "Montserrat", sans-serif;
+    font-optical-sizing: auto;
+    font-style: normal;
+}
+
+.card {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    margin: 10px;
+    padding: 15px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.card:hover {
+    background-color: #f0f0f0;
+}
+
+.content {
+    display: none;
+    margin-top: 10px;
+    padding: 10px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+/* 모달 배경 스타일 */
+.modal {
+    display: none; /* 기본적으로 숨김 */
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.5); /* 반투명 배경 */
+}
+
+/* 모달 내용 스타일 */
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto; /* 중앙 정렬 */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%; /* 폭 */
+}
+
+/* 닫기 버튼 스타일 */
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+ul {
+    list-style-type: none; /* 불릿 제거 */
+    padding: 0; /* 기본 패딩 제거 */
+    margin: 0; /* 기본 마진 제거 */
+}
+
+/*반응형으로 만들기*/
+@media (max-width: 768px) {
+    .header, .footer {
+        font-size: 14px; /* 작은 화면에서 글자 크기 조정 */
+    }
+
+    .content {
+        padding: 10px; /* 패딩 줄이기 */
+    }
+}
+
+@media (max-width: 480px) {
+    .header, .footer {
+        font-size: 12px; /* 더 작은 화면에서 글자 크기 조정 */
+    }
+
+    .content {
+        padding: 5px; /* 패딩 더 줄이기 */
+    }
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+}
+
+.hamburger {
+    font-size: 30px;
+    cursor: pointer;
+    position: fixed; /* 고정 위치 */
+    top: 20px;
+    right: 20px; /* 오른쪽 상단 */
+    z-index: 1000; /* 다른 요소 위에 표시 */
+}
+
+.menu-trigger {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 40px;
+    height: 30px;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+.menu-trigger span {
+    display: block;
+    width: 100%;
+    height: 4px;
+    background-color: black;
+}
+
+.menu {
+    position: fixed; /* 고정 위치 */
+    top: 0;
+    right: -300px; /* 화면 밖으로 초기 위치 설정 */
+    width: 200px; /* 메뉴 너비 */
+    height: 100%; /* 전체 높이 */
+    background-color: white; /* 메뉴 배경색 */
+    color: white; /* 글자색 */
+    padding: 20px;
+    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.5); /* 그림자 */
+    transition: right 0.3s ease; /* 부드러운 전환 */
+}
+
+.menu.active {
+    right: 0; /* 활성화 시 오른쪽으로 이동 */
+}
+
+.header-container {
+    display: flex;
+    justify-content: space-between; /* 제목과 버튼을 양쪽 끝으로 배치 */
+    align-items: center; /* 세로 정렬 */
+    padding: 20px; /* 여백 추가 */
+    margin: 10px;
+}
+
+h3 {
+    margin: 0; /* 기본 마진 제거 */
+}
+
+.login-button {
+    /* 버튼 스타일을 여기에 추가할 수 있습니다. */
+    padding: 10px 15px; /* 버튼 패딩 */
+    background-color: #ffffff; /* 버튼 배경색 */
+    border: none; /* 테두리 제거 */
+    border-radius: 5px; /* 둥근 모서리 */
+    cursor: pointer; /* 포인터 커서 */
+}
+
+.login-button:hover {
+    background-color: #aaaaaa; /* 호버 시 색상 변경 */
+}
+
+.modal {
+    display: none; /* 기본적으로 숨김 */
+    position: fixed; /* 고정 위치 */
+    z-index: 1; /* 최상위 */
+    left: 0;
+    top: 0;
+    width: 100%; /* 전체 너비 */
+    height: 100%; /* 전체 높이 */
+    overflow: auto; /* 스크롤 가능 */
+    background-color: rgba(0, 0, 0, 0.5); /* 반투명 배경 */
+}
+
+.modal-content {
+    text-align: center;
+    background-color: #fff;
+    margin: 15% auto; /* 중앙 정렬 */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 300px; /* 너비 설정 */
+    border-radius: 5px; /* 모서리 둥글게 */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+

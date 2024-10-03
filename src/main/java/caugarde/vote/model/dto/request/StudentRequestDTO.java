@@ -1,8 +1,10 @@
 package caugarde.vote.model.dto.request;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
+@NoArgsConstructor
 public class StudentRequestDTO {
     String name;
     String majority;

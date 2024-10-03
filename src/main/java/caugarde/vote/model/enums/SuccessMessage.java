@@ -1,4 +1,4 @@
-package caugarde.vote.model.constant;
+package caugarde.vote.model.enums;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

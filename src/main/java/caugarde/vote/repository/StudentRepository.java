@@ -12,4 +12,6 @@ public interface StudentRepository extends JpaRepository<Student, UUID> {
 
     Optional<Student> findByEmail(String email);
 
+
+
 }

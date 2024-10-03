@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <title>Footer</title>
+    <link th:href="@{/css/header.css}" rel="stylesheet"> <!-- 외부 CSS 파일 연결 -->
+</head>
+<body>
+
+<th:block th:fragment="footerLayout">
+    <footer>
+        <div class="footer-content" style="text-align: center; padding: 20px">
+            <p>&copy; 2024 Chung-Ang University Fencing Club. All rights reserved.</p>
+            <ul style="list-style: none; padding: 0;">
+                <li style="display: inline; margin: 0 15px;">
+                    <a style="text-decoration: none; font-size: 80%">Made By Seong-ho Kim</a>
+                </li>
+            </ul>
+        </div>
+    </footer>
+</th:block>
+
+</body>
+</html>

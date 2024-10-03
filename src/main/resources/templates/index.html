@@ -11,6 +11,7 @@
     <h4>
         CAU FENCING POLLING SYSTEM
     </h4>
+
 </div>
 
 <ul>
@@ -53,9 +54,7 @@
                 </label><br><br>
                 <button onclick="vote(this)">투표</button>
 
-                <button id="openModal">투표한 사람들</button>
-
-                <!-- 모달 -->
+                <button id="openModal">참여 인원</button>
 
 
             </div>
@@ -70,7 +69,8 @@
     </li>
 </ul>
 
-<script th:src="@{/js/polling.js}"></script>
+<script th:src="@{/js/polling/card.js}"></script>
+<script>getCardInfo('api/vote');</script>
 <a href="/oauth2/authorization/kakao">Kakao로 로그인하기</a>
 
 </body>
