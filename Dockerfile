@@ -26,5 +26,6 @@ WORKDIR /app/cau_vote
 RUN chmod +x gradlew
 RUN ./gradlew build -x test
 
+
 # 애플리케이션 실행
 ENTRYPOINT ["java", "-jar", "./build/libs/cau_vote-0.0.1-SNAPSHOT.jar"]
