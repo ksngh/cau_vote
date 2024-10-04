@@ -1,0 +1,60 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap');
+
+/* 폰트 적용 */
+body {
+    font-family: "Montserrat", sans-serif;
+    font-optical-sizing: auto;
+    font-style: normal;
+    box-sizing: border-box; /* 박스 크기 조정 */
+}
+
+* {
+    box-sizing: border-box; /* 모든 요소에 box-sizing 적용 */
+}
+form {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    max-width: 600px; /* 최대 너비를 늘림 */
+    margin: 0 auto;
+    width: 100%; /* 반응형을 위해 100% 너비 설정 */
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    color: #555;
+}
+
+input[type="text"],
+input[type="number"],
+input[type="datetime-local"],
+textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+textarea {
+    /* 스크롤 방지 및 적절한 높이 설정 */
+    height: 150px; /* 높이 설정 */
+    overflow: hidden; /* 스크롤 숨김 */
+    resize: none; /* 크기 조절 비활성화 */
+}
+
+@media (max-width: 600px) {
+    form {
+        padding: 15px;
+    }
+
+    input[type="text"],
+    input[type="number"],
+    input[type="datetime-local"],
+    textarea {
+        font-size: 14px; /* 폰트 크기 조정 */
+    }
+}

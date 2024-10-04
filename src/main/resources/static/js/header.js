@@ -43,16 +43,39 @@ function checkUserStatus() {
 
                     if (data.role === "ROLE_USER") {
                         menu.innerHTML = ` 
+                            <div class="menu-header">
+                                <button class="close-menu" id="close-menu">&times;</button>
+                            </div>
                             <li><a href="/mypage">나의 투표 현황</a></li>
                             <li><a href="/logout">로그아웃</a></li>`
                     } else if (data.role === "ROLE_ADMIN") {
-                        menu.innerHTML = ` 
+                        menu.innerHTML = `
+                            <div class="menu-header">
+                                <button class="close-menu" id="close-menu">&times;</button>
+                            </div>  
                             <li><a href="/admin/posting">투표 생성하기</a></li>
                             <li><a href="/logout">로그아웃</a></li>`
                     }
                     const menuContainer = document.querySelector('.menu');
                     menuContainer.classList.toggle('active'); // 메뉴의 활성화 상태 토글
+
+                    const overlay = document.getElementById('overlay');
+                    overlay.classList.toggle('active');
+
+                    const closeMenuButton = document.getElementById('close-menu');
+                    closeMenuButton.addEventListener('click', function () {
+                        menuContainer.classList.remove('active'); // 메뉴 비활성화
+                        overlay.classList.remove('active'); // 오버레이 비활성화
+                    });
+
+                    document.addEventListener('click', function (event) {
+                        if (menuContainer.classList.contains('active') && !menuContainer.contains(event.target) && !menuTrigger.contains(event.target)) {
+                            menuContainer.classList.remove('active'); // 메뉴 비활성화
+                            overlay.classList.remove('active'); // 오버레이 비활성화
+                        }
+                    });
                 });
+
 
 
                 // 햄버거 버튼을 nav에 추가
@@ -68,3 +91,5 @@ function checkUserStatus() {
 document.addEventListener('DOMContentLoaded', (event) => {
     checkUserStatus();
 });
+
+

@@ -33,7 +33,7 @@ function generateModal(data) {
     modal.innerHTML = `
         <div class="modal-content">
             <span class="close">&times;</span>
-            <h2>참여 여부</h2>
+            <h2>참여 인원</h2>
             <ul id="voteList"></ul> <!-- 리스트를 추가할 곳 -->
         </div>
     `;

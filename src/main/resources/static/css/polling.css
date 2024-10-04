@@ -21,7 +21,7 @@ body {
 }
 
 .card:hover {
-    background-color: #f0f0f0;
+    background-color: #f8f9fa;
 }
 
 .content {
@@ -31,6 +31,12 @@ body {
     background-color: #f9f9f9;
     border: 1px solid #ddd;
     border-radius: 5px;
+}
+
+.vote{
+    white-space: pre-wrap; /* 줄 바꿈과 띄어쓰기를 모두 유지 */
+    word-wrap: break-word; /* 긴 단어가 줄을 넘어갈 경우 줄 바꿈 */
+    padding: 10px; /* 여백 추가 */
 }
 
 /* 모달 배경 스타일 */
@@ -103,3 +109,4 @@ ul {
     background-color: #ccc; /* 색상 설정 */
     margin: 20px 0; /* 위아래 여백 설정 */
 }
+

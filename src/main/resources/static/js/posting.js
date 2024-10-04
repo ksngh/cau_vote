@@ -36,7 +36,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 }
             })
             .then(result => {
-                alert('투표가 생성되었습니다: ' + result);
+                alert('투표가 생성되었습니다.');
                 window.location.href = "/";
             })
             .catch(error => {

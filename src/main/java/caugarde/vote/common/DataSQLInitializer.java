@@ -29,7 +29,7 @@ public class DataSQLInitializer {
         Integer count = jdbcTemplate.queryForObject(checkIfExistsSql, Integer.class);
 
         if (count != null && count == 0) {
-            ResourceDatabasePopulator resourceDatabasePopulator = new ResourceDatabasePopulator(new ClassPathResource("data.sql"));
+            ResourceDatabasePopulator resourceDatabasePopulator = new ResourceDatabasePopulator(new ClassPathResource("sql/data.sql"));
             resourceDatabasePopulator.execute(dataSource);
         }
     }
