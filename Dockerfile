@@ -15,16 +15,16 @@ WORKDIR /app
 RUN git clone --depth=1 -b main https://github.com/ksngh/cau_vote cau_vote
 
 # Changes the working directory to /app/${REPO_NAME}. This uses the variable to dynamically set the directory path.
-WORKDIR /app/codeback
+WORKDIR /app/cau_vote
 RUN rm -rf .git
 
 COPY ./src/main/resources/application.properties ./src/main/resources/
 COPY ./src/main/resources/keystore.p12 ./src/main/resources/
 
 # JAR 파일 빌드 (테스트 생략)
-WORKDIR /app/vote
+WORKDIR /app/cau_vote
 RUN chmod +x gradlew
 RUN ./gradlew build -x test
 
 # 애플리케이션 실행
-ENTRYPOINT ["java", "-jar", "./build/libs/vote-0.0.1-SNAPSHOT.jar"]
+ENTRYPOINT ["java", "-jar", "./build/libs/cau_vote-0.0.1-SNAPSHOT.jar"]
