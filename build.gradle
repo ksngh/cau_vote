@@ -32,14 +32,17 @@ dependencies {
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-	implementation 'mysql:mysql-connector-java:8.0.33'
-// https://mvnrepository.com/artifact/org.springframework.data/spring-data-jpa
+	implementation 'org.mariadb.jdbc:mariadb-java-client:3.4.1'
+
 	implementation 'org.springframework.data:spring-data-jpa:3.3.3'
 
+	implementation 'org.apache.maven.plugins:maven-compiler-plugin:3.13.0'
 
+	implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect'
 	implementation 'org.springframework.security:spring-security-oauth2-client:6.3.3'
 
 	implementation 'org.springframework.boot:spring-boot-starter-security:3.3.3'
+	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5'
 
 
 
@@ -47,4 +50,8 @@ dependencies {
 
 tasks.named('test') {
 	useJUnitPlatform()
+}
+
+compileJava {
+	options.compilerArgs << '-parameters'
 }

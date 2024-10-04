@@ -16,8 +16,12 @@ body {
     transition: background-color 0.3s;
 }
 
+.card.blurred {
+    opacity: 0.4; /* 투명도 조절 (0.0은 완전 투명, 1.0은 불투명) */
+}
+
 .card:hover {
-    background-color: #f0f0f0;
+    background-color: #f8f9fa;
 }
 
 .content {
@@ -27,6 +31,12 @@ body {
     background-color: #f9f9f9;
     border: 1px solid #ddd;
     border-radius: 5px;
+}
+
+.vote{
+    white-space: pre-wrap; /* 줄 바꿈과 띄어쓰기를 모두 유지 */
+    word-wrap: break-word; /* 긴 단어가 줄을 넘어갈 경우 줄 바꿈 */
+    padding: 10px; /* 여백 추가 */
 }
 
 /* 모달 배경 스타일 */
@@ -92,3 +102,11 @@ ul {
         padding: 5px; /* 패딩 더 줄이기 */
     }
 }
+
+.divider {
+    border: none; /* 기본 테두리 제거 */
+    height: 1px; /* 높이 설정 */
+    background-color: #ccc; /* 색상 설정 */
+    margin: 20px 0; /* 위아래 여백 설정 */
+}
+

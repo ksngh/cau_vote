@@ -1,20 +1,47 @@
 package caugarde.vote.service;
 
+import caugarde.vote.exception.UserNotFoundException;
+import caugarde.vote.model.constant.CustomOAuthUser;
+import caugarde.vote.model.constant.CustomUserDetails;
+import caugarde.vote.model.dto.request.StudentRequestDTO;
+import caugarde.vote.model.dto.response.StudentResponseDTO;
+import caugarde.vote.model.entity.Admin;
+import caugarde.vote.model.entity.Authority;
 import caugarde.vote.model.entity.Student;
+import caugarde.vote.model.enums.Role;
+import caugarde.vote.repository.AdminRepository;
 import caugarde.vote.repository.StudentRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
+@Transactional
 public class StudentService {
 
     private final StudentRepository studentRepository;
+    private final AdminRepository adminRepository;
 
-    public void save(Student student) {
+    public void signUp(CustomOAuthUser user, StudentRequestDTO studentRequestDTO,Authority authority) {
+
+        Student student = Student.builder()
+                .studentPk(user.getId())
+                .email(user.getEmail())
+                .studentId(studentRequestDTO.getStudentId())
+                .majority(studentRequestDTO.getMajority())
+                .memberType(studentRequestDTO.getMemberType())
+                .name(studentRequestDTO.getName())
+                .authority(authority)
+                .build();
+
         studentRepository.save(student);
     }
 
@@ -37,5 +64,21 @@ public class StudentService {
     public Student findByEmail(String email) {
         return studentRepository.findByEmail(email).orElse(null);
     }
+
+    public StudentResponseDTO userToStudentResponseDTO(Authentication authentication) {
+
+        if (authentication != null && authentication.getAuthorities().stream()
+                .anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals(Role.ADMIN.getAuth()))) {
+            return new StudentResponseDTO(authentication.getName(), Role.ADMIN.getAuth());
+        } else if (authentication != null && authentication.getAuthorities().stream()
+                .anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals(Role.USER.getAuth())))  {
+
+
+            return new StudentResponseDTO(authentication.getName(), Role.USER.getAuth());
+        } else {
+            throw new UserNotFoundException("사용자 권한이 없습니다.");
+        }
+    }
+
 
 }

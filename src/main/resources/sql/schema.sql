@@ -1,54 +1,61 @@
-CREATE TABLE `STUDENT` (
-                           `STUDENT_PK`	VARCHAR(50)	NOT NULL,
-                           `STUDENT_ID`	INT	NOT NULL,
-                           `EMAIL`	VARCHAR(50)	NULL,
-                           `NAME`	VARCHAR(30)	NULL,
-                           `MAJORITY`	VARCHAR(50)	NULL,
-                           `ROLE`	VARCHAR(30)	NULL,
-                           `MEMBER_TYPE`	VARCHAR(30)	NULL
+-- auto-generated definition
+create table admin
+(
+    admin_pk     uuid         not null
+        primary key,
+    id           varchar(255) null,
+    password     varchar(255) null,
+    authority_fk uuid         not null,
+    constraint FKk67v5sw6otnq1bq75i6jbbfpk
+        foreign key (authority_fk) references authority (authority_pk)
 );
 
-CREATE TABLE `VOTE` (
-                        `VOTE_PK`	VARCHAR(50)	NOT NULL,
-                        `TITLE`	VARCHAR(100)	NULL,
-                        `CONTENT`	VARCHAR(100)	NULL,
-                        `START_DATE`	DATETIME	NULL,
-                        `SUBMIT_DATE`	DATETIME	NULL,
-                        `LIMIT_PEOPLE`	INT	NULL
+-- auto-generated definition
+create table authority
+(
+    authority_pk uuid                   not null
+        primary key,
+    role         enum ('ADMIN', 'USER') null
 );
 
-CREATE TABLE `STUDENT_VOTE` (
-                                `STUDENT_VOTE_PK`	VARCHAR(50)	NOT NULL,
-                                `VOTE_FK`	VARCHAR(50)	NOT NULL,
-                                `STUDENT_FK`	VARCHAR(50)	NOT NULL,
-                                `CHOICE`	INT	NULL
+-- auto-generated definition
+create table student
+(
+    student_pk   uuid         not null
+        primary key,
+    email        varchar(255) null,
+    majority     varchar(255) null,
+    member_type  varchar(255) null,
+    name         varchar(255) null,
+    student_id   varchar(255) null,
+    authority_fk uuid         not null,
+    constraint FKbc14e1oujbi7284oi9c5kegov
+        foreign key (authority_fk) references authority (authority_pk)
 );
 
-ALTER TABLE `STUDENT` ADD CONSTRAINT `PK_STUDENT` PRIMARY KEY (
-                                                               `STUDENT_PK`
-    );
+-- auto-generated definition
+create table student_vote
+(
+    student_vote_pk uuid not null
+        primary key,
+    choice          int  null,
+    student_fk      uuid not null,
+    vote_fk         uuid not null,
+    constraint FKham45vyv1nd1nowc9uujtm0vp
+        foreign key (student_fk) references student (student_pk),
+    constraint FKmtkdhexiyae7j75jrpbh0ndma
+        foreign key (vote_fk) references vote (vote_pk)
+);
 
-ALTER TABLE `VOTE` ADD CONSTRAINT `PK_VOTE` PRIMARY KEY (
-                                                         `VOTE_PK`
-    );
-
-ALTER TABLE `STUDENT_VOTE` ADD CONSTRAINT `PK_STUDENT_VOTE` PRIMARY KEY (
-                                                                         `STUDENT_VOTE_PK`,
-                                                                         `VOTE_FK`,
-                                                                         `STUDENT_FK`
-    );
-
-ALTER TABLE `STUDENT_VOTE` ADD CONSTRAINT `FK_VOTE_TO_STUDENT_VOTE_1` FOREIGN KEY (
-                                                                                   `VOTE_FK`
-    )
-    REFERENCES `VOTE` (
-                       `VOTE_PK`
-        );
-
-ALTER TABLE `STUDENT_VOTE` ADD CONSTRAINT `FK_STUDENT_TO_STUDENT_VOTE_1` FOREIGN KEY (
-                                                                                      `STUDENT_FK`
-    )
-    REFERENCES `STUDENT` (
-                          `STUDENT_PK`
-        );
+-- auto-generated definition
+create table vote
+(
+    vote_pk      uuid         not null
+        primary key,
+    content      varchar(255) null,
+    limit_people int          null,
+    start_date   datetime(6)  null,
+    submit_date  datetime(6)  null,
+    title        varchar(255) null
+);
 

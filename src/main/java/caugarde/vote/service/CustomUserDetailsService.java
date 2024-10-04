@@ -1,20 +1,33 @@
 package caugarde.vote.service;
 
+import caugarde.vote.model.constant.CustomUserDetails;
+import caugarde.vote.model.entity.Admin;
+import caugarde.vote.repository.AdminRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
+@Transactional
 public class CustomUserDetailsService implements UserDetailsService {
 
-    @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        return new org.springframework.security.core.userdetails.User(email, "", new ArrayList<>());
-    }
+    private final AdminRepository adminRepository;
 
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+
+        Admin adminData = adminRepository.findByUsername(username).orElse(null);
+
+        if (adminData != null) {
+            return new CustomUserDetails(adminData);
+        }
+
+        throw new UsernameNotFoundException("사용자를 찾을 수 없습니다: " + username);
+    }
 }

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      lang="en">
+<th:block th:replace="~{header::headerLayout}"></th:block>
+<head>
+    <meta charset="UTF-8">
+    <title>훈련 투표 현황</title>
+    <link th:href="@{/css/polling.css}" rel="stylesheet">  <!-- 외부 CSS 파일 연결 -->
+</head>
+<body>
+
+<ul id="voteContainer">
+    <div id="ongoingVote">
+        <h3 style="text-align: center">나의 투표 현황</h3>
+    </div>
+    <div id="finishedVote">
+    </div>
+
+</ul>
+<script th:src="@{/js/polling/card.js}"></script>
+<script th:src="@{/js/generate-my-card.js}"></script>
+<script th:src="@{/js/generate-modal.js}"></script>
+</body>
+</html>

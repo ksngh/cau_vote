@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      lang="en">
+<th:block th:replace="~{header::headerLayout}"></th:block>
 <head>
   <title>학생 정보 결과</title>
 </head>
@@ -26,7 +28,7 @@
     <input type="radio" name="memberType" value="기존"> 기존 부원
   </label>
 </div>
-  <button>회원가입</button>
-<script src="/js/student/signup.js"></script>
+  <button id="signup-button">회원가입</button>
+<script src="/js/signup.js"></script>
 </body>
 </html>
