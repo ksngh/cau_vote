@@ -21,11 +21,10 @@ function getMyCardInfo() {
         })
         .catch(error => {
             console.error('Error:', error);
-            alert('서버와의 연결에 문제가 발생했습니다.');
         });
 }
 
-function generateMyCard(data) {
+async function generateMyCard(data) {
 
 
     const myCurrentDate = new Date();
@@ -36,8 +35,10 @@ function generateMyCard(data) {
     let hideButtons = false; // 버튼 숨김 여부
     let hidePeople =false;
     let voteInfo ='';
+    const joinNum = await fetchVoteCount(data.uuid)
+    const attendanceNum = "참여 인원 : " + joinNum + "/" + data.limitPeople;
 
-    if (myCurrentDate > mySubmitDate) {
+    if (myCurrentDate > mySubmitDate || joinNum >= data.limitPeople) {
         dividerClass = 'finishedVote';
         isBlurred = true; // 마감된 투표는 블러 처리
         hideButtons = true; // 버튼 숨김
@@ -57,6 +58,7 @@ function generateMyCard(data) {
     card.innerHTML = `
         <h3 style="display: inline;">${data.title}</h3>
         <p>${voteInfo}</p>
+        <p>${attendanceNum}</p>
         <div class="content">
             <p>${data.content}</p>
             <button onclick=myCancel("${data.uuid}") style="${hideButtons ? 'display:none;' : ''}">취소</button>
@@ -97,4 +99,18 @@ function formatDate(date) {
     const minutes = date.getMinutes().toString().padStart(2, '0'); // 2자리로 포맷
 
     return `${year}년 ${month}월 ${day}일 ${hours}시 ${minutes}분`;
+}
+
+async function fetchVoteCount(id) {
+    try {
+        const response = await fetch(`api/student/vote/count/${id}`);
+
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        const data = await response.json(); // JSON 형식으로 변환
+        return data.countStudentVote; // StudentVoteCountResponseDTO 객체 반환
+    } catch (error) {
+        console.error('Error fetching vote count:', error);
+    }
 }

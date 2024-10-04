@@ -24,7 +24,6 @@ function getCardInfo() {
         })
         .catch(error => {
             console.error('Error:', error);
-            alert('서버와의 연결에 문제가 발생했습니다.');
         })
         .finally(() => {
             isRequestInProgress = false; // 요청 완료 후 상태 초기화
@@ -43,9 +42,10 @@ async function generateCard(data) {
     let hideButtons = false; // 버튼 숨김 여부
     let hidePeople = false;
     let voteInfo = '';
-    const attendanceNum = "참여 인원 : " + await fetchVoteCount(data.uuid) + "/" + data.limitPeople;
+    const joinNum = await fetchVoteCount(data.uuid)
+    const attendanceNum = "참여 인원 : " + joinNum + "/" + data.limitPeople;
 
-    if (currentDate > submitDate) {
+    if (currentDate > submitDate || joinNum >= data.limitPeople) {
         dividerClass = 'finishedVote';
         isBlurred = true; // 마감된 투표는 블러 처리
         hideButtons = true; // 버튼 숨김
@@ -77,7 +77,7 @@ async function generateCard(data) {
                     <p>${voteInfo}</p>
                     <p>${attendanceNum}</p>
                     <div class="content" id="card-content">
-                        <p style="white-space: pre-line;">${data.content}</p>
+                        <p class="vote">${data.content}</p>
                         <button onclick=openVoteModal("${data.uuid}") style="${hidePeople ? 'display:none;' : ''}">참여 인원</button>
                         <button onclick=updateCard('${data.uuid}')>수정</button>
                         <button onclick=deleteCard('${data.uuid}')>삭제</button>
@@ -90,7 +90,7 @@ async function generateCard(data) {
                     <p>${voteInfo}</p>
                     <p>${attendanceNum}</p>
                     <div class="content" id="card-content">
-                        <p>${data.content}</p>
+                        <p class="vote">${data.content}</p>
                         <button onclick=vote("${data.uuid}") style="${hideButtons ? 'display:none;' : ''}">참석</button>
                         <button onclick=cancel("${data.uuid}") style="${hideButtons ? 'display:none;' : ''}">취소</button>
                         <button onclick=openVoteModal("${data.uuid}") style="${hidePeople ? 'display:none;' : ''}">참여 인원</button>
