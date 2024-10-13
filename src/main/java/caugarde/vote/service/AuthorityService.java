@@ -2,7 +2,7 @@ package caugarde.vote.service;
 
 import caugarde.vote.model.entity.Authority;
 import caugarde.vote.model.enums.Role;
-import caugarde.vote.repository.AuthorityRepository;
+import caugarde.vote.repository.jpa.AuthorityRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

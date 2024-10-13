@@ -1,14 +1,13 @@
 package caugarde.vote.service;
 
 import caugarde.vote.model.constant.CustomOAuthUser;
-import caugarde.vote.model.dto.request.StudentVoteRequestDTO;
 import caugarde.vote.model.dto.response.StudentVoteResponseDTO;
 import caugarde.vote.model.entity.Student;
 import caugarde.vote.model.entity.StudentVote;
 import caugarde.vote.model.entity.Vote;
-import caugarde.vote.repository.StudentRepository;
-import caugarde.vote.repository.StudentVoteRepository;
-import caugarde.vote.repository.VoteRepository;
+import caugarde.vote.repository.jpa.StudentRepository;
+import caugarde.vote.repository.jpa.StudentVoteRepository;
+import caugarde.vote.repository.jpa.VoteRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -27,20 +26,21 @@ public class StudentVoteService {
     private final VoteRepository voteRepository;
     private final StudentRepository studentRepository;
 
-    public Boolean save(UUID id, CustomOAuthUser user) {
+    public Boolean save(UUID id, Student student) {
 
-        Student student = studentRepository.findById(user.getId()).orElseThrow(EntityNotFoundException::new);
         Vote vote = voteRepository.findById(id).orElseThrow(EntityNotFoundException::new);
         if(studentVoteRepository.findByVoteAndStudent(vote, student).isPresent()) {
             return false;
         }else{
             StudentVote studentVote = StudentVote.builder()
                     .studentVotePk(UUID.randomUUID())
-                    .student(studentRepository.findById(user.getId()).orElse(null))
+                    .student(student)
                     .vote(voteRepository.findById(id).orElse(null))
                     .build();
 
             studentVoteRepository.save(studentVote);
+            student.getStudentVotes().add(studentVote);
+            studentRepository.save(student);
             return true;
         }
 
@@ -50,7 +50,7 @@ public class StudentVoteService {
         Vote vote = voteRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Vote not found with id: " + id));
 
-        return studentVoteRepository.findByVote(vote)
+        return studentVoteRepository.findByVoteOrderByCreatedAtAsc(vote)
                 .stream()
                 .map(StudentVote::getStudent)
                 .collect(Collectors.toList());
@@ -90,5 +90,6 @@ public class StudentVoteService {
     public int countByVote(Vote vote){
         return studentVoteRepository.findByVote(vote).size();
     }
+
 
 }

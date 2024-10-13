@@ -1,30 +1,41 @@
-getMyCardInfo()
+let isRequestInProgress = false;
+getMyCardInfo();
 
-function getMyCardInfo() {
+async function getMyCardInfo() {
 
-    fetch('api/vote/mypage', {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-    }).then(response => {
-        if (response.ok) {
-            return response.json(); // JSON 데이터 반환
-        } else {
-            throw new Error('투표 생성에 실패했습니다: ' + response.statusText);
-        }
-    })
-        .then(data => {
-            for (let i = 0; i < data.length; i++) {
-                generateMyCard(data[i]);
+    try {
+        const response = await fetch('api/vote/mypage', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
             }
-        })
-        .catch(error => {
-            console.error('Error:', error);
         });
+
+        if (!response.ok) {
+            throw new Error('투표 데이터를 가져오는데 실패했습니다: ' + response.statusText);
+        }
+
+        const data = await response.json();
+
+        // 각 아이템에 대해 fetchVoteCount를 병렬로 호출하고, 순서 유지
+        const dataWithCounts = await Promise.all(
+            data.map(async (item) => {
+                const joinNum = await fetchVoteCount(item.uuid);
+                return { ...item, joinNum }; // joinNum을 포함한 새로운 객체 반환
+            })
+        );
+
+        // 정렬된 데이터에 대해 generateCard 호출
+        dataWithCounts.forEach(item => generateMyCard(item));
+
+    } catch (error) {
+        console.error('Error:', error);
+    } finally {
+        isRequestInProgress = false; // 요청 완료 후 상태 초기화
+    }
 }
 
-async function generateMyCard(data) {
+function generateMyCard(data) {
 
 
     const myCurrentDate = new Date();
@@ -35,10 +46,10 @@ async function generateMyCard(data) {
     let hideButtons = false; // 버튼 숨김 여부
     let hidePeople =false;
     let voteInfo ='';
-    const joinNum = await fetchVoteCount(data.uuid)
-    const attendanceNum = "참여 인원 : " + joinNum + "/" + data.limitPeople;
 
-    if (myCurrentDate > mySubmitDate || joinNum >= data.limitPeople) {
+    const attendanceNum = "참여 인원 : " + data.joinNum + "/" + data.limitPeople;
+
+    if (myCurrentDate > mySubmitDate || data.joinNum >= data.limitPeople) {
         dividerClass = 'finishedVote';
         isBlurred = true; // 마감된 투표는 블러 처리
         hideButtons = true; // 버튼 숨김
@@ -113,4 +124,8 @@ async function fetchVoteCount(id) {
     } catch (error) {
         console.error('Error fetching vote count:', error);
     }
+}
+function toggleContent(card) {
+    const content = card.querySelector('.content');
+    content.style.display = (content.style.display === 'block') ? 'none' : 'block';
 }

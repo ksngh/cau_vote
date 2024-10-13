@@ -5,7 +5,9 @@ import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 
+import java.time.LocalDateTime;
 import java.util.Set;
 import java.util.UUID;
 
@@ -20,7 +22,7 @@ public class Student {
     @Column(name = "STUDENT_PK", nullable = false)
     private UUID studentPk;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "AUTHORITY_FK", nullable = false)
     private Authority authority;
 
@@ -38,6 +40,10 @@ public class Student {
 
     @Column(name = "MEMBER_TYPE")
     private String memberType;
+
+    @CreationTimestamp
+    @Column(name = "CREATED_AT")
+    private LocalDateTime createdAt;
 
     @OneToMany(mappedBy = "student")
     private Set<StudentVote> studentVotes;

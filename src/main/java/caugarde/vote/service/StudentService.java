@@ -2,19 +2,16 @@ package caugarde.vote.service;
 
 import caugarde.vote.exception.UserNotFoundException;
 import caugarde.vote.model.constant.CustomOAuthUser;
-import caugarde.vote.model.constant.CustomUserDetails;
 import caugarde.vote.model.dto.request.StudentRequestDTO;
 import caugarde.vote.model.dto.response.StudentResponseDTO;
-import caugarde.vote.model.entity.Admin;
 import caugarde.vote.model.entity.Authority;
 import caugarde.vote.model.entity.Student;
 import caugarde.vote.model.enums.Role;
-import caugarde.vote.repository.AdminRepository;
-import caugarde.vote.repository.StudentRepository;
+import caugarde.vote.repository.jpa.AdminRepository;
+import caugarde.vote.repository.jpa.StudentRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

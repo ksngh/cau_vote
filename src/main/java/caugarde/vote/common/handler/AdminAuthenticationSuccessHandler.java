@@ -1,6 +1,5 @@
-package caugarde.vote.common;
+package caugarde.vote.common.handler;
 
-import caugarde.vote.model.constant.CustomOAuthUser;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.core.Authentication;

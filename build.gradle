@@ -42,6 +42,18 @@ dependencies {
 	implementation 'org.springframework.security:spring-security-oauth2-client:6.3.3'
 	implementation 'org.springframework.boot:spring-boot-starter-security:3.3.3'
 
+	// Spring WebSocket
+	implementation 'org.springframework.boot:spring-boot-starter-websocket'
+
+	// JSON 파싱을 위한 Jackson
+	implementation 'com.fasterxml.jackson.core:jackson-databind'
+
+	// 테스트와 모킹을 위한 라이브러리
+	testImplementation 'org.mockito:mockito-core'
+	testImplementation 'org.mockito:mockito-junit-jupiter'
+
+	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+
 
 
 }

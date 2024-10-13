@@ -32,14 +32,14 @@ public class StudentVoteRestController {
         return ResponseEntity.ok().body(studentVoteResponseDTOS);
     }
 
-    @PostMapping("/{id}")
-    public ResponseEntity<?> save(@PathVariable UUID id, @AuthenticationPrincipal CustomOAuthUser user) {
-        if(studentVoteService.save(id,user)){
-            return ResponseEntity.ok().body(new MessageResponseDTO("투표가 완료되었습니다."));
-        }else{
-            return ResponseEntity.ok().body(new MessageResponseDTO("이미 참석에 투표하셨습니다."));
-        }
-    }
+//    @PostMapping("/{id}")
+//    public ResponseEntity<?> save(@PathVariable UUID id, @AuthenticationPrincipal CustomOAuthUser user) {
+//        if(studentVoteService.save(id,user)){
+//            return ResponseEntity.ok().body(new MessageResponseDTO("투표가 완료되었습니다."));
+//        }else{
+//            return ResponseEntity.ok().body(new MessageResponseDTO("이미 참석에 투표하셨습니다."));
+//        }
+//    }
 
     @DeleteMapping("/choice/{id}")
     public ResponseEntity<?> delete(@PathVariable UUID id, @AuthenticationPrincipal CustomOAuthUser user) {

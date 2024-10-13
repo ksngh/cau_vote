@@ -1,8 +1,8 @@
-package caugarde.vote.service;
+package caugarde.vote.service.user;
 
 import caugarde.vote.model.constant.CustomUserDetails;
 import caugarde.vote.model.entity.Admin;
-import caugarde.vote.repository.AdminRepository;
+import caugarde.vote.repository.jpa.AdminRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetails;

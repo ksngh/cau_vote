@@ -1,10 +1,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap');
 
-/* 폰트 적용 */
 body {
     font-family: "Montserrat", sans-serif;
     font-optical-sizing: auto;
     font-style: normal;
+    max-width: 800px; /* 최대 너비 설정 */
+    margin: 0 auto;
 }
 
 .card {
@@ -31,6 +32,8 @@ body {
 
 /* 모달 배경 스타일 */
 .modal {
+
+    margin: 0 auto;
     display: none; /* 기본적으로 숨김 */
     position: fixed;
     z-index: 1;
@@ -258,4 +261,47 @@ h3 {
 
 .overlay.active {
     display: block; /* 오버레이 활성화 시 표시 */
+}
+
+.shiny-text {
+    display: block;
+    max-width: 70%;
+    margin: 30px auto;
+    padding: 15px;
+    border: 1px solid #ADD8E6; /* 기존 보더 색상 유지 */
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: bold;
+    text-align: center;
+    background: linear-gradient(90deg, #00bfff, #1e90ff, #00ffff, #87cefa, #1e90ff, #00bfff);
+    background-size: 300% 300%;
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    animation: gradientLoop 5s ease infinite;
+}
+
+/* 애니메이션 */
+@keyframes gradientLoop {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+.image-container {
+    display: inline-block;
+    background-color: #ffffff; /* 원하는 배경색 코드 */
+    padding: 10px; /* 이미지와 배경 사이 여백 */
+    border-radius: 10px; /* 둥근 모서리 */
+}
+.image-container img {
+    display: block;
+    width: 17px; /* 원하는 이미지 크기로 조정 */
+    height: 17px;
 }

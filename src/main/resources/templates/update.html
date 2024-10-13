@@ -1,16 +1,18 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       lang="en">
-<th:block th:replace="~{header::headerLayout}"></th:block>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>투표 수정</title>
     <link th:href="@{/css/posting.css}" rel="stylesheet">
+    <link th:href="@{/css/header.css}" rel="stylesheet">
 </head>
 <body>
+<th:block th:replace="~{header::headerLayout}"></th:block>
 <div id="poll-container"></div>
 
 <script src="/js/update.js"></script>
 </body>
+<th:block th:replace="~{footer::footerLayout}"></th:block>
 </html>

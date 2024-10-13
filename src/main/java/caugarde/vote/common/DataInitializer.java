@@ -3,8 +3,8 @@ package caugarde.vote.common;
 import caugarde.vote.model.entity.Admin;
 import caugarde.vote.model.entity.Authority;
 import caugarde.vote.model.enums.Role;
-import caugarde.vote.repository.AdminRepository;
-import caugarde.vote.repository.AuthorityRepository;
+import caugarde.vote.repository.jpa.AdminRepository;
+import caugarde.vote.repository.jpa.AuthorityRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
@@ -29,7 +29,10 @@ public class DataInitializer implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-        initializeData();
+        if (authorityRepository.findByRole(Role.ADMIN).isEmpty()) {
+            initializeData();
+        }
+
     }
 
     private void initializeData() {

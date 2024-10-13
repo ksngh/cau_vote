@@ -76,8 +76,6 @@ function checkUserStatus() {
                     });
                 });
 
-
-
                 // 햄버거 버튼을 nav에 추가
                 loginBtn.style.display = 'none';
             } else {
