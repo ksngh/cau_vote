@@ -1,12 +1,11 @@
-package caugarde.vote.service;
+package caugarde.vote.service.user;
 
 import caugarde.vote.model.constant.CustomOAuthUser;
 import caugarde.vote.model.entity.Student;
 import caugarde.vote.model.enums.Role;
-import caugarde.vote.repository.StudentRepository;
+import caugarde.vote.repository.jpa.StudentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;

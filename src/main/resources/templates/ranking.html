@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>중앙가르드 랭킹</title>
+    <link rel="stylesheet" th:href="@{/css/header.css}">
+    <link rel="stylesheet" th:href="@{/css/ranking.css}">
+    <link href="/favicon.ico" rel="icon" type="image/x-icon">
+</head>
+
+<body>
+<th:block th:replace="~{header::headerLayout}"></th:block>
+
+<div class="rankings-list" id="rankings-container"></div>
+<script src="/js/ranking.js"></script>
+</body>
+<th:block th:replace="~{footer :: footerLayout}"></th:block>
+</html>

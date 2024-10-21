@@ -8,9 +8,42 @@ document.addEventListener("DOMContentLoaded", function() {
         const startDateInput = document.getElementById('startDate').value;
         const submitDateInput = document.getElementById('submitDate').value;
 
+        // 필드가 비어 있는지 확인
+        if (!title) {
+            alert('제목을 입력해 주세요.');
+            document.getElementById('title').focus();
+            return;
+        }
+        if (!content) {
+            alert('내용을 입력해 주세요.');
+            document.getElementById('content').focus();
+            return;
+        }
+        if (!limitPeople) {
+            alert('참여 인원 제한을 입력해 주세요.');
+            document.getElementById('limitPeople').focus();
+            return;
+        }
+        if (!startDateInput) {
+            alert('시작 날짜를 입력해 주세요.');
+            document.getElementById('startDate').focus();
+            return;
+        }
+        if (!submitDateInput) {
+            alert('마감 날짜를 입력해 주세요.');
+            document.getElementById('submitDate').focus();
+            return;
+        }
+
 // 초를 포함한 올바른 형식으로 변환
         const startDate = new Date(startDateInput + ":00").toISOString();
         const submitDate = new Date(submitDateInput + ":00").toISOString();
+
+        if (startDate >= submitDate) {
+            alert('시작 날짜는 마감 날짜보다 빨라야 합니다.');
+            document.getElementById('startDate').focus();
+            return;
+        }
 
         // 요청 데이터 준비
         const voteData = {

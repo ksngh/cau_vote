@@ -10,8 +10,8 @@ import java.util.UUID;
 @Entity
 @Table(name = "ADMIN")
 @Getter
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 public class Admin {
 
     @Id
@@ -28,6 +28,4 @@ public class Admin {
     @Column(name = "PASSWORD")
     private String password;
 
-
-    // Getters and Setters
 }

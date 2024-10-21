@@ -1,11 +1,15 @@
 package caugarde.vote.model.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -39,8 +43,17 @@ public class Student {
     @Column(name = "MEMBER_TYPE")
     private String memberType;
 
-    @OneToMany(mappedBy = "student")
+    @CreationTimestamp
+    @Column(name = "CREATED_AT")
+    private LocalDateTime createdAt;
+
+    @OneToMany(mappedBy = "student",cascade = CascadeType.ALL)
+    @JsonIgnore
     private Set<StudentVote> studentVotes;
+
+    @OneToMany(mappedBy = "student",cascade = CascadeType.ALL)
+    @JsonIgnore
+    private Set<Ranking> rankings;
 
     public Student(UUID studentPk, String email) {
         this.studentPk = studentPk;

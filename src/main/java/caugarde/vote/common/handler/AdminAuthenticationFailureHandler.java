@@ -1,4 +1,4 @@
-package caugarde.vote.common;
+package caugarde.vote.common.handler;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

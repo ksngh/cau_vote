@@ -1,0 +1,23 @@
+#rankings-container {
+    max-width: 800px;  /* 컨테이너의 최대 너비 */
+    margin: 20px auto;  /* 페이지 중앙에 배치 */
+    padding: 20px;  /* 내부 여백 */
+    text-align: center;
+}
+
+.rankings-list {
+    list-style-type: none;  /* 리스트 스타일 제거 (필요시 적용 가능) */
+    padding: 0;  /* 내부 여백 제거 */
+    margin: 0;  /* 외부 여백 제거 */
+}
+
+.trophy {
+    all: unset;  /* 부모 스타일 상속 차단 */
+    font-size: 24px;  /* 트로피 이모지 크기 */
+    display: inline-block;
+    color: inherit;  /* 색상은 a 태그와 동일하게 유지하거나 원하는 색으로 설정 가능 */
+    background: none;
+    margin-right: 5px;  /* 이모지와 텍스트 사이 간격 */
+    text-decoration: none;  /* a 태그의 밑줄 제거 */
+    line-height: 1;  /* 높이 맞추기 */
+}

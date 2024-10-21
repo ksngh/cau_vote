@@ -2,8 +2,10 @@ package caugarde.vote.model.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -12,7 +14,6 @@ import java.util.UUID;
 @Table(name = "VOTE")
 @NoArgsConstructor
 @Getter
-@ToString
 public class Vote {
 
     @Id
@@ -34,7 +35,11 @@ public class Vote {
     @Column(name = "LIMIT_PEOPLE")
     private int limitPeople;
 
-    @OneToMany(mappedBy = "vote")
+    @CreationTimestamp
+    @Column(name = "CREATED_AT")
+    private LocalDateTime createdAt;
+
+    @OneToMany(mappedBy = "vote",fetch = FetchType.LAZY)
     private Set<StudentVote> studentVotes;
 
     @Builder
@@ -47,6 +52,4 @@ public class Vote {
         this.limitPeople = limitPeople;
     }
 
-
-    // Getters and Setters
 }

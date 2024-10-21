@@ -1,4 +1,4 @@
-package caugarde.vote.repository;
+package caugarde.vote.repository.jpa;
 
 import caugarde.vote.model.entity.Admin;
 import org.springframework.data.jpa.repository.JpaRepository;
