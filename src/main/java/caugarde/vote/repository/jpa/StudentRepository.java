@@ -17,8 +17,7 @@ public interface StudentRepository extends JpaRepository<Student, UUID> {
     @Query("SELECT s.studentPk, COUNT(v) " +
             "FROM Student s " +
             "LEFT JOIN StudentVote v ON v.student.studentPk = s.studentPk " +
-            "GROUP BY s.studentPk " +
-            "ORDER BY COUNT(v) DESC")
+            "GROUP BY s.studentPk ")
     List<Object[]> findVoteCountByStudent();
 
 

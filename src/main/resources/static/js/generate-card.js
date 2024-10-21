@@ -49,7 +49,7 @@ function generateCard(data) {
     let voteInfo = '';
     const attendanceNum = "참여 인원 : " + data.joinNum + "/" + data.limitPeople;
 
-    if (currentDate > submitDate || data.joinNum >= data.limitPeople) {
+    if (currentDate > submitDate) {
         dividerClass = 'finishedVote';
         isBlurred = true;
         hideButtons = true;
@@ -77,7 +77,7 @@ function generateCard(data) {
                 card.innerHTML = `
                     <h3 style="display: inline;">${data.title}</h3>
                     <p>${voteInfo}</p>
-                    <p>${attendanceNum}</p>
+                    <p id="attendance-number">${attendanceNum}</p>
                     <div class="content" id="card-content">
                         <p class="vote">${data.content}</p>
                         <button onclick=openVoteModal("${data.uuid}") style="${hidePeople ? 'display:none;' : ''}">참여 인원</button>
@@ -89,10 +89,21 @@ function generateCard(data) {
                 card.innerHTML = `
                     <h3 style="display: inline;">${data.title}</h3>
                     <p>${voteInfo}</p>
-                    <p>${attendanceNum}</p>
+                    <p id="attendance-number">${attendanceNum}</p>
                     <div class="content" id="card-content">
                         <p class="vote">${data.content}</p>
-                        <button onclick=vote("${data.uuid}") style="${hideButtons ? 'display:none;' : ''}">참석</button>
+                            <div id="category-selection" style="${hideButtons ? 'display:none;' : ''} margin-bottom:15px" onclick="event.stopPropagation();">
+                                <label style="margin: 5px">
+                                    <input type="radio" name="category" value="SABRE" checked>사브르
+                                </label>
+                                <label style="margin: 5px">
+                                    <input type="radio" name="category" value="FLUERET">플러레
+                                </label>
+                                <label style="margin: 5px">
+                                    <input type="radio" name="category" value="EPEE">에페
+                                </label>
+                            </div>
+                        <button onclick=sendVote("${data.uuid}") style="${hideButtons ? 'display:none;' : ''}">참석</button>
                         <button onclick=cancel("${data.uuid}") style="${hideButtons ? 'display:none;' : ''}">취소</button>
                         <button onclick=openVoteModal("${data.uuid}") style="${hidePeople ? 'display:none;' : ''}">참여 인원</button>
                     </div>
@@ -136,26 +147,6 @@ function vote(id) {
     }).catch(error => {
         console.error('Error:', error);
         alert('로그인 후 이용해주세요.');
-    });
-}
-
-function cancel(id) {
-    fetch(`api/student/vote/choice/${id}`, {
-        method: 'DELETE',
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    }).then(response => {
-        if (response.ok) {
-            return response.json();
-        } else {
-            throw new Error('취소에 실패했습니다: ' + response.statusText);
-        }
-    }).then(data => {
-        alert("투표가 취소되었습니다.");
-        location.reload();
-    }).catch(error => {
-        alert("로그인 후 이용해주세요.");
     });
 }
 

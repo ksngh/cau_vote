@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
@@ -43,34 +44,32 @@ public class SecurityConfig {
 
         http
                 .authorizeHttpRequests(authorizeHttpRequests -> authorizeHttpRequests
-                                .requestMatchers(
-                                        "/",
-                                        "/oauth2/authorization/kakao",
-                                        "/oauth/kakao/callback")
-                                .permitAll()
-                                .requestMatchers(
-                                        "/mypage"
-                                )
-                                .hasRole("USER")
-                                .requestMatchers(
-                                        ("/admin/**")
-                                )
-                                .hasRole("ADMIN")
-                                .anyRequest().permitAll()
+
+                        .requestMatchers(HttpMethod.GET, "/mypage").hasRole("USER")
+                        .requestMatchers(HttpMethod.DELETE, "/api/student/vote/*").hasRole("USER")
+
+                        .requestMatchers(HttpMethod.POST, "/api/vote").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/api/vote/*").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/api/vote/*").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/admin/posting").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/admin/posting/*").hasRole("ADMIN")
+
+
+                        .anyRequest().permitAll()
                 );
 
         //form 로그인(admin)
         http.formLogin(formLogin -> {
-                    formLogin
-                            .loginPage("/admin/login")
-                            .permitAll()// 사용자 정의 로그인 페이지
-                            .loginProcessingUrl("/admin/loginProcess")
-                            .permitAll()
-                            .usernameParameter("username")
-                            .passwordParameter("password")
-                            .successHandler(new AdminAuthenticationSuccessHandler())
-                            .failureHandler(new AdminAuthenticationFailureHandler());
-                });
+            formLogin
+                    .loginPage("/admin/login")
+                    .permitAll()// 사용자 정의 로그인 페이지
+                    .loginProcessingUrl("/admin/loginProcess")
+                    .permitAll()
+                    .usernameParameter("username")
+                    .passwordParameter("password")
+                    .successHandler(new AdminAuthenticationSuccessHandler())
+                    .failureHandler(new AdminAuthenticationFailureHandler());
+        });
 
 
         //oauth

@@ -12,7 +12,7 @@ class SemesterUtilTest {
     @DisplayName("학기")
     void getSemester() {
         //given
-        LocalDate date = LocalDate.of(2020, 1, 1);
+        LocalDate date = LocalDate.of(2020, 3, 1);
 
         //when
         String semester = SemesterUtil.getSemester(date);

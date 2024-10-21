@@ -11,12 +11,18 @@ import caugarde.vote.repository.jpa.AdminRepository;
 import caugarde.vote.repository.jpa.StudentRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -41,6 +47,7 @@ public class StudentService {
 
         studentRepository.save(student);
     }
+
 
     public List<Student> findAll() {
         return studentRepository.findAll();
@@ -75,6 +82,14 @@ public class StudentService {
         } else {
             throw new UserNotFoundException("사용자 권한이 없습니다.");
         }
+    }
+
+    public List<Object[]> getAttendanceList() {
+        return findVoteCountByStudent();
+    }
+
+    public List<Object[]> findVoteCountByStudent(){
+        return studentRepository.findVoteCountByStudent();
     }
 
 

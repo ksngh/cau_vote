@@ -33,6 +33,7 @@ dependencies {
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 	implementation 'org.mariadb.jdbc:mariadb-java-client:3.4.1'
+	implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
 
 	implementation 'org.springframework.data:spring-data-jpa:3.3.3'
 

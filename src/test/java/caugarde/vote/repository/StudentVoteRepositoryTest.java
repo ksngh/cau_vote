@@ -8,6 +8,7 @@ import caugarde.vote.repository.jpa.AuthorityRepository;
 import caugarde.vote.repository.jpa.StudentRepository;
 import caugarde.vote.repository.jpa.StudentVoteRepository;
 import caugarde.vote.repository.jpa.VoteRepository;
+import caugarde.vote.service.VoteService;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.*;
 import org.mockito.Mock;
@@ -35,6 +36,8 @@ class StudentVoteRepositoryTest {
 
     @Autowired
     private AuthorityRepository authorityRepository;
+    @Autowired
+    private VoteService voteService;
 
     @BeforeEach
     void setUp() {
@@ -86,5 +89,16 @@ class StudentVoteRepositoryTest {
     @Test
     void save(){
         Vote vote = voteRepository.findById(UUID.fromString("9a21e8fa-b5f9-4be1-a990-0ea9558b7651")).orElse(null);
+    }
+
+    @Test
+    void count(){
+        //given
+
+        //when
+        long count = voteRepository.countAllByVotePk(UUID.fromString("bba06759-1402-4b8d-9585-a1d1991f802c"));
+
+        //then
+        Assertions.assertThat(count).isEqualTo(1L);
     }
 }

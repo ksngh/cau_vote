@@ -49,7 +49,7 @@ function generateMyCard(data) {
 
     const attendanceNum = "참여 인원 : " + data.joinNum + "/" + data.limitPeople;
 
-    if (myCurrentDate > mySubmitDate || data.joinNum >= data.limitPeople) {
+    if (myCurrentDate > mySubmitDate) {
         dividerClass = 'finishedVote';
         isBlurred = true; // 마감된 투표는 블러 처리
         hideButtons = true; // 버튼 숨김
@@ -69,37 +69,16 @@ function generateMyCard(data) {
     card.innerHTML = `
         <h3 style="display: inline;">${data.title}</h3>
         <p>${voteInfo}</p>
-        <p>${attendanceNum}</p>
+        <p id="attendance-number">${attendanceNum}</p>
         <div class="content">
             <p>${data.content}</p>
-            <button onclick=myCancel("${data.uuid}") style="${hideButtons ? 'display:none;' : ''}">취소</button>
+            <button onclick=cancel("${data.uuid}") style="${hideButtons ? 'display:none;' : ''}">취소</button>
             <button onclick=openVoteModal("${data.uuid}") style="${hidePeople ? 'display:none;' : ''}">참여 인원</button>
         </div>
     `;
 
     // 생성된 카드를 컨테이너에 추가
     document.getElementById(dividerClass).appendChild(card);
-}
-
-function myCancel(id){
-    fetch(`api/student/vote/choice/${id}`,{
-        method: 'DELETE',
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    }).then(response => {
-        if (response.ok) {
-            return response.json(); // JSON 데이터 반환
-        } else {
-            throw new Error('취소에 실패했습니다: ' + response.statusText);
-        }
-    }).then(data => {
-        alert("투표가 취소되었습니다.");
-        window.location.reload();
-    }).catch(error => {
-        console.error('Error:', error);
-        alert('서버와의 연결에 문제가 발생했습니다.');
-    });
 }
 
 function formatDate(date) {

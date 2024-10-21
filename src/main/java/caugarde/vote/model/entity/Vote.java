@@ -14,7 +14,6 @@ import java.util.UUID;
 @Table(name = "VOTE")
 @NoArgsConstructor
 @Getter
-@ToString
 public class Vote {
 
     @Id
@@ -40,7 +39,7 @@ public class Vote {
     @Column(name = "CREATED_AT")
     private LocalDateTime createdAt;
 
-    @OneToMany(mappedBy = "vote")
+    @OneToMany(mappedBy = "vote",fetch = FetchType.LAZY)
     private Set<StudentVote> studentVotes;
 
     @Builder

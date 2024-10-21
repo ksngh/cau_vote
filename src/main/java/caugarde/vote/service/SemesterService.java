@@ -12,7 +12,8 @@ public class SemesterService {
     private final SemesterRepository semesterRepository;
 
     public Semester save(Semester semester) {
-        if (semesterRepository.findBySemester(semester.getSemester()) != null) {
+        if (semesterRepository.findBySemester(semester.getSemester()) == null) {
+
             return semesterRepository.save(semester);
         }else {
             return semesterRepository.findBySemester(semester.getSemester());

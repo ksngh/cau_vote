@@ -23,5 +23,7 @@ public interface StudentVoteRepository extends JpaRepository<StudentVote, UUID> 
 
     void deleteByVote(Vote vote);
 
+    long countByVote(Vote vote);
+
     List<StudentVote> findByStudent(Student student);
 }

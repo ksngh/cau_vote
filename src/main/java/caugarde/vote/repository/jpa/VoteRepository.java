@@ -8,4 +8,7 @@ import java.util.UUID;
 
 @Repository
 public interface VoteRepository extends JpaRepository<Vote, UUID> {
+
+    long countAllByVotePk(UUID id);
+
 }

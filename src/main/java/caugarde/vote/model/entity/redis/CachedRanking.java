@@ -1,5 +1,6 @@
 package caugarde.vote.model.entity.redis;
 
+import caugarde.vote.model.entity.Ranking;
 import caugarde.vote.model.entity.Semester;
 import caugarde.vote.model.entity.Student;
 import jakarta.persistence.Column;
@@ -11,13 +12,14 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import org.springframework.data.redis.core.RedisHash;
 
+import java.io.Serializable;
 import java.util.UUID;
 
 @RedisHash("CachedRanking")
 @Getter
 @Builder
 @AllArgsConstructor
-public class CachedRanking{
+public class CachedRanking implements Serializable {
 
     @Id
     @Column(name = "RANKING_PK", nullable = false)
@@ -31,12 +33,8 @@ public class CachedRanking{
     @JoinColumn(name = "SEMESTER", nullable = false)
     private Semester semester;
 
-    @Column(name = "RANK")
-    private Integer rank;
-
     @Column(name = "ATTENDANCE_COUNT")
-    private Integer attendanceCount;
-
+    private int attendanceCount;
 
 
 }

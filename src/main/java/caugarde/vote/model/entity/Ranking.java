@@ -1,7 +1,9 @@
 package caugarde.vote.model.entity;
 
 
+import caugarde.vote.model.entity.redis.CachedRanking;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -11,6 +13,7 @@ import java.util.UUID;
 @Table(name="RANKING")
 @Getter
 @NoArgsConstructor
+@AllArgsConstructor
 public class Ranking {
 
     @Id
@@ -25,10 +28,14 @@ public class Ranking {
     @JoinColumn(name = "SEMESTER", nullable = false)
     private Semester semester;
 
-    @Column(name = "RANK")
-    private Integer rank;
-
     @Column(name = "ATTENDANCE_COUNT")
-    private Integer attendanceCount;
+    private int attendanceCount;
+
+    public Ranking(CachedRanking cachedRanking){
+        this.rankingPk = cachedRanking.getRankingPk();
+        this.student = cachedRanking.getStudent();
+        this.semester = cachedRanking.getSemester();
+        this.attendanceCount = cachedRanking.getAttendanceCount();
+    }
 
 }
