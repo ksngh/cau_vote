@@ -35,6 +35,11 @@ jobs:
       - name: Restore application.properties from GitHub Secrets
         run: |
           echo "${{ secrets.APPLICATION_PROPERTIES }}" > ./src/main/resources/application.properties
+
+      # 4. Docker compose 파일 복원
+      - name: Restore keystore.p12 from GitHub Secrets
+        run: |
+          echo "${{ secrets.DOCKER_COMPOSE }}" | base64 --decode > ./src/main/docker-compose.yml
       
       # 3. Gradle 실행 파일에 권한 부여
       - name: Grant execute permission for Gradle
