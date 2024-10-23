@@ -10,26 +10,15 @@ RUN apt-get update && \
 # 3. 작업 디렉토리 설정
 WORKDIR /app
 
-# 4. 소스 코드 및 Gradle 빌드 파일 복사
+# 4. 소스 코드 및 빌드 파일 복사
+# GitHub Actions에서 가져온 소스 코드를 컨테이너로 복사
 COPY . /app
 
-# 5. Gradle 빌드 파일 실행 권한 설정
-RUN chmod +x gradlew
+# 5. Gradle 및 wait-for-it.sh 파일에 실행 권한 부여
+RUN chmod +x ./gradlew ./wait-for-it.sh
 
 # 6. Gradle 빌드 (테스트 생략)
 RUN ./gradlew build -x test
 
-# 5. Gradle 실행 권한 설정 및 wait-for-it.sh 복사
-WORKDIR /app/cau_vote
-COPY ./wait-for-it.sh /app/cau_vote/wait-for-it.sh
-RUN chmod +x gradlew wait-for-it.sh
-
-# 6. 애플리케이션의 리소스 파일 복사
-COPY ./src/main/resources/application.properties ./src/main/resources/
-COPY ./src/main/resources/keystore.p12 ./src/main/resources/
-
-# 7. Gradle을 사용해 빌드 (테스트 생략)
-RUN ./gradlew build -x test
-
-# 8. 애플리케이션 실행 (wait-for-it.sh 사용)
+# 7. 애플리케이션 실행 (wait-for-it.sh 사용)
 ENTRYPOINT ["./wait-for-it.sh", "redis:6379", "--", "java", "-jar", "./build/libs/vote-0.0.1-SNAPSHOT.jar"]
