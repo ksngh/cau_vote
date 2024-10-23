@@ -36,8 +36,9 @@ public class StudentVoteController {
 
         studentVoteService.processVote(id, student, category,
                 resultMessageDTO -> messagingTemplate.convertAndSendToUser(principal.getName(), "/topic/vote/result", resultMessageDTO),
-                voteCountDTO -> messagingTemplate.convertAndSend("/topic/vote/count/", voteCountDTO)
+                voteCountDTO -> messagingTemplate.convertAndSend("/topic/vote/count", voteCountDTO)
         );
+
     }
 
     @MessageMapping("/vote/cancel/{id}")
@@ -47,7 +48,7 @@ public class StudentVoteController {
 
         studentVoteService.cancelVote(id, student,
                 resultMessageDTO -> messagingTemplate.convertAndSendToUser(principal.getName(), "/topic/vote/result", resultMessageDTO),
-                voteCountDTO -> messagingTemplate.convertAndSend("/topic/vote/count/", voteCountDTO)
+                voteCountDTO -> messagingTemplate.convertAndSend("/topic/vote/count", voteCountDTO)
         );
     }
 }

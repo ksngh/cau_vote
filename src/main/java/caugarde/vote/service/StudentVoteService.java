@@ -6,8 +6,6 @@ import caugarde.vote.model.entity.Category;
 import caugarde.vote.model.entity.Student;
 import caugarde.vote.model.entity.StudentVote;
 import caugarde.vote.model.entity.Vote;
-import caugarde.vote.repository.jpa.CategoryRepository;
-import caugarde.vote.repository.jpa.StudentRepository;
 import caugarde.vote.repository.jpa.StudentVoteRepository;
 import caugarde.vote.repository.jpa.VoteRepository;
 import jakarta.annotation.PreDestroy;
@@ -33,7 +31,6 @@ public class StudentVoteService {
 
     private final StudentVoteRepository studentVoteRepository;
     private final VoteRepository voteRepository;
-    private final CategoryRepository categoryRepository;
 
     private final ExecutorService executorService = Executors.newFixedThreadPool(10);
     private final ConcurrentLinkedQueue<VoteTask> voteSaveQueue = new ConcurrentLinkedQueue<>();
@@ -52,9 +49,11 @@ public class StudentVoteService {
 
     private void processVoteQueue(Consumer<String> messageHandler, Consumer<StudentVoteResponseDTO.CreateAttendanceNumber> countHandler) {
 
-        while (!voteSaveQueue.isEmpty()) {
-            VoteTask task = voteSaveQueue.poll();
-            boolean isSaved = save(task.getVotePk(), task.getStudent(),task.getCategory());
+        VoteTask task = voteSaveQueue.poll();
+
+        try {
+            // 예외가 발생할 수 있는 부분
+            boolean isSaved = save(task.getVotePk(), task.getStudent(), task.getCategory());
 
             // 메시지와 카운트 업데이트
             StudentVoteResponseDTO.CreateMessage resultMessageDTO = new StudentVoteResponseDTO.CreateMessage(isSaved ? "투표가 완료되었습니다." : "이미 투표하셨습니다.");
@@ -65,6 +64,9 @@ public class StudentVoteService {
             );
             countHandler.accept(voteCountDTO);
 
+        } catch (IllegalArgumentException e) {
+            // IllegalArgumentException 발생 시 클라이언트로 전달
+            messageHandler.accept("투표 인원이 초과되었습니다.");
         }
 
     }
@@ -114,9 +116,16 @@ public class StudentVoteService {
     public Boolean save(UUID id, Student student,Category category) {
 
         Vote vote = voteRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+
         if(studentVoteRepository.findByVoteAndStudent(vote, student).isPresent()) {
             return false;
-        }else{
+        }
+
+        else if (vote.getLimitPeople() == countByVote(vote)){
+            throw new IllegalArgumentException("투표 인원이 초과되었습니다.");
+        }
+
+        else{
             StudentVote studentVote = StudentVote.builder()
                     .studentVotePk(UUID.randomUUID())
                     .student(student)

@@ -10,7 +10,7 @@ function displaySemesterRankings(semesterRankingMap) {
 
         // 학기 제목 추가
         const semesterTitle = document.createElement("h3");
-        semesterTitle.innerText = `-- ${semester} --`;
+        semesterTitle.innerHTML = `<hr class="divider"> ${semester} </hr>`;
         semesterSection.appendChild(semesterTitle);
 
         let rank = 1;
@@ -40,7 +40,7 @@ function displaySemesterRankings(semesterRankingMap) {
                 medal = '';  // 4등 이후에는 메달 없음
             }
 
-            rankText.innerText = `${medal} ${rank}등 ${ranking.majorName} ${ranking.studentName} : ${ranking.attendance}회`;
+            rankText.innerText = `${medal} ${ranking.majorName} ${ranking.studentName} : ${ranking.attendance}회`;
             semesterSection.appendChild(rankText);
 
             // 현재 출석 횟수를 다음 순위 비교를 위해 저장

@@ -5,7 +5,6 @@ function getFirstRankings() {
     fetch('/api/ranking/first')
         .then(response => response.json())
         .then(data => {
-            console.log(data);
             data.forEach(ranking => generateRankingBanner(ranking));
         })
         .catch(error => console.error('Error fetching rankings:', error));
