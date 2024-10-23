@@ -37,7 +37,7 @@ jobs:
           echo "${{ secrets.APPLICATION_PROPERTIES }}" > ./src/main/resources/application.properties
 
       # 4. Docker compose 파일 복원
-      - name: Restore keystore.p12 from GitHub Secrets
+      - name: Restore docker-compose.yml from GitHub Secrets
         run: |
           echo "${{ secrets.DOCKER_COMPOSE }}" | base64 --decode > ./src/main/docker-compose.yml
       
