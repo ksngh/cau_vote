@@ -7,6 +7,7 @@ import caugarde.vote.model.entity.redis.CachedRanking;
 import caugarde.vote.service.RankingService;
 import caugarde.vote.service.SemesterService;
 import caugarde.vote.service.StudentService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -21,6 +22,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class RankingRedisService {
 
     private final RedisTemplate<String, CachedRanking> redisTemplate;  // 개별 Ranking 객체
@@ -93,7 +95,7 @@ public class RankingRedisService {
     }
 
 
-    @Scheduled(cron = "0 0 0 * * MON")
+    @Scheduled(cron = "0 46 10 * * WED")
     public void generateWeeklyRanking() {
         deleteAllByKey(getCurrentKey());
         generateRankings();

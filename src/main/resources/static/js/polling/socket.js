@@ -8,20 +8,24 @@ function openWebSocket() {
     if (!stompClient || !stompClient.connected) {
         socket = new SockJS("/ws");
         stompClient = Stomp.over(socket);
-
+        stompClient.debug = null; // 로그 비활성화
         stompClient.connect({}, onConnected, onError);
     }
 }
 
 // WebSocket 연결 성공 시 실행되는 함수
 function onConnected(frame) {
-    console.log("WebSocket 연결이 열렸습니다:", frame);
 
     // 투표 결과 메시지 구독
     stompClient.subscribe('/user/topic/vote/result', onVoteResultReceived);
 
     // 투표 수 업데이트 구독
-    stompClient.subscribe(`/topic/vote/count/`, onVoteCountUpdated);
+    stompClient.subscribe(`/topic/vote/count`, onVoteCountUpdated);
+
+    stompClient.subscribe('/user/topic/errors', (errorMessage) => {
+        const errorContent = errorMessage.body;
+        alert(errorContent); // 사용자에게 에러 메시지 표시
+    });
 }
 
 // WebSocket 연결 실패 시 실행되는 함수
@@ -70,7 +74,6 @@ function resetInactivityTimer() {
 // 투표 요청 전송 함수
 function sendVote(voteId) {
     const selectedCategory = document.querySelector('input[name="category"]:checked').value;
-    console.log(selectedCategory)
     const attendanceData = {
         category: selectedCategory  // 선택된 카테고리 정보 추가
     };
