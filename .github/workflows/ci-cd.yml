@@ -75,9 +75,9 @@ jobs:
       - name: SSH and deploy to EC2
         uses: appleboy/ssh-action@v0.1.4
         with:
-          host: ${{ secrets.EC2_HOST }}
-          username: ${{ secrets.EC2_USER }}
-          key: ${{ secrets.EC2_KEY }}
+          host: ${{ secrets.AWS_EC2_HOST }}
+          username: ${{ secrets.AWS_EC2_USER }}
+          key: ${{ secrets.AWS_EC2_KEY }}
           script: |
             docker pull ksngh/cau_vote:latest
             docker stop cau_vote || true
