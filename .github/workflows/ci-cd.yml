@@ -25,8 +25,17 @@ jobs:
           distribution: 'corretto'  # Amazon Corretto 배포판을 사용
           java-package: jdk
           check-latest: false
+      
+      # 2. keystore.p12 파일 복원
+      - name: Restore keystore.p12 from GitHub Secrets
+        run: |
+          echo "${{ secrets.KEYSTORE_P12 }}" | base64 --decode > ./src/main/resources/keystore.p12
 
-          
+      # 3. application.properties 파일 복원
+      - name: Restore application.properties from GitHub Secrets
+        run: |
+          echo "${{ secrets.APPLICATION_PROPERTIES }}" > ./src/main/resources/application.properties
+      
       # 3. Gradle 실행 파일에 권한 부여
       - name: Grant execute permission for Gradle
         run: chmod +x ./gradlew
@@ -68,4 +77,4 @@ jobs:
             docker pull ksngh/cau_vote:latest
             docker stop cau_vote || true
             docker rm cau_vote || true
-            docker run -d -p 443:443 --name cau_vote ksngh/cau_vote:latest
+            docker-compose --project-name cau_vote up -d
