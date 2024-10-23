@@ -10,8 +10,14 @@ RUN apt-get update && \
 # 3. 작업 디렉토리 설정
 WORKDIR /app
 
-# 4. Git 레포지토리 복사
-RUN git clone --depth=1 -b main https://github.com/ksngh/cau_vote cau_vote
+# 4. 소스 코드 및 Gradle 빌드 파일 복사
+COPY . /app
+
+# 5. Gradle 빌드 파일 실행 권한 설정
+RUN chmod +x gradlew
+
+# 6. Gradle 빌드 (테스트 생략)
+RUN ./gradlew build -x test
 
 # 5. Gradle 실행 권한 설정 및 wait-for-it.sh 복사
 WORKDIR /app/cau_vote
