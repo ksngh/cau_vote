@@ -95,7 +95,7 @@ public class RankingRedisService {
     }
 
 
-    @Scheduled(cron = "0 46 10 * * WED")
+    @Scheduled(cron = "0 0 0 * * MON")
     public void generateWeeklyRanking() {
         deleteAllByKey(getCurrentKey());
         generateRankings();
