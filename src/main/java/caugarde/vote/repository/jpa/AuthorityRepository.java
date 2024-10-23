@@ -1,4 +1,4 @@
-package caugarde.vote.repository;
+package caugarde.vote.repository.jpa;
 
 import caugarde.vote.model.entity.Authority;
 import caugarde.vote.model.enums.Role;

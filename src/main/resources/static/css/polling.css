@@ -39,21 +39,10 @@ body {
     padding: 10px; /* 여백 추가 */
 }
 
-/* 모달 배경 스타일 */
-.modal {
-    display: none; /* 기본적으로 숨김 */
-    position: fixed;
-    z-index: 1;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgba(0, 0, 0, 0.5); /* 반투명 배경 */
-}
 
 /* 모달 내용 스타일 */
 .modal-content {
+    max-width: 800px; /* 최대 너비 설정 */
     background-color: #fefefe;
     margin: 15% auto; /* 중앙 정렬 */
     padding: 20px;
@@ -104,9 +93,91 @@ ul {
 }
 
 .divider {
+    max-width: 90%;
     border: none; /* 기본 테두리 제거 */
     height: 1px; /* 높이 설정 */
     background-color: #ccc; /* 색상 설정 */
-    margin: 20px 0; /* 위아래 여백 설정 */
+    margin: 20px auto; /* 위아래 여백 설정 */
+}
+#first-grade-banner {
+    position: relative;
+    height: 50px;
+    overflow: hidden;
 }
 
+.ranking-item {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 18px;
+    opacity: 0;
+    animation-name: slideUp;
+    animation-timing-function: linear;
+    animation-fill-mode: forwards;
+    animation-iteration-count: infinite;
+}
+
+@keyframes slideUp {
+    0% {
+        transform: translateY(100%);
+        opacity: 0;
+    }
+    10% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+    40% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+    50% {
+        transform: translateY(-100%);
+        opacity: 0;
+    }
+    100% {
+        transform: translateY(-100%);
+        opacity: 0;
+    }
+}
+
+
+.shiny-text {
+    display: block;
+    max-width: 70%;
+    margin: 30px auto;
+    padding: 15px;
+    border: 1px solid #ADD8E6; /* 기존 보더 색상 유지 */
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: bold;
+    text-align: center;
+    background: linear-gradient(90deg, #00bfff, #1e90ff, #00ffff, #87cefa, #1e90ff, #00bfff);
+    background-size: 300% 300%;
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    animation: gradientLoop 5s ease infinite;
+}
+
+/* 애니메이션 */
+@keyframes gradientLoop {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+.shiny-text * {
+    background: inherit;
+    background-clip: inherit;
+    -webkit-background-clip: inherit;
+    color: inherit;
+}

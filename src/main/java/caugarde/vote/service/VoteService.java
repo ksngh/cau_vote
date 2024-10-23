@@ -4,17 +4,15 @@ import caugarde.vote.model.dto.request.VoteRequestDTO;
 import caugarde.vote.model.dto.response.VoteResponseDTO;
 import caugarde.vote.model.entity.StudentVote;
 import caugarde.vote.model.entity.Vote;
-import caugarde.vote.repository.StudentVoteRepository;
-import caugarde.vote.repository.VoteRepository;
+import caugarde.vote.repository.jpa.StudentVoteRepository;
+import caugarde.vote.repository.jpa.VoteRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -67,7 +65,7 @@ public class VoteService {
     }
 
     public List<Vote> getAllVotes() {
-        return voteRepository.findAll();
+        return voteRepository.findAll(Sort.by(Sort.Direction.ASC, "createdAt"));
     }
 
     public List<VoteResponseDTO> votesToDTO(List<Vote> votes) {

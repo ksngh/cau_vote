@@ -3,15 +3,14 @@ package caugarde.vote.repository;
 import caugarde.vote.model.entity.Admin;
 import caugarde.vote.model.entity.Authority;
 import caugarde.vote.model.enums.Role;
+import caugarde.vote.repository.jpa.AdminRepository;
+import caugarde.vote.repository.jpa.AuthorityRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.UUID;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 class AdminRepositoryTest {

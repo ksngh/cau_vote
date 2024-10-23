@@ -40,12 +40,30 @@ function generateModal(data) {
 
     const voteList = modal.querySelector('#voteList');
 
-    // data를 통해 리스트 항목 생성
-    data.forEach(item => {
-        const listItem = document.createElement('li');
-        listItem.textContent = `${item.majority} ${item.name}`; // 데이터에서 이름 가져오기
-        voteList.appendChild(listItem);
-    });
+    fetch('/api/student')
+        .then(response => response.json())
+        .then(userData => {
+            if (userData && userData.role === "ROLE_ADMIN") {
+
+                data.forEach(item => {
+                    const listItem = document.createElement('li');
+                    listItem.textContent = `${item.studentId} ${item.majority} ${item.name} / ${item.category}`; // 데이터에서 이름 가져오기
+                    voteList.appendChild(listItem);
+                });
+
+            } else{
+
+                // data를 통해 리스트 항목 생성
+                data.forEach(item => {
+                    const listItem = document.createElement('li');
+                    listItem.textContent = `${item.majority} ${item.name} / ${item.category}`; // 데이터에서 이름 가져오기
+                    voteList.appendChild(listItem);
+                });
+
+            }
+        })
+        .catch(error => console.error('Error fetching user status:', error));
+
 
     // 모달을 페이지에 추가
     document.body.appendChild(modal);

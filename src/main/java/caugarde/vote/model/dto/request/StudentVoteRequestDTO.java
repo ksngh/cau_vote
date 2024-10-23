@@ -7,9 +7,8 @@ import lombok.NoArgsConstructor;
 @Getter
 public class StudentVoteRequestDTO {
 
-    private int choice;
+        public record Create(String category) {}
 
-    public StudentVoteRequestDTO(int choice) {
-        this.choice = choice;
-    }
+        public record Delete(String category) {}
+
 }

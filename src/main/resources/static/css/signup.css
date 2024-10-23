@@ -1,0 +1,45 @@
+* {
+    box-sizing: border-box;
+}
+label.info {
+    display: block;
+    font-size: 16px; /* 글씨 크기 키우기 */
+    margin-bottom: 5px; /* 간격 추가 */
+}
+input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-top: 5px; /* 인풋 위에 간격 추가 */
+}
+
+.radio-group {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap; /* 줄 바꿈이 가능하게 설정 */
+    margin: 20px;
+}
+
+.radio-group label {
+    margin: 10px 30px;
+    font-size: 16px;
+    white-space: nowrap;
+}
+
+@media (max-width: 600px) {
+    .radio-group label {
+        margin: 10px 3vw; /* 화면 너비가 줄어들수록 여백도 줄어듦 */
+    }
+}
+
+@media (max-width: 400px) {
+    .radio-group {
+        flex-direction: column;
+        align-items: center;
+    }
+    .radio-group label {
+        margin: 10px 0; /* 작은 화면에서는 세로로 배치하고 여백 최소화 */
+    }
+}
+
