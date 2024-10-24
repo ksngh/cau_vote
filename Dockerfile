@@ -13,6 +13,8 @@ WORKDIR /app
 # 4. 소스 코드 및 빌드 파일 복사
 # GitHub Actions에서 가져온 소스 코드를 컨테이너로 복사
 COPY . /app
+COPY ./src/main/resources/keystore.p12 /app/src/main/resources/keystore.p12
+COPY ./src/main/resources/application.properties /app/src/main/resources/application.properties
 
 # 5. Gradle 및 wait-for-it.sh 파일에 실행 권한 부여
 RUN chmod +x ./gradlew ./wait-for-it.sh
@@ -21,4 +23,4 @@ RUN chmod +x ./gradlew ./wait-for-it.sh
 RUN ./gradlew build -x test
 
 # 7. 애플리케이션 실행 (wait-for-it.sh 사용)
-ENTRYPOINT ["./wait-for-it.sh", "redis:6379", "--", "java", "-jar", "./build/libs/vote-0.0.1-SNAPSHOT.jar"]
+ENTRYPOINT ["./wait-for-it.sh", "redis:6379", "java", "-jar", "./build/libs/vote-0.0.1-SNAPSHOT.jar"]
