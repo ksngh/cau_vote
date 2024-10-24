@@ -13,8 +13,8 @@ WORKDIR /app
 # 4. 소스 코드 및 빌드 파일 복사
 # GitHub Actions에서 가져온 소스 코드를 컨테이너로 복사
 COPY . /app
-COPY ./src/main/resources/keystore.p12 /app/src/main/resources/keystore.p12
-COPY ./src/main/resources/application.properties /app/src/main/resources/application.properties
+COPY ./keystore.p12 ./src/main/resources/
+COPY ./application.properties ./src/main/resources/
 
 # 5. Gradle 및 wait-for-it.sh 파일에 실행 권한 부여
 RUN chmod +x ./gradlew ./wait-for-it.sh
