@@ -78,7 +78,7 @@ jobs:
           script: |
             echo "${{ secrets.DOCKER_COMPOSE }}" > ./docker-compose.yml
             echo "${{ secrets.APPLICATION_PROPERTIES }}" > ./application.properties
-            echo "${{ secrets.KEYSTORE_P12 }}" | base64 --decode > ./keystore.p12
+            echo "${{ secrets.KEYSTORE }}" | base64 --decode > ./keystore.p12
             sudo docker pull ksngh/cau_vote:latest
             sudo docker stop cau_vote || true
             sudo docker rm cau_vote || true
