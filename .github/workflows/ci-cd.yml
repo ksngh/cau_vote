@@ -26,12 +26,12 @@ jobs:
       # 2. keystore.p12 파일 복원
       - name: Restore keystore.p12 from GitHub Secrets
         run: |
-          echo "${{ secrets.KEYSTORE_P12 }}" | base64 --decode > ./src/main/resources/keystore.p12
+          echo "${{ secrets.KEYSTORE_P12 }}" | base64 --decode > ./keystore.p12
 
       # 3. application.properties 파일 복원
       - name: Restore application.properties from GitHub Secrets
         run: |
-          echo "${{ secrets.APPLICATION_PROPERTIES }}" > ./src/main/resources/application.properties
+          echo "${{ secrets.APPLICATION_PROPERTIES }}" > ./application.properties
 
       # 4. Docker compose 파일 복원
       - name: Restore docker-compose.yml from GitHub Secrets
