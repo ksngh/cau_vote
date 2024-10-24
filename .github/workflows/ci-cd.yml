@@ -80,6 +80,6 @@ jobs:
           key: ${{ secrets.AWS_EC2_KEY }}
           script: |
             docker pull ksngh/cau_vote:latest
-            docker stop cau_vote || true
-            docker rm cau_vote || true
+            sudo docker stop cau_vote || true
+            sudo docker rm cau_vote || true
             docker-compose --project-name cau_vote up -d
