@@ -76,8 +76,9 @@ jobs:
           username: ${{ secrets.AWS_EC2_USER }}
           key: ${{ secrets.AWS_EC2_KEY }}
           script:
-            cd /home/ubuntu ;
-            sudo docker pull ksngh/cau_vote:latest &&
-            sudo docker stop cau_vote || true &&
-            sudo docker rm cau_vote || true &&
+            echo "${{ secrets.DOCKER_COMPOSE }}" > /home/ubuntu/docker-compose.yml
+            cd /home/ubuntu
+            sudo docker pull ksngh/cau_vote:latest
+            sudo docker stop cau_vote || true
+            sudo docker rm cau_vote || true
             sudo docker-compose --project-name cau_vote up
