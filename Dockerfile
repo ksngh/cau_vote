@@ -23,4 +23,4 @@ RUN chmod +x ./gradlew ./wait-for-it.sh
 RUN ./gradlew build -x test
 
 # 7. 애플리케이션 실행 (wait-for-it.sh 사용)
-ENTRYPOINT ["./wait-for-it.sh", "redis:6379", "java", "-jar", "./build/libs/vote-0.0.1-SNAPSHOT.jar"]
+ENTRYPOINT ["./wait-for-it.sh", "redis:6379", "--", "java", "-jar", "./build/libs/vote-0.0.1-SNAPSHOT.jar"]
