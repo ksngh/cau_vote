@@ -13,6 +13,7 @@ WORKDIR /app
 # 4. 소스 코드 및 빌드 파일 복사
 # GitHub Actions에서 가져온 소스 코드를 컨테이너로 복사
 COPY . /app
+
 COPY ./keystore.p12 ./src/main/resources/
 COPY ./application.properties ./src/main/resources/
 
