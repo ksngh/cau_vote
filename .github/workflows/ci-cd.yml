@@ -26,7 +26,7 @@ jobs:
       # 2. keystore.p12 파일 복원
       - name: Restore keystore.p12 from GitHub Secrets
         run: |
-          echo "${{ secrets.KEYSTORE_P12 }}" | base64 --decode > ./keystore.p12
+          echo "${{ secrets.KEYSTORE }}" | base64 --decode > ./keystore.p12
 
       # 3. application.properties 파일 복원
       - name: Restore application.properties from GitHub Secrets
