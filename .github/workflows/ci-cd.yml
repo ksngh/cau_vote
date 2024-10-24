@@ -69,10 +69,6 @@ jobs:
 
     # 도커 컴포즈 할 수 있는 환경으로 바꿔두기
     steps:
-      - name: Create docker-compose.yml from GitHub Secrets
-        run: |        
-          echo "${{ secrets.DOCKER_COMPOSE }}" > /home/ubuntu/docker-compose.yml
-
       - name: SSH and deploy to EC2
         uses: appleboy/ssh-action@v0.1.4
         with:
@@ -80,6 +76,7 @@ jobs:
           username: ${{ secrets.AWS_EC2_USER }}
           key: ${{ secrets.AWS_EC2_KEY }}
           script: |
+            echo "${{ secrets.DOCKER_COMPOSE }}" > /home/ubuntu/docker-compose.yml
             cd /home/ubuntu
             sudo docker pull ksngh/cau_vote:latest
             sudo docker stop cau_vote || true
