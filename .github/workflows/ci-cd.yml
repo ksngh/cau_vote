@@ -77,6 +77,7 @@ jobs:
           key: ${{ secrets.AWS_EC2_KEY }}
           script: |
             echo "${{ secrets.DOCKER_COMPOSE }}" > /home/ubuntu/docker-compose.yml
+            echo "${{ secrets.APPLICATION_PROPERTIES }}" > /home/ubuntu/application.properties
             cd /home/ubuntu
             sudo docker pull ksngh/cau_vote:latest
             sudo docker stop cau_vote || true
