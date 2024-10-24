@@ -36,7 +36,7 @@ jobs:
       # 4. Docker compose 파일 복원
       - name: Restore docker-compose.yml from GitHub Secrets
         run: |
-          echo "${{ secrets.DOCKER_COMPOSE }}" > ./src/main/docker-compose.yml
+          echo "${{ secrets.DOCKER_COMPOSE }}" > ./docker-compose.yml
       
       # 3. Gradle 실행 파일에 권한 부여
       - name: Grant execute permission for Gradle
@@ -78,6 +78,7 @@ jobs:
           script: |
             echo "${{ secrets.DOCKER_COMPOSE }}" > /home/ubuntu/docker-compose.yml
             echo "${{ secrets.APPLICATION_PROPERTIES }}" > /home/ubuntu/application.properties
+            echo "${{ secrets.KEYSTORE_P12 }}" | base64 --decode > /home/ubuntu/keystore.p12
             cd /home/ubuntu
             sudo docker pull ksngh/cau_vote:latest
             sudo docker stop cau_vote || true
