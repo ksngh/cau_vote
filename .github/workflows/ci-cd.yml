@@ -75,7 +75,7 @@ jobs:
           host: ${{ secrets.AWS_EC2_HOST }}
           username: ${{ secrets.AWS_EC2_USER }}
           key: ${{ secrets.AWS_EC2_KEY }}
-          script:
+          script: |
             echo "${{ secrets.DOCKER_COMPOSE }}" > /home/ubuntu/docker-compose.yml
             cd /home/ubuntu
             sudo docker pull ksngh/cau_vote:latest
