@@ -25,8 +25,7 @@ public class StudentVoteRestController {
 
     @GetMapping("/{id}")
     public ResponseEntity<List<StudentVoteResponseDTO>> getStudentsByVoteId(@PathVariable UUID id) {
-        List<StudentVote> studentVotes = studentVoteService.getVoteInfo(id);
-        List<StudentVoteResponseDTO> studentVoteResponseDTOS = studentVoteService.convertToSVDTO(studentVotes);
+        List<StudentVoteResponseDTO> studentVoteResponseDTOS = studentVoteService.getStudentsByVoteId(id);
         return ResponseEntity.ok().body(studentVoteResponseDTOS);
     }
 

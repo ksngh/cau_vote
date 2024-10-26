@@ -138,24 +138,14 @@ public class StudentVoteService {
         }
     }
 
-    public List<StudentVote> getVoteInfo(UUID votePk){
-        Vote vote = voteRepository.findById(votePk).orElse(null);
-        return studentVoteRepository.findByVote(vote);
-    }
 
-    public List<StudentVoteResponseDTO> convertToSVDTO(List<StudentVote> studentVoteList) {
-        return studentVoteList.stream()
-                .map(StudentVoteResponseDTO::new)
-                .collect(Collectors.toList());
-    }
-
-    public List<Student> getStudentsByVoteId(UUID id) {
+    public List<StudentVoteResponseDTO> getStudentsByVoteId(UUID id) {
         Vote vote = voteRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Vote not found with id: " + id));
 
         return studentVoteRepository.findByVoteOrderByCreatedAtAsc(vote)
                 .stream()
-                .map(StudentVote::getStudent)
+                .map(StudentVoteResponseDTO::new)
                 .collect(Collectors.toList());
     }
 
