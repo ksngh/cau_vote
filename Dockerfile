@@ -1,6 +1,6 @@
 # 1. 베이스 이미지 설정 (OpenJDK 21)
 FROM openjdk:21-jdk-bullseye
-
+ENV TZ=Asia/Seoul
 # 2. 필요한 패키지 설치
 RUN apt-get update && \
     apt-get install -y git fonts-nanum && \
