@@ -17,7 +17,7 @@ function updateVote(voteData, id) {
         })
         .then(result => {
             alert('투표가 수정되었습니다.');
-            window.location.href = "/";
+            window.location.href = "../../../..";
         })
         .catch(error => {
             console.error('Error:', error);

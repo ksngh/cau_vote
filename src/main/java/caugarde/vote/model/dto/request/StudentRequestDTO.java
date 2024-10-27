@@ -17,4 +17,7 @@ public class StudentRequestDTO {
         this.memberType = memberType;
         this.studentId = studentId;
     }
+
+        public record Update(String name, String majority, String memberType, String studentId, String email) {
+    }
 }
