@@ -1,6 +1,5 @@
 package caugarde.vote.service;
 
-import caugarde.vote.exception.UserNotFoundException;
 import caugarde.vote.model.constant.CustomOAuthUser;
 import caugarde.vote.model.dto.request.StudentRequestDTO;
 import caugarde.vote.model.dto.response.StudentResponseDTO;
@@ -11,18 +10,15 @@ import caugarde.vote.repository.jpa.AdminRepository;
 import caugarde.vote.repository.jpa.StudentRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -61,7 +57,15 @@ public class StudentService {
         studentRepository.deleteById(id);
     }
 
-    public Student update(Student student) {
+    public Student update(UUID id , StudentRequestDTO.Update studentRequestDTO) {
+        Student student = Student.builder()
+                .studentId(studentRequestDTO.studentId())
+                .studentPk(id)
+                .name(studentRequestDTO.name())
+                .email(studentRequestDTO.email())
+                .majority(studentRequestDTO.majority())
+                .memberType(studentRequestDTO.memberType())
+                .build();
         return studentRepository.save(student);
     }
 
@@ -80,8 +84,28 @@ public class StudentService {
 
             return new StudentResponseDTO(authentication.getName(), Role.USER.getAuth());
         } else {
-            throw new UserNotFoundException("사용자 권한이 없습니다.");
+            throw new UsernameNotFoundException("사용자 권한이 없습니다.");
         }
+    }
+
+    public Boolean validateAuth(UUID id){
+
+        if ( SecurityContextHolder.getContext().getAuthentication().getAuthorities().contains(new SimpleGrantedAuthority(Role.ADMIN.getAuth()))){
+            return true;
+        }
+
+        else{
+            try {
+                CustomOAuthUser user = (CustomOAuthUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+                if (user.getId()==id) return true;
+            }
+
+            catch (ClassCastException e){
+                return false;
+            }
+        }
+
+        return false;
     }
 
     public List<Object[]> getAttendanceList() {

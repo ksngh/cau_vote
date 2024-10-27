@@ -19,6 +19,7 @@ public class HomeController {
 
 	@GetMapping()
 	public String poll() {
+		SecurityContextHolder.getContext().getAuthentication().getName();
 		return "polling";
 	}
 }

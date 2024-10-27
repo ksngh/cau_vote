@@ -70,7 +70,7 @@ document.addEventListener("DOMContentLoaded", function() {
             })
             .then(result => {
                 alert('투표가 생성되었습니다.');
-                window.location.href = "/";
+                window.location.href = "../../../..";
             })
             .catch(error => {
                 console.error('Error:', error);
