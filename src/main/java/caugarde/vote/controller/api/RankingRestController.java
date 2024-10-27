@@ -31,8 +31,9 @@ public class RankingRestController {
 
     @GetMapping("/first")
     public ResponseEntity<?> getRankingsFirst(){
-//        rankingRedisService.deleteAllByKey(rankingRedisService.getCurrentKey());
-//        rankingRedisService.generateRankings();
+        rankingRedisService.deleteAllByKey(rankingRedisService.getCurrentKey());
+        rankingRedisService.generateRankings();
+        System.out.println("ranking redis 테스트");
         List<RankingResponseDTO> rankingResponseDTOS = rankingService.rankingsToDTOs(rankingRedisService.getFirstGrade());
         return ResponseEntity.ok(rankingResponseDTOS);
     }

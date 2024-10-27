@@ -41,4 +41,20 @@ public class StudentRestController {
         return ResponseEntity.ok().body(studentService.userToStudentResponseDTO(authentication));
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateStudent(@PathVariable UUID id, @RequestBody StudentRequestDTO.Update studentRequestDTO) {
+        if(studentService.validateAuth(id)){
+            studentService.update(id, studentRequestDTO);
+            return ResponseEntity.ok(new MessageResponseDTO("student" + SuccessMessage.UPDATE.getMessage()));
+        }
+        throw new IllegalArgumentException();
+    }
+
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteStudent(@PathVariable UUID id) {
+        studentService.deleteById(id);
+        return ResponseEntity.ok(new MessageResponseDTO("student" + SuccessMessage.DELETE.getMessage()));
+    }
+
 }
