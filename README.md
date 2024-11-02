@@ -1,13 +1,15 @@
 # CAU VOTE
 
-## 📖 프로젝트 소개
-
 ### (24.09.09~) **배포 중**
-[**GitHub 주소**](https://github.com/ksngh/cau_vote) | [**배포 주소**](https://caufencing.com)
+[**배포 주소**](https://caufencing.com)
 
-![투표 시스템](https://github.com/user-attachments/assets/6fc65b6b-7073-4a09-9c44-fb63cc8e18b9)
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/6fc65b6b-7073-4a09-9c44-fb63cc8e18b9" alt="Image 1" width="45%">
+  <img src="https://github.com/user-attachments/assets/f4d89b0e-7048-43cc-8a9a-fc030ee911aa" alt="Image 2" width="45%">
+</p>
 
-![투표 시스템 모달창](https://github.com/user-attachments/assets/f4d89b0e-7048-43cc-8a9a-fc030ee911aa)
+![erd](https://github.com/user-attachments/assets/574cd687-c26a-4e32-924f-0ed00c2285b0) 
+
 
 > **중앙대학교 펜싱동아리 훈련 투표 사이트입니다.**  
 > 1인 개발 프로젝트로, 현재 **50명 이상**이 사용 중입니다.  
