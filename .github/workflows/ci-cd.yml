@@ -83,3 +83,4 @@ jobs:
             sudo docker stop cau_vote || true
             sudo docker rm cau_vote || true
             sudo docker-compose --project-name cau_vote up
+            exit 0
