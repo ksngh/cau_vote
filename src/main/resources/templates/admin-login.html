@@ -6,7 +6,7 @@
     <title>중앙가르드 훈련 투표</title>
     <link th:href="@{/css/header.css}" rel="stylesheet"> <!-- Header 관련 CSS -->
     <link th:href="@{/css/polling.css}" rel="stylesheet"> <!-- Polling 페이지 관련 CSS -->
-    <link rel="icon" href="/favicon.ico" type="image/x-icon"> <!-- 파비콘 -->
+    <link rel="icon" href="/favicon.ico" fencingType="image/x-icon"> <!-- 파비콘 -->
     <style>
         * {
             box-sizing: border-box;
@@ -19,16 +19,16 @@
     <h2 style="text-align: center; color: #333;">관리자 로그인</h2>
     <div style="margin: 15px">
         <label for="username" style="margin: 5px;">사용자 이름:</label>
-        <input type="text" id="username" name="username" required
+        <input fencingType="text" id="username" name="username" required
                style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px;">
     </div>
     <div style="margin: 15px;">
         <label for="password" style="margin: 5px;">비밀번호:</label>
-        <input type="password" id="password" name="password" required
+        <input fencingType="password" id="password" name="password" required
                style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px;">
     </div>
     <div style="margin: 15px">
-        <button type="submit"
+        <button fencingType="submit"
                 style="width: 100%; padding: 10px; background-color: darkgray; color: white; border: none; border-radius: 4px; cursor: pointer; transition: background-color 0.3s;">
             로그인
         </button>

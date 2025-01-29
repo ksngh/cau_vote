@@ -6,7 +6,7 @@
     <title>중앙가르드 훈련 투표</title>
     <link th:href="@{/css/header.css}" rel="stylesheet">
     <link th:href="@{/css/signup.css}" rel="stylesheet">
-    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/favicon.ico" fencingType="image/x-icon">
 </head>
 <th:block th:replace="~{header::headerLayout}"></th:block>
 <body>
@@ -14,22 +14,22 @@
     <h2 style="text-align: center; color: #333;">회원 가입</h2>
     <div style="margin: 15px">
         <label for="studentId" class="info">학번</label>
-        <input type="text" id="studentId" name="studentId"/>
+        <input fencingType="text" id="studentId" name="studentId"/>
     </div>
     <div style="margin: 15px;">
         <label for="name" class="info">이름</label>
-        <input type="text" id="name" name="name"/>
+        <input fencingType="text" id="name" name="name"/>
     </div>
     <div style="margin: 15px;">
         <label for="majority" class="info">전공</label>
-        <input type="text" id="majority" name="majority"/>
+        <input fencingType="text" id="majority" name="majority"/>
     </div>
     <div class="radio-group">
         <label>
-            <input type="radio" name="memberType" value="신입" checked> 신입 부원
+            <input fencingType="radio" name="memberType" value="신입" checked> 신입 부원
         </label>
         <label>
-            <input type="radio" name="memberType" value="기존"> 기존 부원
+            <input fencingType="radio" name="memberType" value="기존"> 기존 부원
         </label>
     </div>
     <div style="text-align: center">
