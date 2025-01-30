@@ -1,15 +1,19 @@
 package caugarde.vote.model.entity;
 
+import caugarde.vote.common.util.RoleConverter;
 import caugarde.vote.model.enums.Role;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @Table(name = "STUDENT")
+@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Student {
 
@@ -19,6 +23,7 @@ public class Student {
     private Integer id;
 
     @Column(name = "AUTHORITY", nullable = false)
+    @Convert(converter = RoleConverter.class)
     private Set<Role> authorities;
 
     @Column(name = "STUDENT_ID", nullable = false, length = 30)
@@ -44,4 +49,15 @@ public class Student {
 
     @Column(name = "DELETED_AT")
     private LocalDateTime deletedAt;
+
+    private Student(String email) {
+        this.email = email;
+        this.createdAt = LocalDateTime.now();
+        this.authorities = new HashSet<>();
+        authorities.add(Role.USER);
+    }
+
+    public static Student create(String email){
+        return new Student(email);
+    }
 }

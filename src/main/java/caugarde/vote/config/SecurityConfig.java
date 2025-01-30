@@ -15,7 +15,13 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-
+        http
+            .oauth2Login(oauth2 -> oauth2
+                .userInfoEndpoint(userInfo -> userInfo
+                        .userService(oAuthUserService())  // 사용자 정보 가져오기
+                )
+                .defaultSuccessUrl("/home", true)  // 로그인 성공 시 리디렉트
+        );
         return http.build();
     }
 

@@ -2,7 +2,6 @@ package caugarde.vote.common.exception;
 
 import caugarde.vote.common.response.CustomApiResponse;
 import caugarde.vote.common.response.ResErrorCode;
-
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.ResponseEntity;
