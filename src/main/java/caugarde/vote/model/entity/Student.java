@@ -26,19 +26,19 @@ public class Student {
     @Convert(converter = RoleConverter.class)
     private Set<Role> authorities;
 
-    @Column(name = "STUDENT_ID", nullable = false, length = 30)
+    @Column(name = "STUDENT_ID", length = 30)
     private String studentId;
 
     @Column(name = "EMAIL", nullable = false, length = 50)
     private String email;
 
-    @Column(name = "NAME", nullable = false, length = 30)
+    @Column(name = "NAME", length = 30)
     private String name;
 
-    @Column(name = "MAJORITY", nullable = false, length = 50)
+    @Column(name = "MAJORITY", length = 50)
     private String majority;
 
-    @Column(name = "MEMBER_TYPE", nullable = false, length = 10)
+    @Column(name = "MEMBER_TYPE", length = 10)
     private String memberType;
 
     @Column(name = "CREATED_AT", nullable = false)

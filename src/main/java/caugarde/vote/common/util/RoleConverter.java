@@ -23,7 +23,7 @@ public class RoleConverter implements AttributeConverter<Set<Role>, String> {
     @Override
     public Set<Role> convertToEntityAttribute(String dbData) {
         return Arrays.stream(dbData.split(SEPARATOR))
-                .map(Role::valueOf)
+                .map(role -> Role.valueOf(role.replace("ROLE_", "")))
                 .collect(Collectors.toSet());
     }
 
