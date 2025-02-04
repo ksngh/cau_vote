@@ -9,7 +9,7 @@ import org.springframework.http.HttpStatus;
 public enum ResErrorCode implements ResCode {
     BAD_REQUEST(HttpStatus.BAD_REQUEST.value(), 40000, "Invalid Request"),
     UNAUTHORIZED(HttpStatus.UNAUTHORIZED.value(), 40100, "Unauthorized"),
-    EXPIRED_TOKEN(HttpStatus.UNAUTHORIZED.value(), 40101, "EXPIRED TOKEN"),
+    EXPIRED_TOKEN(HttpStatus.UNAUTHORIZED.value(), 40101, "Expired Token"),
     PENDING_AUTHORIZED(HttpStatus.UNAUTHORIZED.value(), 40102, "Pending User"),
     FORBIDDEN(HttpStatus.FORBIDDEN.value(), 40300, "Access Denied"),
     NOT_FOUND(HttpStatus.NOT_FOUND.value(), 40400, "Not Found"),
