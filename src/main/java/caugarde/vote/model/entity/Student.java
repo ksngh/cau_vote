@@ -54,10 +54,29 @@ public class Student {
         this.email = email;
         this.createdAt = LocalDateTime.now();
         this.authorities = new HashSet<>();
-        authorities.add(Role.USER);
+        authorities.add(Role.PENDING_USER);
     }
 
     public static Student create(String email){
         return new Student(email);
     }
+
+    private Student(String studentId,String name, String majority, String memberType){
+        this.studentId = studentId;
+        this.name = name;
+        this.majority = majority;
+        this.memberType = memberType;
+        authorities.remove(Role.PENDING_USER);
+        authorities.add(Role.USER);
+        this.updatedAt = LocalDateTime.now();
+    }
+
+    public static Student inputInfo(String studentId, String email, String name, String majority, String memberType){
+        return new Student(studentId, email, name, majority);
+    }
+
+    public void delete(){
+        this.deletedAt = LocalDateTime.now();
+    }
+
 }

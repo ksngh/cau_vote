@@ -12,11 +12,10 @@ import java.util.Map;
 public class CustomOAuthUser implements OAuth2User {
 
     private final Student student;
-    private final Map<String, Object> attributes;
 
     @Override
     public Map<String, Object> getAttributes() {
-        return attributes;
+        return null;
     }
 
     @Override

@@ -1,11 +1,15 @@
 package caugarde.vote.common.util;
 
+import caugarde.vote.common.exception.CustomApiException;
+import caugarde.vote.common.response.ResErrorCode;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.security.Key;
+import java.util.Base64;
 import java.util.Date;
 import java.util.function.Function;
 
@@ -14,8 +18,13 @@ public class JwtUtil {
 
     private final int expiration = 1000 * 60 * 60 * 24 * 7;
 
-    @Value("${jwtSecret}")
-    private Key secretKey; // 시크릿 키 자동 생성
+
+    private final Key secretKey;
+
+    public JwtUtil(@Value("${jwtSecret}") String jwtSecret) {
+        byte[] keyBytes = Base64.getEncoder().encode(jwtSecret.getBytes());
+        this.secretKey = Keys.hmacShaKeyFor(keyBytes);
+    }
 
     public String generateToken(String email) {
         return Jwts.builder()
@@ -39,16 +48,19 @@ public class JwtUtil {
     }
 
     public <T> T getClaim(String token, Function<Claims, T> claimsResolver) {
-        final Claims claims = getClaims(token);
+        Claims claims = getClaims(token);
         return claimsResolver.apply(claims);
     }
 
-    public boolean validateToken(String token, String email) {
-        final String extractedEmail = getEmail(token);
-        return (extractedEmail.equals(email) && !isTokenExpired(token));
-    }
-
-    private boolean isTokenExpired(String token) {
+    public boolean isTokenExpired(String token) {
         return getClaims(token).getExpiration().before(new Date());
     }
+
+    public String extractToken(String cookie) {
+        if (!cookie.startsWith("Bearer ")) {
+            throw new CustomApiException(ResErrorCode.UNAUTHORIZED, "유효하지 않은 인증 형식입니다.");
+        }
+        return cookie.substring(7);
+    }
+
 }
