@@ -46,7 +46,7 @@ public class BoardRepositoryImpl implements BoardRepository {
                         qBoard.createdAt
                 ))
                 .from(qBoard)
-                .where(applyStatusFilter(statusSet))
+                .where(applyStatusFilter(statusSet),isNotDeleted())
                 .orderBy(qBoard.createdAt.desc())
                 .fetch();
     }
@@ -58,5 +58,10 @@ public class BoardRepositoryImpl implements BoardRepository {
         }
         return qBoard.status.in(statuses);
     }
+
+    private BooleanExpression isNotDeleted() {
+        return qBoard.deletedAt.isNull();
+    }
+
 
 }

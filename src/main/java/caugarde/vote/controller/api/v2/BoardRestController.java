@@ -29,7 +29,6 @@ public class BoardRestController {
         return CustomApiResponse.OK(ResSuccessCode.CREATED);
     }
 
-    //TODO : delete by에 값 안들어오는 지 여부 찾기
     @GetMapping("/board")
     public CustomApiResponse<List<BoardInfo.Response>> getBoard(@RequestParam String boardStatus) {
         Set<BoardStatus> statusSet = parseStatuses(boardStatus);

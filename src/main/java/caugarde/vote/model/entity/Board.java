@@ -71,16 +71,6 @@ public class Board {
         return new Board(request);
     }
 
-    private Board(BoardUpdate.Request request) {
-        this.title = request.getTitle();
-        this.content = request.getContent();
-        this.limitPeople = request.getLimitPeople();
-        this.startDate = request.getStartDate();
-        this.endDate = request.getEndDate();
-        this.createdAt = LocalDateTime.now();
-        this.status = BoardStatus.PENDING;
-    }
-
     public void update(BoardUpdate.Request request,String email){
         this.title= request.getTitle();
         this.content= request.getContent();
