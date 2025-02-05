@@ -78,9 +78,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             Student student = studentService.getByEmail(email);
             validatePending(student);
             CustomOAuthUser oAuthUser = new CustomOAuthUser(student);
-
             UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(oAuthUser, null, oAuthUser.getAuthorities());
-
             SecurityContextHolder.getContext().setAuthentication(authenticationToken);
         }
     }
@@ -104,4 +102,5 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         ObjectMapper objectMapper = new ObjectMapper();
         response.getWriter().write(objectMapper.writeValueAsString(errorResponse));
     }
+
 }

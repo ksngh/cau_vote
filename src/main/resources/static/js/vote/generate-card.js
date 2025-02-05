@@ -19,7 +19,6 @@ async function getCardInfo() {
 
         const data = await response.json();
 
-        // 각 아이템에 대해 fetchVoteCount를 병렬로 호출하고, 순서 유지
         const dataWithCounts = await Promise.all(
             data.map(async (item) => {
                 const joinNum = await fetchVoteCount(item.uuid);
@@ -27,7 +26,6 @@ async function getCardInfo() {
             })
         );
 
-        // 정렬된 데이터에 대해 generateCard 호출
         dataWithCounts.forEach(item => generateCard(item));
 
     } catch (error) {
