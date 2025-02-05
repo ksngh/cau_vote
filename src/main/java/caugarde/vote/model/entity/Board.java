@@ -1,5 +1,6 @@
 package caugarde.vote.model.entity;
 
+import caugarde.vote.model.dto.board.BoardCreate;
 import caugarde.vote.model.enums.BoardStatus;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -55,26 +56,28 @@ public class Board {
     @Column(name = "DELETED_BY")
     private String deletedBy;
 
-    private Board(String title, String content, Integer limitPeople, LocalDateTime startDate, LocalDateTime endDate) {
-        this.title = title;
-        this.content = content;
-        this.limitPeople = limitPeople;
-        this.startDate = startDate;
-        this.endDate = endDate;
+    private Board(BoardCreate.Request request) {
+        this.title = request.getTitle();
+        this.content = request.getContent();
+        this.limitPeople = request.getLimitPeople();
+        this.startDate = request.getStartDate();
+        this.endDate = request.getEndDate();
         this.createdAt = LocalDateTime.now();
         this.status = BoardStatus.PENDING;
     }
 
-    public static Board create(String title, String content, Integer limitPeople, LocalDateTime startDate, LocalDateTime endDate) {
-        return new Board(title, content, limitPeople, startDate, endDate);
+    public static Board from(BoardCreate.Request request) {
+        return new Board(request);
     }
 
-    public void update() {
+    public void update(String email) {
         this.updatedAt = LocalDateTime.now();
+        this.updatedBy = email;
     }
 
-    public void softDelete() {
+    public void softDelete(String email) {
         this.deletedAt = LocalDateTime.now();
+        this.deletedBy = email;
     }
 }
 
