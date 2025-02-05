@@ -14,9 +14,9 @@ public class StudentController {
         return "signup";
     }
 
-    @GetMapping("/mypage")
-    public String mypage() {
-        return "mypage";
+    @GetMapping("/my-page")
+    public String myPage() {
+        return "my-page";
     }
 
 
