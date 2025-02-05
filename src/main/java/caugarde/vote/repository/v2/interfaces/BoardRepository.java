@@ -4,6 +4,7 @@ import caugarde.vote.model.dto.board.BoardInfo;
 import caugarde.vote.model.entity.Board;
 import caugarde.vote.model.enums.BoardStatus;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -12,7 +13,9 @@ public interface BoardRepository {
 
     void save(Board board);
 
-    Optional<Board> findById(Integer id);
+    Optional<Board> findById(Long id);
 
-    List<BoardInfo.Response> searchBoard(Set<BoardStatus> statuses);
+    List<BoardInfo.Response> searchBoard(Set<BoardStatus> statusSet);
+
+    long closeExpiredBoards(LocalDateTime now);
 }

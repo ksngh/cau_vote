@@ -1,14 +1,16 @@
-package caugarde.vote.controller.api.v2;
+package caugarde.vote.controller.v2.api;
 
 import caugarde.vote.common.response.CustomApiResponse;
 import caugarde.vote.common.response.ResSuccessCode;
 import caugarde.vote.model.dto.board.BoardCreate;
 import caugarde.vote.model.dto.board.BoardInfo;
 import caugarde.vote.model.dto.board.BoardUpdate;
+import caugarde.vote.model.dto.student.CustomOAuthUser;
 import caugarde.vote.model.enums.BoardStatus;
 import caugarde.vote.service.v2.interfaces.BoardService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
@@ -37,14 +39,17 @@ public class BoardRestController {
     }
 
     @PatchMapping("/board/{boardId}")
-    public CustomApiResponse<Void> updateBoard(@RequestBody @Valid BoardUpdate.Request request, @PathVariable Integer boardId) {
-        boardService.update(request,boardId);
+    public CustomApiResponse<Void> updateBoard(@RequestBody @Valid BoardUpdate.Request request,
+                                               @PathVariable Long boardId,
+                                               @AuthenticationPrincipal CustomOAuthUser user) {
+        boardService.update(request,boardId,user.getName());
         return CustomApiResponse.OK(ResSuccessCode.UPDATED);
     }
 
     @DeleteMapping("/board/{boardId}")
-    public CustomApiResponse<Void> deleteBoard(@PathVariable Integer boardId) {
-        boardService.delete(boardId);
+    public CustomApiResponse<Void> deleteBoard(@PathVariable Long boardId,
+                                               @AuthenticationPrincipal CustomOAuthUser user) {
+        boardService.delete(boardId,user.getName());
         return CustomApiResponse.OK(ResSuccessCode.DELETED);
     }
 

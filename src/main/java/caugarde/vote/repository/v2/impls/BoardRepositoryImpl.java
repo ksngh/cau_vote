@@ -11,7 +11,9 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -30,7 +32,7 @@ public class BoardRepositoryImpl implements BoardRepository {
     }
 
     @Override
-    public Optional<Board> findById(Integer id) {
+    public Optional<Board> findById(Long id) {
         return boardJpaRepository.findById(id);
     }
 
@@ -49,6 +51,20 @@ public class BoardRepositoryImpl implements BoardRepository {
                 .where(applyStatusFilter(statusSet),isNotDeleted())
                 .orderBy(qBoard.createdAt.desc())
                 .fetch();
+    }
+
+    @Override
+    public long closeExpiredBoards(LocalDateTime now) {
+        QBoard board = QBoard.board;
+
+        return queryFactory
+                .update(board)
+                .set(board.status, BoardStatus.INACTIVE)
+                .where(
+                        board.status.eq(BoardStatus.ACTIVE),
+                        board.endDate.before(now)
+                )
+                .execute();
     }
 
 

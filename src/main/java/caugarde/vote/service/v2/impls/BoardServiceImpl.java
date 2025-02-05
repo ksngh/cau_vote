@@ -11,15 +11,22 @@ import caugarde.vote.model.enums.BoardStatus;
 import caugarde.vote.repository.v2.interfaces.BoardRepository;
 import caugarde.vote.service.v2.interfaces.BoardService;
 import lombok.RequiredArgsConstructor;
+import org.ehcache.Cache;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Service
 @RequiredArgsConstructor
 public class BoardServiceImpl implements BoardService {
 
+    private final Cache<Long, AtomicInteger> voteCache;
     private final BoardRepository boardRepository;
 
     @Override
@@ -29,21 +36,21 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public void update(BoardUpdate.Request request,Integer id) {
+    public void update(BoardUpdate.Request request,Long id,String email) {
         Board board = getById(id);
 
-        board.update(request,SecurityUtil.getCurrentUserEmail());
+        board.update(request,email);
         boardRepository.save(board);
     }
 
     @Override
-    public void delete(Integer id) {
+    public void delete(Long id,String email) {
         Board board = getById(id);
-        board.onSoftDelete(SecurityUtil.getCurrentUserEmail());
+        board.onSoftDelete(email);
     }
 
     @Override
-    public Board getById(Integer id) {
+    public Board getById(Long id) {
         return boardRepository.findById(id).orElseThrow(()-> new CustomApiException(ResErrorCode.NOT_FOUND,"해당하는 투표 게시글을 찾을 수 없습니다."));
     }
 
@@ -52,6 +59,16 @@ public class BoardServiceImpl implements BoardService {
         return boardRepository.searchBoard(boardStatusSet);
     }
 
+    private void deleteVoteCache(Board board){
+        if(board.getStatus().equals(BoardStatus.INACTIVE)){
+            voteCache.remove(board.getId());
+        }
+    }
 
+    @Scheduled(cron = "0 */1 * * * *")
+    @Transactional
+    public void closeExpiredBoards() {
+        boardRepository.closeExpiredBoards(LocalDateTime.now());
+    }
 
 }
