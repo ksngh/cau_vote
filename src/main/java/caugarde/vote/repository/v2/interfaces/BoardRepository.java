@@ -17,5 +17,5 @@ public interface BoardRepository {
 
     List<BoardInfo.Response> searchBoard(Set<BoardStatus> statusSet);
 
-    long closeExpiredBoards(LocalDateTime now);
+    List<Long> closeExpiredBoards(LocalDateTime now);
 }
