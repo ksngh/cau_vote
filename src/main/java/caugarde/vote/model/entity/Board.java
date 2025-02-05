@@ -5,19 +5,21 @@ import caugarde.vote.model.dto.board.BoardUpdate;
 import caugarde.vote.model.enums.BoardStatus;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "Board")
+@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Board {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID", nullable = false)
-    private Integer id;
+    private Long id;
 
     @Column(name = "TITLE", nullable = false, length = 50)
     private String title;
@@ -69,16 +71,6 @@ public class Board {
 
     public static Board from(BoardCreate.Request request) {
         return new Board(request);
-    }
-
-    private Board(BoardUpdate.Request request) {
-        this.title = request.getTitle();
-        this.content = request.getContent();
-        this.limitPeople = request.getLimitPeople();
-        this.startDate = request.getStartDate();
-        this.endDate = request.getEndDate();
-        this.createdAt = LocalDateTime.now();
-        this.status = BoardStatus.PENDING;
     }
 
     public void update(BoardUpdate.Request request,String email){

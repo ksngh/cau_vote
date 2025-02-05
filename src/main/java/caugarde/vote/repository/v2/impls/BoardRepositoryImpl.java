@@ -12,6 +12,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -30,7 +31,7 @@ public class BoardRepositoryImpl implements BoardRepository {
     }
 
     @Override
-    public Optional<Board> findById(Integer id) {
+    public Optional<Board> findById(Long id) {
         return boardJpaRepository.findById(id);
     }
 
@@ -46,9 +47,30 @@ public class BoardRepositoryImpl implements BoardRepository {
                         qBoard.createdAt
                 ))
                 .from(qBoard)
-                .where(applyStatusFilter(statusSet))
+                .where(applyStatusFilter(statusSet), isNotDeleted())
                 .orderBy(qBoard.createdAt.desc())
                 .fetch();
+    }
+
+    @Override
+    public List<Long> closeExpiredBoards(LocalDateTime now) {
+
+        List<Long> expiredBoardIds = queryFactory
+                .select(qBoard.id)
+                .from(qBoard)
+                .where(
+                        qBoard.status.eq(BoardStatus.ACTIVE),
+                        qBoard.endDate.before(now)
+                )
+                .fetch();
+
+        queryFactory
+                .update(qBoard)
+                .set(qBoard.status, BoardStatus.INACTIVE)
+                .where(qBoard.id.in(expiredBoardIds))
+                .execute();
+
+        return expiredBoardIds;
     }
 
 
@@ -58,5 +80,10 @@ public class BoardRepositoryImpl implements BoardRepository {
         }
         return qBoard.status.in(statuses);
     }
+
+    private BooleanExpression isNotDeleted() {
+        return qBoard.deletedAt.isNull();
+    }
+
 
 }

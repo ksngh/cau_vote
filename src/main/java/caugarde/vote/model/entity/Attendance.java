@@ -12,7 +12,7 @@ public class Attendance {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID", nullable = false)
-    private Integer id;
+    private Long id;
 
     @JoinColumn(name = "STUDENT", nullable = false)
     @ManyToOne(fetch = FetchType.LAZY)

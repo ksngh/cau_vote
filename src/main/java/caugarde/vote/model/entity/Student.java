@@ -20,7 +20,7 @@ public class Student {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID", nullable = false)
-    private Integer id;
+    private Long id;
 
     @Column(name = "AUTHORITY", nullable = false)
     @Convert(converter = RoleConverter.class)

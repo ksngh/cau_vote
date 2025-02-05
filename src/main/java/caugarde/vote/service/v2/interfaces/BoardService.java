@@ -13,12 +13,14 @@ public interface BoardService {
 
     void create(BoardCreate.Request request);
 
-    void update(BoardUpdate.Request request, Integer id);
+    void update(BoardUpdate.Request request, Long id,String email);
 
-    void delete(Integer id);
+    void delete(Long id,String email);
 
-    Board getById(Integer id);
+    Board getById(Long id);
 
     List<BoardInfo.Response> search(Set<BoardStatus> boardStatusSet);
+
+    void closeExpiredBoards();
 
 }
