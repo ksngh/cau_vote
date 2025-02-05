@@ -5,19 +5,21 @@ import caugarde.vote.model.dto.board.BoardUpdate;
 import caugarde.vote.model.enums.BoardStatus;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "Board")
+@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Board {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID", nullable = false)
-    private Integer id;
+    private Long id;
 
     @Column(name = "TITLE", nullable = false, length = 50)
     private String title;

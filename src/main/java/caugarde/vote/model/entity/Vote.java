@@ -11,12 +11,12 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class StudentBoard {
+public class Vote {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID", nullable = false)
-    private Integer id;
+    private Long id;
 
     @JoinColumn(name = "STUDENT", nullable = false)
     @ManyToOne(fetch = FetchType.LAZY)
@@ -36,15 +36,15 @@ public class StudentBoard {
     @Column(name = "DELETED_AT")
     private LocalDateTime deletedAt;
 
-    private StudentBoard(Student student, Board board, FencingType fencingType) {
+    private Vote(Student student, Board board, FencingType fencingType) {
         this.student = student;
         this.board = board;
         this.fencingType = fencingType;
         this.createdAt = LocalDateTime.now();
     }
 
-    public static StudentBoard of(Student student, Board board, FencingType fencingType) {
-        return new StudentBoard(student, board, fencingType);
+    public static Vote of(Student student, Board board, FencingType fencingType) {
+        return new Vote(student, board, fencingType);
     }
 
     public void softDelete(){
