@@ -19,8 +19,6 @@ public interface GearService {
 
     void update(Long id, GearUpdate.Request request);
 
-    void rental(Long id);
-
     void delete(Long id);
 
 

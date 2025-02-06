@@ -42,11 +42,6 @@ public class GearServiceImpl implements GearService {
     }
 
     @Override
-    public void rental(Long id) {
-        getById(id).rental();
-    }
-
-    @Override
     public void delete(Long id) {
         gearRepository.deleteById(id);
     }

@@ -51,7 +51,7 @@ public class Gear {
         this.gearType = request.getGearType();
     }
 
-    public void returned(){
+    public void returnGear(){
         this.status=GearStatus.AVAILABLE;
     }
 
