@@ -7,6 +7,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v2/")
-public class StudentRestController {
+public class StudentApiController {
 
 }

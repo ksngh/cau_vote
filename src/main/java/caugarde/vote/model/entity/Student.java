@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -26,8 +27,8 @@ public class Student {
     @Convert(converter = RoleConverter.class)
     private Set<Role> authorities;
 
-    @Column(name = "STUDENT_ID", length = 30)
-    private String studentId;
+    @Column(name = "UNIVERSITY_ID", length = 30)
+    private String universityId;
 
     @Column(name = "EMAIL", nullable = false, length = 50)
     private String email;
@@ -53,26 +54,38 @@ public class Student {
     private Student(String email) {
         this.email = email;
         this.createdAt = LocalDateTime.now();
-        this.authorities = new HashSet<>();
-        authorities.add(Role.PENDING_USER);
+        this.authorities = EnumSet.of(Role.PENDING_USER);
     }
 
     public static Student create(String email){
         return new Student(email);
     }
 
-    private Student(String studentId,String name, String majority, String memberType){
-        this.studentId = studentId;
+    private Student(String universityId,String name, String majority, String memberType){
+        this.universityId = universityId;
         this.name = name;
         this.majority = majority;
         this.memberType = memberType;
-        authorities.remove(Role.PENDING_USER);
-        authorities.add(Role.USER);
+        this.authorities = EnumSet.of(Role.USER);
         this.updatedAt = LocalDateTime.now();
     }
 
-    public static Student inputInfo(String studentId, String email, String name, String majority, String memberType){
-        return new Student(studentId, email, name, majority);
+    public static Student inputInfo(String universityId, String email, String name, String majority, String memberType){
+        return new Student(universityId, email, name, majority);
+    }
+
+    public void addRole(Role role) {
+        authorities.add(role);
+        this.updatedAt = LocalDateTime.now();
+    }
+
+    public void removeRole(Role role) {
+        authorities.remove(role);
+        this.updatedAt = LocalDateTime.now();
+    }
+
+    public boolean hasRole(Role role) {
+        return authorities.contains(role);
     }
 
     public void delete(){

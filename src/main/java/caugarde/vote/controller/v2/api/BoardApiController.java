@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/v2/api")
-public class BoardRestController {
+public class BoardApiController {
 
     private final BoardService boardService;
 

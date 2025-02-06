@@ -1,6 +1,10 @@
 package caugarde.vote.model.entity;
 
+import caugarde.vote.model.dto.gear.GearCreate;
+import caugarde.vote.model.dto.gear.GearUpdate;
 import caugarde.vote.model.enums.FencingType;
+import caugarde.vote.model.enums.GearType;
+import caugarde.vote.model.enums.GearStatus;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -18,8 +22,41 @@ public class Gear {
     @Column(name = "NUM")
     private Integer num;
 
-    @Column(name = "TYPE", length = 10)
+    @Column(name = "FENCING_TYPE", length = 20)
     @Enumerated(EnumType.STRING)
-    private FencingType type;
+    private FencingType fencingType;
+
+    @Column(name = "GEAR_TYPE", length = 30)
+    @Enumerated(EnumType.STRING)
+    private GearType gearType;
+
+    @Column(name = "STATUS", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private GearStatus status;
+
+    private Gear(GearCreate.Request request){
+        this.num = request.getNum();
+        this.fencingType = request.getFencingType();
+        this.gearType = request.getGearType();
+        this.status = GearStatus.AVAILABLE;
+    }
+
+    public static Gear from(GearCreate.Request request){
+        return new Gear(request);
+    }
+
+    public void update(GearUpdate.Request request){
+        this.num = request.getNum();
+        this.fencingType = request.getFencingType();
+        this.gearType = request.getGearType();
+    }
+
+    public void returned(){
+        this.status=GearStatus.AVAILABLE;
+    }
+
+    public void rental(){
+        this.status = GearStatus.IN_USE;
+    }
 
 }

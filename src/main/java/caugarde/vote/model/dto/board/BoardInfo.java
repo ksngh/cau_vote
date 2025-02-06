@@ -1,5 +1,6 @@
 package caugarde.vote.model.dto.board;
 
+import caugarde.vote.model.enums.BoardStatus;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -16,7 +17,7 @@ public class BoardInfo {
         private Long id;
         private String title;
         private String content;
-        private String status;
+        private BoardStatus status;
         private Integer limitPeople;
         private LocalDateTime startDate;
         private LocalDateTime endDate;
