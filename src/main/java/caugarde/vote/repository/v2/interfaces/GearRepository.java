@@ -14,7 +14,7 @@ public interface GearRepository {
 
     List<GearInfo.Response> findGears(FencingType fencingType,GearType gearType);
 
-    Optional<Gear> findById(long id);
+    Optional<Gear> findById(Long id);
 
-    void deleteById(long id);
+    void deleteById(Long id);
 }

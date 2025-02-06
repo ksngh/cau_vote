@@ -38,7 +38,7 @@ public class GearServiceImpl implements GearService {
 
     @Override
     public void update(Long id, GearUpdate.Request request) {
-
+        getById(id).update(request);
     }
 
     @Override

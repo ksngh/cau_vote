@@ -50,12 +50,12 @@ public class GearRepositoryImpl implements GearRepository {
     }
 
     @Override
-    public Optional<Gear> findById(long id) {
+    public Optional<Gear> findById(Long id) {
         return gearJpaRepository.findById(id);
     }
 
     @Override
-    public void deleteById(long id) {
+    public void deleteById(Long id) {
         gearJpaRepository.deleteById(id);
     }
 

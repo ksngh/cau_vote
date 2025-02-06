@@ -1,6 +1,7 @@
 package caugarde.vote.model.entity;
 
 import caugarde.vote.model.dto.gear.GearCreate;
+import caugarde.vote.model.dto.gear.GearUpdate;
 import caugarde.vote.model.enums.FencingType;
 import caugarde.vote.model.enums.GearType;
 import caugarde.vote.model.enums.GearStatus;
@@ -42,6 +43,12 @@ public class Gear {
 
     public static Gear from(GearCreate.Request request){
         return new Gear(request);
+    }
+
+    public void update(GearUpdate.Request request){
+        this.num = request.getNum();
+        this.fencingType = request.getFencingType();
+        this.gearType = request.getGearType();
     }
 
     public void returned(){

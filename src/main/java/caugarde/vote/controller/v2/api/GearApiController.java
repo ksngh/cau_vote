@@ -4,6 +4,8 @@ import caugarde.vote.common.response.CustomApiResponse;
 import caugarde.vote.common.response.ResSuccessCode;
 import caugarde.vote.model.dto.gear.GearCreate;
 import caugarde.vote.model.dto.gear.GearInfo;
+import caugarde.vote.model.dto.gear.GearUpdate;
+import caugarde.vote.model.entity.Gear;
 import caugarde.vote.model.enums.FencingType;
 import caugarde.vote.model.enums.GearType;
 import caugarde.vote.service.v2.interfaces.GearService;
@@ -33,12 +35,22 @@ public class GearApiController {
         return CustomApiResponse.OK(ResSuccessCode.READ,gearInfos);
     }
 
-    //TODO: 수정 필요
+    @GetMapping("/gear/{gearId}")
+    public CustomApiResponse<GearInfo.Response> getGear(@PathVariable Long gearId) {
+        GearInfo.Response response = GearInfo.Response.from(gearService.getById(gearId));
+        return CustomApiResponse.OK(ResSuccessCode.READ,response);
+    }
+
     @PatchMapping("/gear/{gearId}")
-    public CustomApiResponse<Void> updateGear(){
+    public CustomApiResponse<Void> updateGear(@PathVariable Long gearId, @Valid @RequestBody GearUpdate.Request request) {
+        gearService.update(gearId, request);
         return CustomApiResponse.OK(ResSuccessCode.UPDATED);
     }
 
-    //TODO: 삭제 로직 추가
+    @DeleteMapping("/gear/{gearId}")
+    public CustomApiResponse<Void> deleteGear(@PathVariable Long gearId) {
+        gearService.delete(gearId);
+        return CustomApiResponse.OK(ResSuccessCode.DELETED);
+    }
 
 }
