@@ -2,15 +2,18 @@ package caugarde.vote.service.v2.impls;
 
 import caugarde.vote.common.exception.CustomApiException;
 import caugarde.vote.common.response.ResErrorCode;
+import caugarde.vote.common.util.CustomCacheUtil;
 import caugarde.vote.model.entity.Board;
 import caugarde.vote.model.entity.Student;
 import caugarde.vote.model.entity.Vote;
+import caugarde.vote.model.entity.cached.VoteParticipants;
 import caugarde.vote.model.enums.FencingType;
 import caugarde.vote.model.enums.VoteAction;
 import caugarde.vote.repository.v2.interfaces.VoteRepository;
 import caugarde.vote.service.v2.interfaces.BoardService;
 import caugarde.vote.service.v2.interfaces.StudentService;
 import caugarde.vote.service.v2.interfaces.VoteService;
+import caugarde.vote.service.v2.interfaces.cached.VoteParticipantsService;
 import lombok.RequiredArgsConstructor;
 import org.ehcache.Cache;
 import org.springframework.stereotype.Service;
@@ -22,20 +25,22 @@ import java.util.concurrent.atomic.AtomicInteger;
 @RequiredArgsConstructor
 public class VoteServiceImpl implements VoteService {
 
-    private final Cache<Long, AtomicInteger> voteCache;
     private final VoteRepository voteRepository;
     private final BoardService boardService;
     private final StudentService studentService;
+    private final VoteParticipantsService voteParticipantsService;
+
 
     @Override
     @Transactional
     public void create(Long boardId, FencingType fencingType, String email) {
-        voteCache.putIfAbsent(boardId, new AtomicInteger(0));
+        voteCache.putIfAbsent(voteCacheKey + boardId, new AtomicInteger(0));
         updateCount(voteCache, boardId, VoteAction.VOTE);
         saveEntity(boardId, fencingType, email);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Vote getById(Long id) {
         return voteRepository.findById(id).orElseThrow(() -> new CustomApiException(ResErrorCode.NOT_FOUND, "해당하는 투표가 없습니다."));
     }
@@ -48,20 +53,19 @@ public class VoteServiceImpl implements VoteService {
         voteRepository.save(vote);
     }
 
-    private void updateCount(Cache<Long, AtomicInteger> voteCache, Long boardId, VoteAction voteAction) {
+    private void updateCount(Long boardId, VoteAction voteAction) {
         boolean updated = false;
         while (!updated) {
-            AtomicInteger currentCount = voteCache.get(boardId);
-            int currentValue = currentCount.get();
-            int newValue = currentValue + validateVoteAction(voteAction);
-            updated = currentCount.compareAndSet(currentValue, newValue);
+            VoteParticipants currentVoteParticipants = voteParticipantsService.getByBoardId(boardId);
+            VoteParticipants updatedVoteParticipants = new VoteParticipants(currentVoteParticipants.getParticipantsCount());
+            updateByVoteAction(voteAction, updatedVoteParticipants);
+            updated = voteParticipantsService.update(boardId, currentVoteParticipants, updatedVoteParticipants);
         }
     }
 
     @Override
     public int getVoteCount(Long boardId) {
-        AtomicInteger count = voteCache.get(boardId);
-        return (count != null) ? count.get() : 0;
+        return voteParticipantsService.getByBoardId(boardId).getParticipantsCount();
     }
 
     private void validateVote(Board board) {
@@ -75,16 +79,16 @@ public class VoteServiceImpl implements VoteService {
     public void delete(Long voteId) {
         Vote vote = getById(voteId);
         vote.softDelete();
-        updateCount(voteCache, vote.getBoard().getId(), VoteAction.CANCEL);
+        updateByVoteAction(voteCache, vote.getBoard().getId(), VoteAction.CANCEL);
         voteRepository.save(vote);
     }
 
 
-    private int validateVoteAction(VoteAction voteAction) {
+    private void updateByVoteAction(VoteAction voteAction,VoteParticipants voteParticipants) {
         if (voteAction.name().equals(VoteAction.VOTE.name())) {
-            return 1;
+            voteParticipants.increment();
         } else {
-            return -1;
+            voteParticipants.decrement();
         }
     }
 

@@ -11,7 +11,7 @@ public class SemesterUtil {
         if (month >= 3 && month <= 8) {
             return year + "년도 1학기";
         } else {
-            if(month >8 && month <= 12){
+            if(month >8){
                 return year + "년도 2학기";
             }
             else{

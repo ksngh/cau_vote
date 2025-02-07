@@ -1,5 +1,6 @@
 package caugarde.vote.config;
 
+import lombok.RequiredArgsConstructor;
 import org.ehcache.Cache;
 import org.ehcache.CacheManager;
 import org.ehcache.config.builders.CacheConfigurationBuilder;
@@ -11,21 +12,12 @@ import org.springframework.context.annotation.Configuration;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Configuration
+@RequiredArgsConstructor
 public class EhcacheConfig {
 
     @Bean
     public CacheManager cacheManager() {
         return CacheManagerBuilder.newCacheManagerBuilder().build(true);
-    }
-
-    @Bean
-    public Cache<Long, AtomicInteger> voteCache(CacheManager cacheManager) {
-        return cacheManager.createCache("voteCache",
-                CacheConfigurationBuilder.newCacheConfigurationBuilder(
-                        Long.class,
-                        AtomicInteger.class,
-                        ResourcePoolsBuilder.heap(1000)
-                ).build());
     }
 
 }

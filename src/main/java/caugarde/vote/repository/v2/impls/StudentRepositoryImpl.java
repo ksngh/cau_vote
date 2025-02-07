@@ -6,6 +6,7 @@ import caugarde.vote.repository.v2.interfaces.jpa.StudentJpaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -17,6 +18,11 @@ public class StudentRepositoryImpl implements StudentRepository {
     @Override
     public void save(Student student) {
         studentJpaRepository.save(student);
+    }
+
+    @Override
+    public List<Student> findAll() {
+        return studentJpaRepository.findAll();
     }
 
     @Override

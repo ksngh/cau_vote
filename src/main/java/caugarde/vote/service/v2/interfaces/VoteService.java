@@ -12,4 +12,6 @@ public interface VoteService {
     void delete(Long boardId);
 
     int getVoteCount(Long boardId);
+
+
 }

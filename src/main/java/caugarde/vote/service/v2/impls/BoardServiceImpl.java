@@ -9,8 +9,8 @@ import caugarde.vote.model.entity.Board;
 import caugarde.vote.model.enums.BoardStatus;
 import caugarde.vote.repository.v2.interfaces.BoardRepository;
 import caugarde.vote.service.v2.interfaces.BoardService;
+import caugarde.vote.service.v2.interfaces.cached.VoteParticipantsService;
 import lombok.RequiredArgsConstructor;
-import org.ehcache.Cache;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,13 +18,12 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
-import java.util.concurrent.atomic.AtomicInteger;
 
 @Service
 @RequiredArgsConstructor
 public class BoardServiceImpl implements BoardService {
 
-    private final Cache<Long, AtomicInteger> voteCache;
+    private final VoteParticipantsService voteParticipantsService;
     private final BoardRepository boardRepository;
 
     @Override
@@ -56,15 +55,11 @@ public class BoardServiceImpl implements BoardService {
         return boardRepository.searchBoard(boardStatusSet);
     }
 
-    private void deleteVoteCache(Long boardId) {
-        voteCache.remove(boardId);
-    }
-
     @Scheduled(cron = "0 */1 * * * *")
     @Transactional
     public void closeExpiredBoards() {
         List<Long> boardIds = boardRepository.closeExpiredBoards(LocalDateTime.now());
-        boardIds.forEach(this::deleteVoteCache);
+        boardIds.forEach(voteParticipantsService::delete);
     }
 
 }

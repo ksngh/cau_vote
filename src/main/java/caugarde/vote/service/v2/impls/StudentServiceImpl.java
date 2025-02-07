@@ -8,6 +8,8 @@ import caugarde.vote.service.v2.interfaces.StudentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class StudentServiceImpl implements StudentService {
@@ -17,6 +19,11 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public Student getByEmail(String email) {
         return studentRepository.findByEmail(email).orElseThrow(() -> new CustomApiException(ResErrorCode.BAD_REQUEST, "해당하는 이메일을 찾을 수 없습니다."));
+    }
+
+    @Override
+    public List<Student> getAllStudents() {
+        return studentRepository.findAll();
     }
 
 }
