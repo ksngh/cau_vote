@@ -2,20 +2,29 @@ package caugarde.vote.model.entity.cached;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.redis.core.RedisHash;
+
+import java.io.Serializable;
 
 @AllArgsConstructor
 @Getter
-public class VoteParticipants {
+@RedisHash(value = "voteParticipants")
+public class VoteParticipants implements Serializable {
 
-    private int participantsCount;
+    @Id
+    private Long boardId; // Redis Key
+
+    private Integer participantsCount;
 
     public void increment() {
-       this.participantsCount += 1;
+        this.participantsCount++;
     }
 
     public void decrement() {
-
-        this.participantsCount -= 1;
+        if (this.participantsCount > 0) {
+            this.participantsCount--;
+        }
     }
 
 }

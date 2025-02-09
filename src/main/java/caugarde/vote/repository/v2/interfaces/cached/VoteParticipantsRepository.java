@@ -12,5 +12,7 @@ public interface VoteParticipantsRepository {
 
     void delete(Long boardId);
 
-    boolean update(Long boardId,VoteParticipants oldVoteParticipants,VoteParticipants newVoteParticipants);
+    void decrementVoteCount(Long boardId);
+
+    void incrementVoteCount(Long boardId);
 }

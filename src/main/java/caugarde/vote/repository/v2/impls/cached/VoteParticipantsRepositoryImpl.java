@@ -1,10 +1,10 @@
 package caugarde.vote.repository.v2.impls.cached;
 
-import caugarde.vote.common.util.CustomCacheUtil;
 import caugarde.vote.model.entity.cached.VoteParticipants;
 import caugarde.vote.repository.v2.interfaces.cached.VoteParticipantsRepository;
+import caugarde.vote.repository.v2.interfaces.redis.VoteParticipantsRedisRepository;
 import lombok.RequiredArgsConstructor;
-import org.ehcache.Cache;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
@@ -13,30 +13,38 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class VoteParticipantsRepositoryImpl implements VoteParticipantsRepository {
 
-    private final CustomCacheUtil cacheUtil;
-    private static final String voteCacheKey = "boardId:";
-    private final Cache<String,VoteParticipants> cache = 
-            cacheUtil.getOrCreateCache("voteCache", String.class, VoteParticipants.class);
-
+    private final RedisTemplate<String, VoteParticipants> redisTemplate;
+    private final VoteParticipantsRedisRepository voteParticipantsRedisRepository;
+    private final static String voteCacheKey = "voteParticipants:";
 
     @Override
     public Optional<VoteParticipants> findByBoardId(Long boardId) {
-        return Optional.ofNullable(cache.get(voteCacheKey + boardId));
+        return voteParticipantsRedisRepository.findById(getKey(boardId))
+                .or(() -> Optional.of(new VoteParticipants(boardId, 0)));
     }
 
     @Override
     public void save(Long boardId, VoteParticipants voteParticipants) {
-        cache.put(voteCacheKey + boardId, voteParticipants);
+        voteParticipantsRedisRepository.save(voteParticipants);
     }
 
     @Override
     public void delete(Long boardId) {
-        cache.remove(voteCacheKey + boardId);
+        voteParticipantsRedisRepository.deleteById(getKey(boardId));
     }
 
     @Override
-    public boolean update(Long boardId, VoteParticipants oldVoteParticipants, VoteParticipants newVoteParticipants) {
-        return cache.replace(voteCacheKey + boardId, oldVoteParticipants, newVoteParticipants);
+    public void incrementVoteCount(Long boardId) {
+        redisTemplate.opsForValue().increment(getKey(boardId));
+    }
+
+    @Override
+    public void decrementVoteCount(Long boardId) {
+        redisTemplate.opsForValue().decrement(getKey(boardId));
+    }
+
+    private String getKey(Long boardId){
+        return voteCacheKey + boardId;
     }
 
 }

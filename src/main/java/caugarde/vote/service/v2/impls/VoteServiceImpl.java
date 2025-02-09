@@ -2,7 +2,6 @@ package caugarde.vote.service.v2.impls;
 
 import caugarde.vote.common.exception.CustomApiException;
 import caugarde.vote.common.response.ResErrorCode;
-import caugarde.vote.common.util.CustomCacheUtil;
 import caugarde.vote.model.entity.Board;
 import caugarde.vote.model.entity.Student;
 import caugarde.vote.model.entity.Vote;
@@ -15,11 +14,8 @@ import caugarde.vote.service.v2.interfaces.StudentService;
 import caugarde.vote.service.v2.interfaces.VoteService;
 import caugarde.vote.service.v2.interfaces.cached.VoteParticipantsService;
 import lombok.RequiredArgsConstructor;
-import org.ehcache.Cache;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.concurrent.atomic.AtomicInteger;
 
 @Service
 @RequiredArgsConstructor
@@ -30,12 +26,11 @@ public class VoteServiceImpl implements VoteService {
     private final StudentService studentService;
     private final VoteParticipantsService voteParticipantsService;
 
-
     @Override
     @Transactional
     public void create(Long boardId, FencingType fencingType, String email) {
-        voteCache.putIfAbsent(voteCacheKey + boardId, new AtomicInteger(0));
-        updateCount(voteCache, boardId, VoteAction.VOTE);
+
+        updateCount(boardId, VoteAction.VOTE);
         saveEntity(boardId, fencingType, email);
     }
 
@@ -56,10 +51,7 @@ public class VoteServiceImpl implements VoteService {
     private void updateCount(Long boardId, VoteAction voteAction) {
         boolean updated = false;
         while (!updated) {
-            VoteParticipants currentVoteParticipants = voteParticipantsService.getByBoardId(boardId);
-            VoteParticipants updatedVoteParticipants = new VoteParticipants(currentVoteParticipants.getParticipantsCount());
-            updateByVoteAction(voteAction, updatedVoteParticipants);
-            updated = voteParticipantsService.update(boardId, currentVoteParticipants, updatedVoteParticipants);
+
         }
     }
 
@@ -79,12 +71,12 @@ public class VoteServiceImpl implements VoteService {
     public void delete(Long voteId) {
         Vote vote = getById(voteId);
         vote.softDelete();
-        updateByVoteAction(voteCache, vote.getBoard().getId(), VoteAction.CANCEL);
+        updateCount(vote.getBoard().getId(), VoteAction.CANCEL);
         voteRepository.save(vote);
     }
 
 
-    private void updateByVoteAction(VoteAction voteAction,VoteParticipants voteParticipants) {
+    private void updateByVoteAction(VoteAction voteAction, VoteParticipants voteParticipants) {
         if (voteAction.name().equals(VoteAction.VOTE.name())) {
             voteParticipants.increment();
         } else {

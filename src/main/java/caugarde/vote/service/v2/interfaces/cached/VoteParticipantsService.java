@@ -6,9 +6,11 @@ public interface VoteParticipantsService {
 
     VoteParticipants getByBoardId(Long boardId);
 
-    void save(Long boardId, VoteParticipants voteParticipants);
-
     void delete(Long boardId);
 
-    boolean update(Long boardId, VoteParticipants oldVoteParticipants,VoteParticipants newVoteParticipants);
+    void create(Long boardId,VoteParticipants voteParticipants);
+
+    void vote(Long boardId);
+
+    void cancel(Long boardId);
 }
