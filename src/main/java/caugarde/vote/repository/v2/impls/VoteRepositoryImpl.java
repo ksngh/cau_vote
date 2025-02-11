@@ -1,5 +1,6 @@
 package caugarde.vote.repository.v2.impls;
 
+import caugarde.vote.model.entity.Board;
 import caugarde.vote.model.entity.Vote;
 import caugarde.vote.repository.v2.interfaces.VoteRepository;
 import caugarde.vote.repository.v2.interfaces.jpa.VoteJpaRepository;
@@ -22,6 +23,11 @@ public class VoteRepositoryImpl implements VoteRepository {
     @Override
     public Optional<Vote> findById(Long id) {
         return voteJpaRepository.findById(id);
+    }
+
+    @Override
+    public Long countVoteByBoard(Board board) {
+        return voteJpaRepository.countVoteByBoard(board);
     }
 
 }

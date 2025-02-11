@@ -1,14 +1,12 @@
 package caugarde.vote.service.v2.impls;
 
-import caugarde.vote.model.dto.attendance.AttendanceInfo;
 import caugarde.vote.model.entity.Attendance;
 import caugarde.vote.model.entity.Student;
-import caugarde.vote.model.entity.cached.MostActiveParticipant;
+import caugarde.vote.model.entity.cached.StudentAttendanceCount;
 import caugarde.vote.repository.v2.interfaces.AttendanceRepository;
-import caugarde.vote.repository.v2.interfaces.cached.MostActiveParticipantRepository;
 import caugarde.vote.service.v2.interfaces.AttendanceService;
 import caugarde.vote.service.v2.interfaces.StudentService;
-import caugarde.vote.service.v2.interfaces.VoteService;
+import caugarde.vote.service.v2.interfaces.cached.StudentAttendanceCountService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -22,22 +20,8 @@ import java.util.Map;
 public class AttendanceServiceImpl implements AttendanceService {
 
     private final AttendanceRepository attendanceRepository;
+    private final StudentAttendanceCountService studentAttendanceCountService;
     private final StudentService studentService;
-    private final MostActiveParticipantRepository mostActiveParticipantRepository;
-
-    @Override
-    @Transactional(readOnly = true)
-    public List<AttendanceInfo.Response> getTopParticipants() {
-        List<MostActiveParticipant> mostActiveParticipants = mostActiveParticipantRepository.findMostActiveParticipants();
-        return mostActiveParticipants.stream()
-                .map(AttendanceInfo.Response::from)
-                .toList();
-    }
-
-    @Override
-    public List<AttendanceInfo.Response> getTopTenParticipants() {
-        return List.of();
-    }
 
     @Override
     @Transactional
@@ -51,6 +35,12 @@ public class AttendanceServiceImpl implements AttendanceService {
                         voteCounts.getOrDefault(student.getId(), 0)))
                 .toList();
         attendanceRepository.saveAll(attendanceList);
+        studentAttendanceCountService.saveStudentAttendanceCount(attendanceList.stream().map(StudentAttendanceCount::from).toList());
+    }
+
+    @Override
+    public List<Attendance> getTop10Attendances(String semester) {
+        return attendanceRepository.findTop10Attendance(semester);
     }
 
 }

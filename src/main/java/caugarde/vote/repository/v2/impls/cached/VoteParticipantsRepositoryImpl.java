@@ -13,7 +13,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class VoteParticipantsRepositoryImpl implements VoteParticipantsRepository {
 
-    private final RedisTemplate<String, VoteParticipants> redisTemplate;
+    private final RedisTemplate<String, Object> redisTemplate;
     private final VoteParticipantsRedisRepository voteParticipantsRedisRepository;
     private final static String voteCacheKey = "voteParticipants:";
 
@@ -34,8 +34,8 @@ public class VoteParticipantsRepositoryImpl implements VoteParticipantsRepositor
     }
 
     @Override
-    public void incrementVoteCount(Long boardId) {
-        redisTemplate.opsForValue().increment(getKey(boardId));
+    public Long incrementVoteCount(Long boardId) {
+        return redisTemplate.opsForValue().increment(getKey(boardId));
     }
 
     @Override

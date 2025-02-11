@@ -14,5 +14,5 @@ public interface VoteParticipantsRepository {
 
     void decrementVoteCount(Long boardId);
 
-    void incrementVoteCount(Long boardId);
+    Long incrementVoteCount(Long boardId);
 }

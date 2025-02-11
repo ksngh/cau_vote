@@ -4,6 +4,7 @@ import caugarde.vote.common.response.CustomApiResponse;
 import caugarde.vote.common.response.ResSuccessCode;
 import caugarde.vote.model.dto.attendance.AttendanceInfo;
 import caugarde.vote.service.v2.interfaces.AttendanceService;
+import caugarde.vote.service.v2.interfaces.cached.StudentAttendanceCountService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,16 +18,17 @@ import java.util.List;
 public class AttendanceApiController {
 
     private final AttendanceService attendanceService;
+    private final StudentAttendanceCountService studentAttendanceCountService;
 
     @GetMapping("/attendance/most-active")
     public CustomApiResponse<List<AttendanceInfo.Response>> getAttendanceTop(){
-        List<AttendanceInfo.Response> responses = attendanceService.getTopParticipants();
+        List<AttendanceInfo.Response> responses = studentAttendanceCountService.getTop1().stream().map(AttendanceInfo.Response::from).toList();
         return CustomApiResponse.OK(ResSuccessCode.READ, responses);
     }
-
+/*
     @GetMapping("/attendance/top-ten")
     public CustomApiResponse<AttendanceInfo.Response> getAttendanceTopTen(){
 
-    }
+    }*/
 
 }

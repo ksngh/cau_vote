@@ -14,4 +14,6 @@ public interface AttendanceRepository {
 
     void saveAll(List<Attendance> attendances);
 
+    List<Attendance> findTop10Attendance(String semester);
+
 }

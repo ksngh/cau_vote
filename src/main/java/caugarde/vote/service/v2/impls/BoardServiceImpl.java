@@ -6,6 +6,7 @@ import caugarde.vote.model.dto.board.BoardCreate;
 import caugarde.vote.model.dto.board.BoardInfo;
 import caugarde.vote.model.dto.board.BoardUpdate;
 import caugarde.vote.model.entity.Board;
+import caugarde.vote.model.entity.cached.VoteParticipants;
 import caugarde.vote.model.enums.BoardStatus;
 import caugarde.vote.repository.v2.interfaces.BoardRepository;
 import caugarde.vote.service.v2.interfaces.BoardService;
@@ -30,6 +31,7 @@ public class BoardServiceImpl implements BoardService {
     public void create(BoardCreate.Request request) {
         Board board = Board.from(request);
         boardRepository.save(board);
+        voteParticipantsService.create(board.getId(),new VoteParticipants(board.getId(),0));
     }
 
     @Override

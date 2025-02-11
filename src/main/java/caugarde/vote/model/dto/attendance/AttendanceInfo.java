@@ -1,6 +1,6 @@
 package caugarde.vote.model.dto.attendance;
 
-import caugarde.vote.model.entity.cached.MostActiveParticipant;
+import caugarde.vote.model.entity.cached.StudentAttendanceCount;
 
 public class AttendanceInfo {
 
@@ -10,14 +10,14 @@ public class AttendanceInfo {
         private String majority;
         private Integer count;
 
-        private Response(MostActiveParticipant mostActiveParticipant){
-            this.name = mostActiveParticipant.getName();
-            this.majority = mostActiveParticipant.getMajority();
-            this.count = mostActiveParticipant.getCount();
+        private Response(StudentAttendanceCount studentAttendanceCount){
+            this.name = studentAttendanceCount.getName();
+            this.majority = studentAttendanceCount.getMajority();
+            this.count = studentAttendanceCount.getCount();
         }
 
-        public static Response from(MostActiveParticipant mostActiveParticipant){
-            return new Response(mostActiveParticipant);
+        public static Response from(StudentAttendanceCount studentAttendanceCount){
+            return new Response(studentAttendanceCount);
         }
 
     }

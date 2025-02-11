@@ -1,6 +1,7 @@
 package caugarde.vote.repository.v2.impls;
 
 import caugarde.vote.model.entity.Attendance;
+import caugarde.vote.model.entity.QAttendance;
 import caugarde.vote.model.entity.QVote;
 import caugarde.vote.model.entity.Student;
 import caugarde.vote.repository.v2.interfaces.AttendanceRepository;
@@ -19,6 +20,7 @@ import java.util.stream.Collectors;
 public class AttendanceRepositoryImpl implements AttendanceRepository {
 
     private static final QVote qVote = QVote.vote;
+    private static final QAttendance qAttendance = QAttendance.attendance;
     private final JPAQueryFactory queryFactory;
     private final AttendanceJpaRepository attendanceJpaRepository;
 
@@ -49,5 +51,15 @@ public class AttendanceRepositoryImpl implements AttendanceRepository {
         attendanceJpaRepository.saveAll(attendances);
     }
 
+    @Override
+    public List<Attendance> findTop10Attendance(String semester) {
+        return queryFactory
+                .selectFrom(qAttendance)
+                .where(qAttendance.semester.eq(semester))
+                .orderBy(qAttendance.attendanceCount.desc())
+                .limit(10)
+                .fetch();
+
+    }
 
 }

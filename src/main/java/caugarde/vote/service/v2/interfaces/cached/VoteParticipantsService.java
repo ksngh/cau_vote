@@ -4,13 +4,11 @@ import caugarde.vote.model.entity.cached.VoteParticipants;
 
 public interface VoteParticipantsService {
 
-    VoteParticipants getByBoardId(Long boardId);
-
     void delete(Long boardId);
 
     void create(Long boardId,VoteParticipants voteParticipants);
 
-    void vote(Long boardId);
+    void vote(Long boardId,int limitPeople);
 
     void cancel(Long boardId);
 }
