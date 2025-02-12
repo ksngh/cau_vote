@@ -25,10 +25,11 @@ public class AttendanceApiController {
         List<AttendanceInfo.Response> responses = studentAttendanceCountService.getTop1().stream().map(AttendanceInfo.Response::from).toList();
         return CustomApiResponse.OK(ResSuccessCode.READ, responses);
     }
-/*
-    @GetMapping("/attendance/top-ten")
-    public CustomApiResponse<AttendanceInfo.Response> getAttendanceTopTen(){
 
-    }*/
+    @GetMapping("/attendance/top-ten")
+    public CustomApiResponse<List<AttendanceInfo.Response>> getAttendanceTopTen(){
+        List<AttendanceInfo.Response> responses = studentAttendanceCountService.getTop10().stream().map(AttendanceInfo.Response::from).toList();
+        return CustomApiResponse.OK(ResSuccessCode.READ,responses);
+    }
 
 }
