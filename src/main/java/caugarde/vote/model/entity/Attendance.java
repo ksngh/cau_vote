@@ -1,7 +1,10 @@
 package caugarde.vote.model.entity;
 
+import caugarde.vote.common.util.SemesterUtil;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "Attendance")
@@ -24,13 +27,14 @@ public class Attendance {
     @Column(name = "ATTENDANCE_COUNT", nullable = false)
     private Integer attendanceCount;
 
-    private Attendance (Student student, String semester, Integer attendanceCount) {
+    private Attendance (Student student, Integer attendanceCount) {
         this.student = student;
-        this.semester = semester;
+        this.semester = SemesterUtil.getSemester(LocalDate.now());
         this.attendanceCount = attendanceCount;
     }
 
-    public static Attendance of (Student student, String semester, Integer attendanceCount) {
-        return new Attendance(student, semester, attendanceCount);
+    public static Attendance of(Student student, Integer attendanceCount) {
+        return new Attendance(student, attendanceCount);
     }
+
 }
