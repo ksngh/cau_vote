@@ -2,6 +2,8 @@ package caugarde.vote.service.v2.impls;
 
 import caugarde.vote.common.exception.CustomApiException;
 import caugarde.vote.common.response.ResErrorCode;
+import caugarde.vote.model.dto.vote.VoteCreate;
+import caugarde.vote.model.dto.vote.VoteInfo;
 import caugarde.vote.model.entity.Board;
 import caugarde.vote.model.entity.Student;
 import caugarde.vote.model.entity.Vote;
@@ -18,6 +20,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -32,21 +35,23 @@ public class VoteServiceImpl implements VoteService {
 
     @Override
     @Transactional
-    public void create(Long boardId, FencingType fencingType, String email) {
+    public void create(VoteCreate.Request request, String email) {
         Student student = studentService.getByEmail(email);
-        Board board = boardService.getById(boardId);
-        voteParticipantsService.vote(boardId,board.getLimitPeople());
-        Vote vote = Vote.of(student, board, fencingType);
+        Board board = boardService.getById(request.getBoardId());
+        voteParticipantsService.vote(board.getId(), board.getLimitPeople());
+        Vote vote = Vote.of(student, board, request.getFencingType());
         voteRepository.save(vote);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Vote getById(Long id) {
-        return voteRepository.findById(id).orElseThrow(() -> new CustomApiException(ResErrorCode.NOT_FOUND, "해당하는 투표가 없습니다."));
+    public List<VoteInfo.Response> getByBoardId(Long boardId) {
+        List<Vote> votes = voteRepository.findByBoard(boardService.getById(boardId));
+        return votes.stream().map(VoteInfo.Response::from).toList();
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Integer getVoteCount(Long boardId) {
         Optional<VoteParticipants> participants = voteParticipantsRepository.findByBoardId(boardId);
         if (participants.isEmpty()) {
@@ -56,6 +61,14 @@ public class VoteServiceImpl implements VoteService {
         }
     }
 
+    @Override
+    @Transactional(readOnly = true)
+    public Vote getByBoardAndStudent(Long boardId, String email) {
+        Board board = boardService.getById(boardId);
+        Student student = studentService.getByEmail(email);
+        return voteRepository.findVoteByBoardAndStudent(board,student).orElseThrow(()-> new CustomApiException(ResErrorCode.NOT_FOUND,"투표 내역이 존재하지 않습니다."));
+    }
+
     private Integer countVoteByBoardId(Long boardId){
         Board board = boardService.getById(boardId);
         return Math.toIntExact(voteRepository.countVoteByBoard(board));
@@ -63,8 +76,7 @@ public class VoteServiceImpl implements VoteService {
 
     @Override
     @Transactional
-    public void delete(Long voteId) {
-        Vote vote = getById(voteId);
+    public void delete(Vote vote) {
         vote.softDelete();
         voteParticipantsService.cancel(vote.getBoard().getId());
         voteRepository.save(vote);
