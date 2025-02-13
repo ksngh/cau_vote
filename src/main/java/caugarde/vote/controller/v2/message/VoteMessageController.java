@@ -49,11 +49,11 @@ public class VoteMessageController {
 
 
     private void sendVoteResult(String email) {
-        messagingTemplate.convertAndSendToUser(email, "/topic/vote/result", getVoteResultMessage());
+        messagingTemplate.convertAndSendToUser(email, "/user/topic/vote/result", getVoteResultMessage());
     }
 
     private void sendCancelResult(String email) {
-        messagingTemplate.convertAndSendToUser(email, "/topic/vote/result", getCancelResultMessage());
+        messagingTemplate.convertAndSendToUser(email, "/user/topic/vote/result", getCancelResultMessage());
     }
 
     private void sendVoteCountUpdate(Long boardId) {

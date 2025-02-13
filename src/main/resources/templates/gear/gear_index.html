@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>중앙가르드 장비 대여</title>
+    <link rel="stylesheet" th:href="@{/css/header.css}">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 50px;
+        }
+        .tabs {
+            display: flex;
+            cursor: pointer;
+            border-bottom: 2px solid #ddd;
+            margin-bottom: 10px;
+        }
+        .tab {
+            padding: 10px 20px;
+            border: none;
+            background: none;
+            font-size: 16px;
+        }
+        .tab.active {
+            font-weight: bold;
+            border-bottom: 3px solid #007bff;
+        }
+        .content {
+            display: none;
+        }
+        .content.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+<th:block th:replace="~{common/header::headerLayout}"></th:block>
+
+
+<div class="tabs">
+    <button class="tab" data-tab="account">Account</button>
+    <button class="tab" data-tab="password">Password</button>
+</div>
+
+<div id="account" class="content">
+    <h2>Account Settings</h2>
+    <p>Make changes to your account here.</p>
+    <label for="name">Name:</label>
+    <input type="text" id="name" value="Pedro Duarte">
+    <br><br>
+    <label for="username">Username:</label>
+    <input type="text" id="username" value="@peduarte">
+    <br><br>
+    <button>Save changes</button>
+</div>
+
+<div id="password" class="content">
+    <h2>Change Password</h2>
+    <p>Change your password here.</p>
+    <label for="current">Current password:</label>
+    <input type="password" id="current">
+    <br><br>
+    <label for="new">New password:</label>
+    <input type="password" id="new">
+    <br><br>
+    <button>Save password</button>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const tabs = document.querySelectorAll(".tab");
+        const contents = document.querySelectorAll(".content");
+
+        function activateTab(tabName, pushState = true) {
+            tabs.forEach(tab => tab.classList.remove("active"));
+            contents.forEach(content => content.classList.remove("active"));
+
+            document.querySelector(`.tab[data-tab="${tabName}"]`).classList.add("active");
+            document.getElementById(tabName).classList.add("active");
+
+            if (pushState) {
+                history.pushState({ tab: tabName }, "", `/${tabName}`);
+            }
+        }
+
+        tabs.forEach(tab => {
+            tab.addEventListener("click", function () {
+                const tabName = this.getAttribute("data-tab");
+                activateTab(tabName);
+            });
+        });
+
+        window.addEventListener("popstate", function (event) {
+            if (event.state && event.state.tab) {
+                activateTab(event.state.tab, false);
+            }
+        });
+
+        const initialTab = location.pathname.replace("/", "") || "account";
+        activateTab(initialTab, false);
+    });
+</script>
+
+</body>
+</html>
+
+

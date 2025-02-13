@@ -30,21 +30,26 @@ import java.util.Map;
 @Slf4j(topic = "JWT 검증 및 인가")
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
-    private static final List<String> EXCLUDED_PATHS = List.of("/", "/login");
+    private static final List<String> EXCLUDED_PATHS =
+            List.of("/",
+                    "/login",
+                    "/static",
+                    "/ranking",
+                    "/css","/js","/images");
     private final StudentService studentService;
     private final JwtUtil jwtUtil;
     private final CookieUtil cookieUtil;
 
     private boolean isExcludedFromFilter(HttpServletRequest request) {
         String requestURI = request.getRequestURI();
-        return EXCLUDED_PATHS.stream().anyMatch(requestURI::equals);
+        return EXCLUDED_PATHS.stream().anyMatch(requestURI::startsWith);
     }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
         if (isExcludedFromFilter(request)) {
-            filterChain.doFilter(request, response); // 공개 경로는 필터 통과
+            filterChain.doFilter(request, response);
             return;
         }
 
@@ -78,9 +83,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             Student student = studentService.getByEmail(email);
             validatePending(student);
             CustomOAuthUser oAuthUser = new CustomOAuthUser(student);
-
             UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(oAuthUser, null, oAuthUser.getAuthorities());
-
             SecurityContextHolder.getContext().setAuthentication(authenticationToken);
         }
     }

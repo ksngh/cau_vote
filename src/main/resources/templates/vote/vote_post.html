@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <title>투표 생성</title>
-    <link rel="stylesheet" th:href="@{/css/posting.css}">
-    <link rel="stylesheet" th:href="@{/css/header.css}">
-    <link href="/favicon.ico" rel="icon" fencingType="image/x-icon">
+  <meta charset="UTF-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>투표 생성</title>
+  <link rel="stylesheet" th:href="@{/css/posting.css}">
+  <link rel="stylesheet" th:href="@{/css/header.css}">
+  <link href="/favicon.ico" rel="icon" fencingType="image/x-icon">
 </head>
 <body>
 <th:block th:replace="~{header::headerLayout}"></th:block>
@@ -28,7 +28,7 @@
 <input id="submitDate" name="submitDate" required fencingType="datetime-local"><br><br>
 
 <div style="text-align: right; margin-right: 15px ">
-    <button id="generate-poll" fencingType="button">생성</button>
+  <button id="generate-poll" fencingType="button">생성</button>
 </div>
 <th:block th:replace="~{footer::footerLayout}"></th:block>
 

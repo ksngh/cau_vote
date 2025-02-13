@@ -1,9 +1,40 @@
 <!-- header.html -->
+
+<style>
+    .toggle-group {
+        display: flex;
+        gap: 10px;
+    }
+
+    .toggle-button {
+        padding: 10px 20px;
+        border: 2px solid #007bff;
+        background-color: white;
+        color: #007bff;
+        cursor: pointer;
+        transition: all 0.3s;
+        border-radius: 5px;
+        font-size: 16px;
+    }
+
+    .toggle-button.active {
+        background-color: #007bff;
+        color: white;
+    }
+</style>
 <div th:fragment="headerLayout">
     <nav id="nav-header" class="header-container">
-        <h3><a href="/" style="text-decoration: none; color: inherit;">CHUNG-ANG GARDE</a></h3>
+        <h3><a href="/static" style="text-decoration: none; color: inherit;">CHUNG-ANG GARDE</a></h3>
         <button id="loginBtn" class="login-button">로그인</button>
     </nav>
+    <div class="toggle-group" id="toggleGroup">
+        <button class="toggle-button" data-value="web">Web</button>
+        <button class="toggle-button" data-value="android">Android</button>
+        <button class="toggle-button" data-value="ios">iOS</button>
+    </div>
+    <div>
+
+    </div>
     <div id="overlay" class="overlay"></div>
     <div class="menu">
         <ul id="menu"></ul>

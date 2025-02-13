@@ -5,6 +5,7 @@ import caugarde.vote.service.v2.impls.OAuthUserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
@@ -23,16 +24,21 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(request -> request
-                        .requestMatchers("/login").permitAll()
+                        .requestMatchers(HttpMethod.GET,"/login").permitAll()
+                        .requestMatchers(HttpMethod.GET,"/css/**").permitAll()
+                        .requestMatchers(HttpMethod.GET,"/js/**").permitAll()
+                        .requestMatchers(HttpMethod.GET,"/images/**").permitAll()
+                        .requestMatchers(HttpMethod.GET,"/").permitAll()
+                        .requestMatchers(HttpMethod.GET,"/gear/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .oauth2Login(oauth2 -> oauth2
                         .loginProcessingUrl("/oauth/kakao/callback")
                         .userInfoEndpoint(userInfo -> userInfo
-                                .userService(oAuthUserService)  // 사용자 정보 가져오기
+                                .userService(oAuthUserService)
                         )
-                        .defaultSuccessUrl("/", true)  // 로그인 성공 시 리디렉트
+                        .defaultSuccessUrl("/", true)
                 );
         return http.build();
     }

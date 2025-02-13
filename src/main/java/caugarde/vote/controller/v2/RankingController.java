@@ -10,6 +10,6 @@ public class RankingController {
 
     @GetMapping
     public String ranking() {
-        return "ranking";
+        return "vote/vote_ranking";
     }
 }

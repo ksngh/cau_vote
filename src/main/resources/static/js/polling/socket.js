@@ -72,20 +72,20 @@ function resetInactivityTimer() {
 }
 
 // 투표 요청 전송 함수
-function sendVote(voteId) {
+function sendVote(boardId) {
     const selectedCategory = document.querySelector('input[name="category"]:checked').value;
     const attendanceData = {
         category: selectedCategory  // 선택된 카테고리 정보 추가
     };
 
     if (stompClient && stompClient.connected) {
-        stompClient.send(`/app/vote/${voteId}`, {}, JSON.stringify(attendanceData));
+        stompClient.send(`/app/board/${boardId}/vote`, {}, JSON.stringify(attendanceData));
     }
 }
 
-function cancel(voteId) {
+function cancel(boardId) {
     if (stompClient && stompClient.connected) {
-        stompClient.send(`/app/vote/cancel/${voteId}`, {}, JSON.stringify({}));
+        stompClient.send(`/app/board/${boardId}/vote/cancel`, {}, JSON.stringify({}));
     }
 }
 
