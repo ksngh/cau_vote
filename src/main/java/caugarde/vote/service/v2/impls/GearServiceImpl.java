@@ -1,6 +1,6 @@
 package caugarde.vote.service.v2.impls;
 
-import caugarde.vote.common.exception.CustomApiException;
+import caugarde.vote.common.exception.api.CustomApiException;
 import caugarde.vote.common.response.ResErrorCode;
 import caugarde.vote.model.dto.gear.GearCreate;
 import caugarde.vote.model.dto.gear.GearInfo;

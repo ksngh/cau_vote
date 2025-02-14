@@ -1,15 +1,17 @@
 package caugarde.vote.model.entity.cached;
 
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.redis.core.RedisHash;
 
 import java.io.Serializable;
 
-@AllArgsConstructor
 @Getter
 @RedisHash(value = "voteParticipants")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class VoteParticipants implements Serializable {
 
     @Id
@@ -17,14 +19,13 @@ public class VoteParticipants implements Serializable {
 
     private Integer participantsCount;
 
-    public void increment() {
-        this.participantsCount++;
+    private VoteParticipants(Long boardId) {
+        this.boardId = boardId;
+        this.participantsCount = 0;
     }
 
-    public void decrement() {
-        if (this.participantsCount > 0) {
-            this.participantsCount--;
-        }
+    public static VoteParticipants create(Long boardId) {
+        return new VoteParticipants(boardId);
     }
 
 }

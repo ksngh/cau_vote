@@ -25,4 +25,5 @@ public class VoteApiController {
         return CustomApiResponse.OK(ResSuccessCode.READ, responses);
     }
 
+
 }

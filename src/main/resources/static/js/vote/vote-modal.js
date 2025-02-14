@@ -1,5 +1,5 @@
 function getModalInfo(id) {
-    fetch(`api/student/vote/${id}`, {
+    fetch(`v2/api/board/${id}/vote`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json'
@@ -12,7 +12,7 @@ function getModalInfo(id) {
         }
     })
         .then(data => {
-            generateModal(data);
+            voteModal(data);
         })
         .catch(error => {
             console.error('Error:', error);
@@ -20,7 +20,7 @@ function getModalInfo(id) {
         });
 }
 
-function generateModal(data) {
+function voteModal(data) {
     // 이전 모달 내용 제거
     const existingModal = document.querySelector('.modal');
     if (existingModal) {
@@ -47,7 +47,7 @@ function generateModal(data) {
 
                 data.forEach(item => {
                     const listItem = document.createElement('li');
-                    listItem.textContent = `${item.studentId} ${item.majority} ${item.name} / ${item.category}`; // 데이터에서 이름 가져오기
+                    listItem.textContent = `${item.universityId} ${item.majority} ${item.name} / ${item.fencingType}`; // 데이터에서 이름 가져오기
                     voteList.appendChild(listItem);
                 });
 
@@ -62,7 +62,7 @@ function generateModal(data) {
 
             }
         })
-        .catch(error => console.error('Error fetching user status:', error));
+        .catch(error => console.error('투표 모달창 정보를 불러오지 못하였습니다.', error));
 
 
     // 모달을 페이지에 추가
@@ -86,7 +86,7 @@ function generateModal(data) {
 }
 
 // 카드 생성 시 모달 열기
-function openVoteModal(uuid) {
+function openVoteModal(id) {
     event.stopPropagation();
-    getModalInfo(uuid); // UUID를 사용하여 데이터 요청
+    getModalInfo(id); // ID를 사용하여 데이터 요청
 }

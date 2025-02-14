@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface VoteService {
 
-    void create(VoteCreate.Request request, String email);
+    void create(Long boardId,VoteCreate.Request request, String email);
 
     List<VoteInfo.Response> getByBoardId(Long boardId);
 

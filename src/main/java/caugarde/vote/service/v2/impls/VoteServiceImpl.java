@@ -1,6 +1,8 @@
 package caugarde.vote.service.v2.impls;
 
-import caugarde.vote.common.exception.CustomApiException;
+import caugarde.vote.common.exception.api.CustomApiException;
+import caugarde.vote.common.exception.websocket.CustomWebSocketException;
+import caugarde.vote.common.response.CustomWebSocketResponse;
 import caugarde.vote.common.response.ResErrorCode;
 import caugarde.vote.model.dto.vote.VoteCreate;
 import caugarde.vote.model.dto.vote.VoteInfo;
@@ -8,8 +10,6 @@ import caugarde.vote.model.entity.Board;
 import caugarde.vote.model.entity.Student;
 import caugarde.vote.model.entity.Vote;
 import caugarde.vote.model.entity.cached.VoteParticipants;
-import caugarde.vote.model.enums.FencingType;
-import caugarde.vote.model.enums.VoteAction;
 import caugarde.vote.repository.v2.interfaces.VoteRepository;
 import caugarde.vote.repository.v2.interfaces.cached.VoteParticipantsRepository;
 import caugarde.vote.service.v2.interfaces.BoardService;
@@ -35,9 +35,9 @@ public class VoteServiceImpl implements VoteService {
 
     @Override
     @Transactional
-    public void create(VoteCreate.Request request, String email) {
+    public void create(Long boardId,VoteCreate.Request request, String email) {
         Student student = studentService.getByEmail(email);
-        Board board = boardService.getById(request.getBoardId());
+        Board board = boardService.getById(boardId);
         voteParticipantsService.vote(board.getId(), board.getLimitPeople());
         Vote vote = Vote.of(student, board, request.getFencingType());
         voteRepository.save(vote);
@@ -54,7 +54,7 @@ public class VoteServiceImpl implements VoteService {
     @Transactional(readOnly = true)
     public Integer getVoteCount(Long boardId) {
         Optional<VoteParticipants> participants = voteParticipantsRepository.findByBoardId(boardId);
-        if (participants.isEmpty()) {
+        if (participants.isPresent()) {
             return countVoteByBoardId(boardId);
         }else{
             return participants.get().getParticipantsCount();
@@ -66,7 +66,7 @@ public class VoteServiceImpl implements VoteService {
     public Vote getByBoardAndStudent(Long boardId, String email) {
         Board board = boardService.getById(boardId);
         Student student = studentService.getByEmail(email);
-        return voteRepository.findVoteByBoardAndStudent(board,student).orElseThrow(()-> new CustomApiException(ResErrorCode.NOT_FOUND,"투표 내역이 존재하지 않습니다."));
+        return voteRepository.findVoteByBoardAndStudent(board,student).orElseThrow(()-> new CustomWebSocketException(ResErrorCode.NOT_FOUND, "투표 내역이 존재하지 않습니다."));
     }
 
     private Integer countVoteByBoardId(Long boardId){

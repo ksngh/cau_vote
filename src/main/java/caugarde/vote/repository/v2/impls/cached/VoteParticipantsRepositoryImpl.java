@@ -15,36 +15,31 @@ public class VoteParticipantsRepositoryImpl implements VoteParticipantsRepositor
 
     private final RedisTemplate<String, Object> redisTemplate;
     private final VoteParticipantsRedisRepository voteParticipantsRedisRepository;
-    private final static String voteCacheKey = "voteParticipants:";
 
     @Override
     public Optional<VoteParticipants> findByBoardId(Long boardId) {
-        return voteParticipantsRedisRepository.findById(getKey(boardId))
-                .or(() -> Optional.of(new VoteParticipants(boardId, 0)));
+        return voteParticipantsRedisRepository.findById(String.valueOf(boardId));
     }
 
     @Override
-    public void save(Long boardId, VoteParticipants voteParticipants) {
+    public void create(Long boardId) {
+        VoteParticipants voteParticipants = VoteParticipants.create(boardId);
         voteParticipantsRedisRepository.save(voteParticipants);
     }
 
     @Override
     public void delete(Long boardId) {
-        voteParticipantsRedisRepository.deleteById(getKey(boardId));
+        voteParticipantsRedisRepository.deleteById(String.valueOf(boardId));
     }
 
     @Override
     public Long incrementVoteCount(Long boardId) {
-        return redisTemplate.opsForValue().increment(getKey(boardId));
+        return redisTemplate.opsForValue().increment(String.valueOf(boardId));
     }
 
     @Override
     public void decrementVoteCount(Long boardId) {
-        redisTemplate.opsForValue().decrement(getKey(boardId));
-    }
-
-    private String getKey(Long boardId){
-        return voteCacheKey + boardId;
+        redisTemplate.opsForValue().decrement(String.valueOf(boardId));
     }
 
 }

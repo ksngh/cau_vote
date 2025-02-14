@@ -1,4 +1,4 @@
-package caugarde.vote.common.exception;
+package caugarde.vote.common.exception.api;
 
 
 import java.util.List;

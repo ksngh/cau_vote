@@ -29,9 +29,8 @@ public class VoteMessageController {
                      @Payload @Valid VoteCreate.Request request,
                      Principal principal) {
         String email = principal.getName();
-        voteService.create(request, email);
-
-        sendVoteResult(email);
+        voteService.create(boardId,request, email);
+        messagingTemplate.convertAndSendToUser(email, "/user/topic/vote/result", VoteResult.SuccessMessage.vote());
         sendVoteCountUpdate(boardId);
     }
 
@@ -41,35 +40,12 @@ public class VoteMessageController {
         String email = principal.getName();
         Vote vote = voteService.getByBoardAndStudent(boardId, email);
         voteService.delete(vote);
-
-        sendCancelResult(email);
+        messagingTemplate.convertAndSendToUser(email, "/user/topic/vote/result", VoteResult.SuccessMessage.cancel());
         sendVoteCountUpdate(boardId);
     }
 
-
-    private void sendVoteResult(String email) {
-        messagingTemplate.convertAndSendToUser(email, "/user/topic/vote/result", getVoteResultMessage());
-    }
-
-    private void sendCancelResult(String email) {
-        messagingTemplate.convertAndSendToUser(email, "/user/topic/vote/result", getCancelResultMessage());
-    }
-
     private void sendVoteCountUpdate(Long boardId) {
-        messagingTemplate.convertAndSend("/topic/vote/count", getVoteCount(boardId));
+        messagingTemplate.convertAndSend("/topic/vote/count", VoteResult.Count.of(voteService.getVoteCount(boardId)));
     }
-
-    private VoteResult.SuccessMessage getVoteResultMessage() {
-        return VoteResult.SuccessMessage.vote();
-    }
-
-    private VoteResult.SuccessMessage getCancelResultMessage() {
-        return VoteResult.SuccessMessage.cancel();
-    }
-
-    private VoteResult.Count getVoteCount(Long boardId) {
-        return VoteResult.Count.of(voteService.getVoteCount(boardId));
-    }
-
 
 }

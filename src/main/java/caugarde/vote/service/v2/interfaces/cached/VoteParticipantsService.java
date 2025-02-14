@@ -6,7 +6,7 @@ public interface VoteParticipantsService {
 
     void delete(Long boardId);
 
-    void create(Long boardId,VoteParticipants voteParticipants);
+    void create(Long boardId);
 
     void vote(Long boardId,int limitPeople);
 

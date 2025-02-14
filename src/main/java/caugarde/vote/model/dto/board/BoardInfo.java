@@ -10,7 +10,6 @@ import java.time.LocalDateTime;
 
 public class BoardInfo {
 
-    @NoArgsConstructor(access = AccessLevel.PROTECTED)
     @Getter
     @AllArgsConstructor
     public static class Response {

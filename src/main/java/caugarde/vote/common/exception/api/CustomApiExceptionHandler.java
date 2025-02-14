@@ -1,4 +1,4 @@
-package caugarde.vote.common.exception;
+package caugarde.vote.common.exception.api;
 
 import caugarde.vote.common.response.CustomApiResponse;
 import caugarde.vote.common.response.ResCode;

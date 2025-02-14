@@ -1,6 +1,6 @@
 package caugarde.vote.common.filter;
 
-import caugarde.vote.common.exception.CustomApiException;
+import caugarde.vote.common.exception.api.CustomApiException;
 import caugarde.vote.common.response.ResErrorCode;
 import caugarde.vote.common.util.CookieUtil;
 import caugarde.vote.common.util.JwtUtil;

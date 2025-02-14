@@ -4,6 +4,7 @@ import caugarde.vote.common.response.CustomApiResponse;
 import caugarde.vote.common.response.ResCode;
 import caugarde.vote.common.response.ResSuccessCode;
 import caugarde.vote.model.dto.student.StudentUpdate;
+import caugarde.vote.model.entity.Student;
 import caugarde.vote.service.v2.interfaces.StudentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;

@@ -1,12 +1,15 @@
 package caugarde.vote.service.v2.impls.cached;
 
-import caugarde.vote.common.exception.CustomApiException;
+import caugarde.vote.common.exception.api.CustomApiException;
+import caugarde.vote.common.exception.websocket.CustomWebSocketException;
 import caugarde.vote.common.response.ResErrorCode;
+import caugarde.vote.model.entity.Vote;
 import caugarde.vote.model.entity.cached.VoteParticipants;
 import caugarde.vote.repository.v2.interfaces.cached.VoteParticipantsRepository;
 import caugarde.vote.service.v2.interfaces.cached.VoteParticipantsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -24,8 +27,8 @@ public class VoteParticipantsServiceImpl implements VoteParticipantsService {
     }
 
     @Override
-    public void create(Long boardId, VoteParticipants voteParticipants) {
-        voteParticipantsRepository.save(boardId, voteParticipants);
+    public void create(Long boardId) {
+        voteParticipantsRepository.create(boardId);
     }
 
     @Override
@@ -33,7 +36,7 @@ public class VoteParticipantsServiceImpl implements VoteParticipantsService {
         Long count = voteParticipantsRepository.incrementVoteCount(boardId);
         if (limitPeople < count){
             voteParticipantsRepository.decrementVoteCount(boardId);
-            throw new CustomApiException(ResErrorCode.SERVICE_UNAVAILABLE,"제한 인원을 초과하였습니다.");
+            throw new CustomWebSocketException(ResErrorCode.SERVICE_UNAVAILABLE,"투표 인원을 초과하였습니다.");
         }
     }
 
@@ -45,7 +48,7 @@ public class VoteParticipantsServiceImpl implements VoteParticipantsService {
 
     private void validateMinCount(Long boardId) {
         if (0 == getByBoardId(boardId).getParticipantsCount()){
-            throw new CustomApiException(ResErrorCode.SERVICE_UNAVAILABLE,"투표 내역이 존재하지 않습니다.");
+            throw new CustomWebSocketException(ResErrorCode.SERVICE_UNAVAILABLE,"투표 내역이 존재하지 않습니다.");
         }
     }
 

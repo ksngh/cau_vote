@@ -8,7 +8,7 @@ public interface VoteParticipantsRepository {
 
     Optional<VoteParticipants> findByBoardId(Long boardId);
 
-    void save(Long boardId,VoteParticipants voteParticipants);
+    void create(Long boardId);
 
     void delete(Long boardId);
 

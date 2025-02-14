@@ -1,4 +1,3 @@
-openWebSocket()
 
 let socket;  // SockJS 객체
 let stompClient;  // Stomp 클라이언트 객체
@@ -7,7 +6,7 @@ let inactivityTimer; // 타이머 변수
 
 // WebSocket 연결 설정 함수
 function openWebSocket() {
-    if (!stompClient || !stompClient.connected) {
+    if (typeof stompClient === "undefined" || !stompClient || !stompClient.connected) {
         socket = new SockJS("/ws");
         stompClient = Stomp.over(socket);
         stompClient.debug = null; // 로그 비활성화
@@ -75,9 +74,9 @@ function resetInactivityTimer() {
 
 // 투표 요청 전송 함수
 function sendVote(boardId) {
-    const selectedCategory = document.querySelector('input[name="category"]:checked').value;
+    const selectedFencingType = document.querySelector('input[name="fencing-type"]:checked').value;
     const attendanceData = {
-        category: selectedCategory  // 선택된 카테고리 정보 추가
+        fencingType: selectedFencingType  // 선택된 카테고리 정보 추가
     };
 
     if (stompClient && stompClient.connected) {

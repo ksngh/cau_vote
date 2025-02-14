@@ -21,10 +21,11 @@ window.onclick = function (event) {
 }
 
 function checkUserStatus() {
-    fetch('/api/student')
+    fetch('/v2/api/auth')
         .then(response => response.json())
-        .then(data => {
-            if (data.name) {
+        .then(authInfo => {
+            const roles = new Set(authInfo.data.role)
+            if (roles) {
                 // 로그인한 경우 햄버거 버튼 표시
                 const nav = document.getElementById('nav-header');
 
@@ -41,14 +42,14 @@ function checkUserStatus() {
                     event.preventDefault(); // 링크의 기본 동작 방지
                     const menu = document.getElementById('menu');
 
-                    if (data.role === "ROLE_USER") {
+                    if (roles.has("USER")) {
                         menu.innerHTML = ` 
                             <div class="menu-header">
                                 <button class="close-menu" id="close-menu">&times;</button>
                             </div>
                             <li><a href="/mypage">나의 투표 현황</a></li>
                             <li><a href="/logout">로그아웃</a></li>`
-                    } else if (data.role === "ROLE_ADMIN") {
+                    } else if (roles.has("ADMIN")) {
                         menu.innerHTML = `
                             <div class="menu-header">
                                 <button class="close-menu" id="close-menu">&times;</button>
