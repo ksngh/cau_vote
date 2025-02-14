@@ -10,7 +10,6 @@ public class StudentUpdate {
     @Getter
     public static class Request{
         private String universityId;
-        private String email;
         private String name;
         private String majority;
         private String memberType;

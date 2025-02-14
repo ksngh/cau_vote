@@ -37,6 +37,7 @@ public class GearRepositoryImpl implements GearRepository {
                         qGear.id,
                         qGear.num,
                         qGear.fencingType,
+                        qGear.status,
                         qGear.gearType
                 ))
                 .from(qGear)

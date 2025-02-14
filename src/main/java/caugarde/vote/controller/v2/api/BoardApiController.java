@@ -26,8 +26,9 @@ public class BoardApiController {
     private final BoardService boardService;
 
     @PostMapping("/board")
-    public CustomApiResponse<Void> createBoard(@RequestBody @Valid BoardCreate.Request request) {
-        boardService.create(request);
+    public CustomApiResponse<Void> createBoard(@RequestBody @Valid BoardCreate.Request request,
+                                               @AuthenticationPrincipal CustomOAuthUser user) {
+        boardService.create(request,user);
         return CustomApiResponse.OK(ResSuccessCode.CREATED);
     }
 

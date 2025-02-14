@@ -1,3 +1,5 @@
+openWebSocket()
+
 let socket;  // SockJS 객체
 let stompClient;  // Stomp 클라이언트 객체
 const inactivityTimeout = 600000; // 10분 (600,000 ms)

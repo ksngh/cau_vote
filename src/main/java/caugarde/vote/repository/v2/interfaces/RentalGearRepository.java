@@ -14,4 +14,6 @@ public interface RentalGearRepository {
     Optional<RentalGear> findByStudentAndGear(Student student, Gear gear);
 
     List<RentalGear> findOverDueRentals();
+
+    Optional<RentalGear> findByGear(Gear gear);
 }

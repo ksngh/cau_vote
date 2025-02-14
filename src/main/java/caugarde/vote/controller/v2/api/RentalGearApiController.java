@@ -2,10 +2,12 @@ package caugarde.vote.controller.v2.api;
 
 import caugarde.vote.common.response.CustomApiResponse;
 import caugarde.vote.common.response.ResSuccessCode;
+import caugarde.vote.model.dto.rentalgear.RentalGearInfo;
 import caugarde.vote.model.dto.student.CustomOAuthUser;
 import caugarde.vote.service.v2.interfaces.RentalGearService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -27,6 +29,12 @@ public class RentalGearApiController {
                                                     @AuthenticationPrincipal CustomOAuthUser user) {
         rentalGearService.returnGear(gearId, user.getName());
         return CustomApiResponse.OK(ResSuccessCode.UPDATED);
+    }
+
+    @GetMapping("/gear/{gearId}/rental")
+    public CustomApiResponse<RentalGearInfo.Response> getRentalGear(@PathVariable Long gearId) {
+        RentalGearInfo.Response response = RentalGearInfo.Response.from(rentalGearService.getByGearId(gearId));
+        return CustomApiResponse.OK(ResSuccessCode.READ, response);
     }
 
 }

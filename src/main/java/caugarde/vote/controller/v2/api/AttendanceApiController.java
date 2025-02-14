@@ -17,7 +17,6 @@ import java.util.List;
 @RequestMapping("/v2/api")
 public class AttendanceApiController {
 
-    private final AttendanceService attendanceService;
     private final StudentAttendanceCountService studentAttendanceCountService;
 
     @GetMapping("/attendance/most-active")

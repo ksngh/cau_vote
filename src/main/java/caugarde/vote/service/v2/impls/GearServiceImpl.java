@@ -46,5 +46,4 @@ public class GearServiceImpl implements GearService {
         gearRepository.deleteById(id);
     }
 
-
 }

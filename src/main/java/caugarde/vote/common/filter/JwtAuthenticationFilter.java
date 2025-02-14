@@ -31,11 +31,14 @@ import java.util.Map;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private static final List<String> EXCLUDED_PATHS =
-            List.of("/",
+            List.of(
+                    "/ws",
                     "/login",
                     "/static",
                     "/ranking",
-                    "/css","/js","/images");
+                    "/css","/js","/images",
+//                    "/v2/api/gear",
+                    "/v2/api/student");
     private final StudentService studentService;
     private final JwtUtil jwtUtil;
     private final CookieUtil cookieUtil;
@@ -58,7 +61,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             validateAuthorizationCookie(token);
             validateToken(token);
             String email = jwtUtil.getEmail(token);
-            authenticateUser(email, request);
+            authenticateUser(email);
             filterChain.doFilter(request, response);
         } catch (CustomApiException e) {
             handleException(response, e);
@@ -78,7 +81,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
     }
 
-    private void authenticateUser(String email, HttpServletRequest request) {
+    private void authenticateUser(String email) {
         if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             Student student = studentService.getByEmail(email);
             validatePending(student);

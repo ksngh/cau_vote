@@ -32,7 +32,7 @@ public class BoardRepositoryImpl implements BoardRepository {
 
     @Override
     public Optional<Board> findById(Long id) {
-        return boardJpaRepository.findById(id);
+        return boardJpaRepository.findByDeletedAtIsNullAndId(id);
     }
 
     @Override

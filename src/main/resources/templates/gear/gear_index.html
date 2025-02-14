@@ -7,101 +7,141 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            margin: 50px;
+            padding: 20px;
+            margin: 0;
         }
-        .tabs {
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        /* 📌 반응형 적용 */
+        .gear_menu {
             display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+            padding: 10px;
+            max-width: 100%;
+            overflow-x: auto; /* 📌 모바일에서 가로 스크롤 가능 */
+            white-space: nowrap; /* 📌 줄 바꿈 방지 */
+            scrollbar-width: thin; /* 📌 스크롤바 최소화 (Firefox) */
+        }
+
+        select, button {
+            padding: 10px;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            background-color: #007bff;
+            color: white;
             cursor: pointer;
-            border-bottom: 2px solid #ddd;
-            margin-bottom: 10px;
-        }
-        .tab {
-            padding: 10px 20px;
             border: none;
-            background: none;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        #result {
+            margin-top: 20px;
             font-size: 16px;
-        }
-        .tab.active {
             font-weight: bold;
-            border-bottom: 3px solid #007bff;
+            text-align: center;
         }
-        .content {
-            display: none;
-        }
-        .content.active {
-            display: block;
+
+        /* 📌 모바일 반응형 스타일 */
+        @media (max-width: 768px) {
+            .gear_menu {
+                flex-direction: row;
+                overflow-x: auto; /* 📌 가로 스크롤 가능하도록 설정 */
+                padding-bottom: 10px;
+            }
+
+            select, button {
+                font-size: 12px;
+                padding: 8px;
+            }
         }
     </style>
 </head>
+
 <body>
 <th:block th:replace="~{common/header::headerLayout}"></th:block>
+<h2>펜싱 장비 검색</h2>
 
+<div class="gear_menu">
+    <label for="fencingType">펜싱 종목:</label>
+    <select id="fencingType">
+        <option value="SABRE">사브르</option>
+        <option value="FOIL">플러레</option>
+        <option value="COMMON">공통</option>
+    </select>
 
-<div class="tabs">
-    <button class="tab" data-tab="account">Account</button>
-    <button class="tab" data-tab="password">Password</button>
+    <label for="gearType">장비 종류:</label>
+    <select id="gearType">
+    </select>
+
+    <button id="searchBtn">검색</button>
 </div>
 
-<div id="account" class="content">
-    <h2>Account Settings</h2>
-    <p>Make changes to your account here.</p>
-    <label for="name">Name:</label>
-    <input type="text" id="name" value="Pedro Duarte">
-    <br><br>
-    <label for="username">Username:</label>
-    <input type="text" id="username" value="@peduarte">
-    <br><br>
-    <button>Save changes</button>
-</div>
-
-<div id="password" class="content">
-    <h2>Change Password</h2>
-    <p>Change your password here.</p>
-    <label for="current">Current password:</label>
-    <input type="password" id="current">
-    <br><br>
-    <label for="new">New password:</label>
-    <input type="password" id="new">
-    <br><br>
-    <button>Save password</button>
-</div>
+<div id="result"></div>
 
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const tabs = document.querySelectorAll(".tab");
-        const contents = document.querySelectorAll(".content");
+    // 📌 펜싱 종목별 선택 가능한 Gear Type 목록
+    const gearTypeOptions = {
+        "SABRE": ["MASK", "SWORD", "GLOVE","METAL"],
+        "FOIL": ["MASK", "SWORD", "GLOVE", "METAL"],
+        "COMMON": ["UNIFORM_TOP", "UNIFORM_BOTTOM","BODY_WIRE", "MASK_WIRE", "OTHERS"]
+    };
 
-        function activateTab(tabName, pushState = true) {
-            tabs.forEach(tab => tab.classList.remove("active"));
-            contents.forEach(content => content.classList.remove("active"));
+    document.getElementById("fencingType").addEventListener("change", function() {
+        const fencingType = this.value;
+        const gearTypeSelect = document.getElementById("gearType");
 
-            document.querySelector(`.tab[data-tab="${tabName}"]`).classList.add("active");
-            document.getElementById(tabName).classList.add("active");
+        // 기존 옵션 초기화
+        gearTypeSelect.innerHTML = '<option value=""></option>';
 
-            if (pushState) {
-                history.pushState({ tab: tabName }, "", `/${tabName}`);
-            }
-        }
-
-        tabs.forEach(tab => {
-            tab.addEventListener("click", function () {
-                const tabName = this.getAttribute("data-tab");
-                activateTab(tabName);
+        // 선택한 종목에 맞는 Gear Type 추가
+        if (fencingType && gearTypeOptions[fencingType]) {
+            gearTypeOptions[fencingType].forEach(gear => {
+                const option = document.createElement("option");
+                option.value = gear;
+                option.textContent = gear;
+                gearTypeSelect.appendChild(option);
             });
-        });
+        }
+    });
 
-        window.addEventListener("popstate", function (event) {
-            if (event.state && event.state.tab) {
-                activateTab(event.state.tab, false);
-            }
-        });
+    document.getElementById("searchBtn").addEventListener("click", function() {
+        const fencingType = document.getElementById("fencingType").value;
+        const gearType = document.getElementById("gearType").value;
 
-        const initialTab = location.pathname.replace("/", "") || "account";
-        activateTab(initialTab, false);
+        let apiUrl = "/api/v2/gear?";
+        if (fencingType) apiUrl += `fencingType=${fencingType}&`;
+        if (gearType) apiUrl += `gearType=${gearType}&`;
+        apiUrl = apiUrl.slice(0, -1); // 마지막 & 제거
+
+        document.getElementById("result").innerText = `요청 URL: ${apiUrl}`;
+
+        // 실제 API 요청
+        fetch(apiUrl)
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("result").innerText = `응답 데이터: ${JSON.stringify(data, null, 2)}`;
+            })
+            .catch(error => {
+                document.getElementById("result").innerText = "에러 발생: " + error;
+            });
     });
 </script>
 
 </body>
 </html>
+
 
 

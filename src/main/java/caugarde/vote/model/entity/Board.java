@@ -59,8 +59,9 @@ public class Board {
     @Column(name = "DELETED_BY")
     private String deletedBy;
 
-    private Board(BoardCreate.Request request) {
+    private Board(BoardCreate.Request request,Student student) {
         this.title = request.getTitle();
+        this.createdBy = student;
         this.content = request.getContent();
         this.limitPeople = request.getLimitPeople();
         this.startDate = request.getStartDate();
@@ -69,8 +70,8 @@ public class Board {
         this.status = BoardStatus.PENDING;
     }
 
-    public static Board from(BoardCreate.Request request) {
-        return new Board(request);
+    public static Board create(BoardCreate.Request request,Student student) {
+        return new Board(request,student);
     }
 
     public void update(BoardUpdate.Request request,String email){

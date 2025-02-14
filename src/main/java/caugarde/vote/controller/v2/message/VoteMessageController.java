@@ -29,8 +29,7 @@ public class VoteMessageController {
                      @Payload @Valid VoteCreate.Request request,
                      Principal principal) {
         String email = principal.getName();
-        Student student = studentService.getByEmail(email);
-        voteService.create(request, student.getEmail());
+        voteService.create(request, email);
 
         sendVoteResult(email);
         sendVoteCountUpdate(boardId);

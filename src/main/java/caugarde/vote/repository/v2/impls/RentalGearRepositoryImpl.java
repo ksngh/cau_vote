@@ -29,7 +29,7 @@ public class RentalGearRepositoryImpl implements RentalGearRepository {
 
     @Override
     public Optional<RentalGear> findByStudentAndGear(Student student, Gear gear) {
-        return rentalGearJpaRepository.findByGearAndStudent(gear,student);
+        return rentalGearJpaRepository.findByGearAndStudentAndReturnedAtIsNull(gear,student);
     }
 
     @Override
@@ -41,6 +41,11 @@ public class RentalGearRepositoryImpl implements RentalGearRepository {
                         qRentalGear.dueDate.before(LocalDateTime.now())
                 )
                 .fetch();
+    }
+
+    @Override
+    public Optional<RentalGear> findByGear(Gear gear) {
+        return rentalGearJpaRepository.findByGearAndReturnedAtIsNull(gear);
     }
 
 }

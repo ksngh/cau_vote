@@ -64,4 +64,10 @@ public class RentalGearServiceImpl implements RentalGearService {
         overDueRentals.forEach(RentalGear::imposeLateFee);
     }
 
+    @Override
+    public RentalGear getByGearId(Long gearId) {
+        Gear gear = gearService.getById(gearId);
+        return rentalGearRepository.findByGear(gear).orElse(null);
+    }
+
 }
