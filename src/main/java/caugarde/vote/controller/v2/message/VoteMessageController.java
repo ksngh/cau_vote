@@ -2,7 +2,6 @@ package caugarde.vote.controller.v2.message;
 
 import caugarde.vote.model.dto.vote.VoteCreate;
 import caugarde.vote.model.dto.vote.VoteResult;
-import caugarde.vote.model.entity.Student;
 import caugarde.vote.model.entity.Vote;
 import caugarde.vote.service.v2.interfaces.StudentService;
 import caugarde.vote.service.v2.interfaces.VoteService;
@@ -29,7 +28,7 @@ public class VoteMessageController {
                      @Payload @Valid VoteCreate.Request request,
                      Principal principal) {
         String email = principal.getName();
-        voteService.create(boardId,request, email);
+        voteService.create(boardId, request, email);
         messagingTemplate.convertAndSendToUser(email, "/user/topic/vote/result", VoteResult.SuccessMessage.vote());
         sendVoteCountUpdate(boardId);
     }

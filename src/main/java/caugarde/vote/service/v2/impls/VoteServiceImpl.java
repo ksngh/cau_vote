@@ -54,7 +54,7 @@ public class VoteServiceImpl implements VoteService {
     @Transactional(readOnly = true)
     public Integer getVoteCount(Long boardId) {
         Optional<VoteParticipants> participants = voteParticipantsRepository.findByBoardId(boardId);
-        if (participants.isPresent()) {
+        if (participants.isEmpty()) {
             return countVoteByBoardId(boardId);
         }else{
             return participants.get().getParticipantsCount();
