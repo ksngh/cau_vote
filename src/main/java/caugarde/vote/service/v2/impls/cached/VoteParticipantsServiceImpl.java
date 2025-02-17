@@ -3,9 +3,12 @@ package caugarde.vote.service.v2.impls.cached;
 import caugarde.vote.common.exception.api.CustomApiException;
 import caugarde.vote.common.exception.websocket.CustomWebSocketException;
 import caugarde.vote.common.response.ResErrorCode;
+import caugarde.vote.model.entity.Board;
 import caugarde.vote.model.entity.Vote;
 import caugarde.vote.model.entity.cached.VoteParticipants;
+import caugarde.vote.model.enums.BoardStatus;
 import caugarde.vote.repository.v2.interfaces.cached.VoteParticipantsRepository;
+import caugarde.vote.service.v2.interfaces.BoardService;
 import caugarde.vote.service.v2.interfaces.cached.VoteParticipantsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -32,9 +35,10 @@ public class VoteParticipantsServiceImpl implements VoteParticipantsService {
     }
 
     @Override
-    public void vote(Long boardId,int limitPeople) {
+    public void vote(Board board) {
+        Long boardId = board.getId();
         Long count = voteParticipantsRepository.incrementVoteCount(boardId);
-        if (limitPeople < count){
+        if (board.getLimitPeople() < count){
             voteParticipantsRepository.decrementVoteCount(boardId);
             throw new CustomWebSocketException(ResErrorCode.SERVICE_UNAVAILABLE,"투표 인원을 초과하였습니다.");
         }
@@ -51,5 +55,7 @@ public class VoteParticipantsServiceImpl implements VoteParticipantsService {
             throw new CustomWebSocketException(ResErrorCode.SERVICE_UNAVAILABLE,"투표 내역이 존재하지 않습니다.");
         }
     }
+
+
 
 }

@@ -104,6 +104,17 @@ function voteCard(data) {
                     <p id="attendance-number">${attendanceNum}</p>
                     <div class="content" id="card-content">
                         <p class="vote">${data.content}</p>
+                            <div id="category-selection" style="${hideButtons ? 'display:none;' : ''} margin-bottom:15px" onclick="event.stopPropagation();">
+                                <label style="margin: 5px">
+                                    <input type="radio" name="fencing-type" value="SABRE" checked>사브르
+                                </label>
+                                <label style="margin: 5px">
+                                    <input type="radio" name="fencing-type" value="FLUERET">플러레
+                                </label>
+                                <label style="margin: 5px">
+                                    <input type="radio" name="fencing-type" value="EPEE">에페
+                                </label>
+                            </div>
                         <button onclick=sendVote("${data.id}") style="${hideButtons ? 'display:none;' : ''}">참석</button>
                         <button onclick=cancel("${data.id}") style="${hideButtons ? 'display:none;' : ''}">취소</button>
                         <button onclick=openVoteModal("${data.id}") style="${hidePeople ? 'display:none;' : ''}">참여 인원</button>
@@ -120,13 +131,13 @@ function voteCard(data) {
                         <p class="vote">${data.content}</p>
                             <div id="category-selection" style="${hideButtons ? 'display:none;' : ''} margin-bottom:15px" onclick="event.stopPropagation();">
                                 <label style="margin: 5px">
-                                    <input type="radio" name="category" value="SABRE" checked>사브르
+                                    <input type="radio" name="fencing-type" value="SABRE" checked>사브르
                                 </label>
                                 <label style="margin: 5px">
-                                    <input type="radio" name="category" value="FLUERET">플러레
+                                    <input type="radio" name="fencing-type" value="FLUERET">플러레
                                 </label>
                                 <label style="margin: 5px">
-                                    <input type="radio" name="category" value="EPEE">에페
+                                    <input type="radio" name="fencing-type" value="EPEE">에페
                                 </label>
                             </div>
                         <button onclick=sendVote("${data.id}") style="${hideButtons ? 'display:none;' : ''}">참석</button>
@@ -167,7 +178,7 @@ function formatDate(date) {
 }
 
 function updateBoard(id) {
-    window.location.href = `/admin/posting/${id}`;
+    window.location.href = `/posting/${id}`;
 }
 
 async function deleteBoard(boardId) {

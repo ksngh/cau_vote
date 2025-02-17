@@ -54,7 +54,7 @@ function checkUserStatus() {
                             <div class="menu-header">
                                 <button class="close-menu" id="close-menu">&times;</button>
                             </div>  
-                            <li><a href="/admin/posting">투표 생성하기</a></li>
+                            <li><a href="/posting">투표 생성하기</a></li>
                             <li><a href="/logout">로그아웃</a></li>`
                     }
                     const menuContainer = document.querySelector('.menu');

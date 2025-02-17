@@ -29,7 +29,7 @@ public class VoteRepositoryImpl implements VoteRepository {
 
     @Override
     public Optional<Vote> findVoteByBoardAndStudent(Board board, Student student) {
-        return voteJpaRepository.findByBoardAndStudent(board, student);
+        return voteJpaRepository.findByBoardAndStudentAndDeletedAtIsNull(board, student);
     }
 
     @Override

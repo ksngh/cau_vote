@@ -1,6 +1,6 @@
 package caugarde.vote.service.v2.interfaces.cached;
 
-import caugarde.vote.model.entity.cached.VoteParticipants;
+import caugarde.vote.model.entity.Board;
 
 public interface VoteParticipantsService {
 
@@ -8,7 +8,7 @@ public interface VoteParticipantsService {
 
     void create(Long boardId);
 
-    void vote(Long boardId,int limitPeople);
+    void vote(Board board);
 
     void cancel(Long boardId);
 }

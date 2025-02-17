@@ -12,7 +12,7 @@ public interface VoteJpaRepository extends JpaRepository<Vote, Long> {
 
     long countVoteByBoard(Board board);
 
-    Optional<Vote> findByBoardAndStudent(Board board, Student student);
+    Optional<Vote> findByBoardAndStudentAndDeletedAtIsNull(Board board, Student student);
 
     List<Vote> findByBoardOrderByCreatedAtAsc(Board board);
 }

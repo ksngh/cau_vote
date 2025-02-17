@@ -10,6 +10,7 @@ import caugarde.vote.model.entity.Board;
 import caugarde.vote.model.entity.Student;
 import caugarde.vote.model.entity.Vote;
 import caugarde.vote.model.entity.cached.VoteParticipants;
+import caugarde.vote.model.enums.BoardStatus;
 import caugarde.vote.repository.v2.interfaces.VoteRepository;
 import caugarde.vote.repository.v2.interfaces.cached.VoteParticipantsRepository;
 import caugarde.vote.service.v2.interfaces.BoardService;
@@ -38,7 +39,9 @@ public class VoteServiceImpl implements VoteService {
     public void create(Long boardId,VoteCreate.Request request, String email) {
         Student student = studentService.getByEmail(email);
         Board board = boardService.getById(boardId);
-        voteParticipantsService.vote(board.getId(), board.getLimitPeople());
+        validateExpiredBoard(board);
+        validateExistingVote(board, student);
+        voteParticipantsService.vote(board);
         Vote vote = Vote.of(student, board, request.getFencingType());
         voteRepository.save(vote);
     }
@@ -80,6 +83,18 @@ public class VoteServiceImpl implements VoteService {
         vote.softDelete();
         voteParticipantsService.cancel(vote.getBoard().getId());
         voteRepository.save(vote);
+    }
+
+    private void validateExpiredBoard(Board board) {
+        if (board.getStatus().equals(BoardStatus.INACTIVE)){
+            throw new CustomWebSocketException(ResErrorCode.BAD_REQUEST,"기한이 지난 투표입니다.");
+        }
+    }
+
+    private void validateExistingVote(Board board, Student student){
+        if (voteRepository.findVoteByBoardAndStudent(board,student).isPresent()){
+            throw new CustomWebSocketException(ResErrorCode.BAD_REQUEST,"이미 참여하신 투표입니다.");
+        }
     }
 
 }

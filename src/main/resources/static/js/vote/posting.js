@@ -1,3 +1,10 @@
+function formatLocalDateTime(dateString) {
+    const date = new Date(dateString);
+    date.setMinutes(date.getMinutes() - date.getTimezoneOffset()); // 로컬 시간대 적용
+    return date.toISOString().slice(0, 19); // "YYYY-MM-DDTHH:mm:ss" 포맷
+}
+
+
 document.addEventListener("DOMContentLoaded", function() {
     function makeVote() {
 
@@ -6,7 +13,7 @@ document.addEventListener("DOMContentLoaded", function() {
         const content = document.getElementById('content').value;
         const limitPeople = parseInt(document.getElementById('limitPeople').value);
         const startDateInput = document.getElementById('startDate').value;
-        const submitDateInput = document.getElementById('submitDate').value;
+        const endDateInput = document.getElementById('endDate').value;
 
         // 필드가 비어 있는지 확인
         if (!title) {
@@ -29,17 +36,21 @@ document.addEventListener("DOMContentLoaded", function() {
             document.getElementById('startDate').focus();
             return;
         }
-        if (!submitDateInput) {
+        if (!endDateInput) {
             alert('마감 날짜를 입력해 주세요.');
-            document.getElementById('submitDate').focus();
+            document.getElementById('endDate').focus();
             return;
         }
 
-// 초를 포함한 올바른 형식으로 변환
-        const startDate = new Date(startDateInput + ":00").toISOString();
-        const submitDate = new Date(submitDateInput + ":00").toISOString();
+        const startDate = formatLocalDateTime(startDateInput);
+        const endDate = formatLocalDateTime(endDateInput);
 
-        if (startDate >= submitDate) {
+// 초를 포함한 올바른 형식으로 변환
+//         const startDate = new Date(startDateInput + ":00").toISOString();
+//         const endDate = new Date(endDateInput + ":00").toISOString();
+
+        console.log(startDate)
+        if (startDate >= endDate) {
             alert('시작 날짜는 마감 날짜보다 빨라야 합니다.');
             document.getElementById('startDate').focus();
             return;
@@ -51,10 +62,10 @@ document.addEventListener("DOMContentLoaded", function() {
             content: content,
             limitPeople: limitPeople,
             startDate: startDate,
-            submitDate: submitDate
+            endDate: endDate
         };
 
-        fetch('/api/vote', {
+        fetch('/v2/api/board', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -70,7 +81,7 @@ document.addEventListener("DOMContentLoaded", function() {
             })
             .then(result => {
                 alert('투표가 생성되었습니다.');
-                window.location.href = "../../../..";
+                window.location.href = "/";
             })
             .catch(error => {
                 console.error('Error:', error);

@@ -24,7 +24,8 @@ function onConnected(frame) {
     stompClient.subscribe(`/topic/vote/count`, onVoteCountUpdated);
 
     stompClient.subscribe('/user/topic/errors', (errorMessage) => {
-        const errorContent = errorMessage.body;
+        const response = JSON.parse(errorMessage.body);
+        const errorContent = response.message;
         alert(errorContent); // 사용자에게 에러 메시지 표시
     });
 }
@@ -38,18 +39,19 @@ function onError(error) {
 
 // 투표 결과 메시지를 처리하는 함수
 function onVoteResultReceived(messageDTO) {
-    alert(messageDTO.body);  // 결과 메시지를 사용자에게 알림
+    const data = JSON.parse(messageDTO.body);
+    alert(data.message);  // 결과 메시지를 사용자에게 알림
 }
 
 // 투표 수 업데이트 메시지를 처리하는 함수
 function onVoteCountUpdated(numberDTO) {
     const data = JSON.parse(numberDTO.body);
-    const card = document.querySelector(`[data-id="${data.votePk}"]`);
+    const card = document.querySelector(`[data-id="${data.boardId}"]`);
     // card 요소에서 id가 "attendance-number"인 요소를 찾아 텍스트 업데이트
     if (card) {
         const attendanceElement = card.querySelector("#attendance-number");
         if (attendanceElement) {
-            attendanceElement.innerText = `참여 인원 : ${data.number}/${data.limitPeople}`;
+            attendanceElement.innerText = `참여 인원 : ${data.count}/${data.limitPeople}`;
         }
     }
 }

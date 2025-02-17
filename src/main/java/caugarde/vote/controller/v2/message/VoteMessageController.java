@@ -2,8 +2,9 @@ package caugarde.vote.controller.v2.message;
 
 import caugarde.vote.model.dto.vote.VoteCreate;
 import caugarde.vote.model.dto.vote.VoteResult;
+import caugarde.vote.model.entity.Board;
 import caugarde.vote.model.entity.Vote;
-import caugarde.vote.service.v2.interfaces.StudentService;
+import caugarde.vote.service.v2.interfaces.BoardService;
 import caugarde.vote.service.v2.interfaces.VoteService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +21,7 @@ import java.security.Principal;
 public class VoteMessageController {
 
     private final SimpMessagingTemplate messagingTemplate;
-    private final StudentService studentService;
+    private final BoardService boardService;
     private final VoteService voteService;
 
     @MessageMapping("/board/{boardId}/vote")
@@ -29,7 +30,7 @@ public class VoteMessageController {
                      Principal principal) {
         String email = principal.getName();
         voteService.create(boardId, request, email);
-        messagingTemplate.convertAndSendToUser(email, "/user/topic/vote/result", VoteResult.SuccessMessage.vote());
+        messagingTemplate.convertAndSendToUser(email, "/topic/vote/result", VoteResult.SuccessMessage.vote());
         sendVoteCountUpdate(boardId);
     }
 
@@ -39,12 +40,13 @@ public class VoteMessageController {
         String email = principal.getName();
         Vote vote = voteService.getByBoardAndStudent(boardId, email);
         voteService.delete(vote);
-        messagingTemplate.convertAndSendToUser(email, "/user/topic/vote/result", VoteResult.SuccessMessage.cancel());
+        messagingTemplate.convertAndSendToUser(email, "/topic/vote/result", VoteResult.SuccessMessage.cancel());
         sendVoteCountUpdate(boardId);
     }
 
     private void sendVoteCountUpdate(Long boardId) {
-        messagingTemplate.convertAndSend("/topic/vote/count", VoteResult.Count.of(voteService.getVoteCount(boardId)));
+        Board board = boardService.getById(boardId);
+        messagingTemplate.convertAndSend("/topic/vote/count", VoteResult.Count.of(boardId, voteService.getVoteCount(boardId), board.getLimitPeople()));
     }
 
 }
