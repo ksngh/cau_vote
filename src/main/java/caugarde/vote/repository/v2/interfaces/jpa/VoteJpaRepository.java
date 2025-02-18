@@ -10,9 +10,9 @@ import java.util.Optional;
 
 public interface VoteJpaRepository extends JpaRepository<Vote, Long> {
 
-    long countVoteByBoard(Board board);
+    long countVoteByDeletedAtIsNullAndBoard(Board board);
 
     Optional<Vote> findByBoardAndStudentAndDeletedAtIsNull(Board board, Student student);
 
-    List<Vote> findByBoardOrderByCreatedAtAsc(Board board);
+    List<Vote> findByBoardAndDeletedAtIsNullOrderByCreatedAtAsc(Board board);
 }

@@ -13,12 +13,12 @@ public class GearController {
     }
 
     @GetMapping("/gear/new")
-    public String gearCreate(){
-        return "gear/gear_new";
+    public String gearCreate() {
+        return "gear/gear_create";
     }
 
     @GetMapping("/gear/update/{gearId}")
-    public String gearUpdate(){
+    public String gearUpdate(@PathVariable Long gearId) {
         return "gear/gear_update";
     }
 

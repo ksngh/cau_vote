@@ -1,10 +1,18 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>투표 수정</title>
+    <link rel="stylesheet" th:href="@{/css/posting.css}">
+    <link rel="stylesheet" th:href="@{/css/header.css}">
+    <link href="/favicon.ico" rel="icon" type="image/x-icon">
 </head>
 <body>
+<th:block th:replace="~{common/header::headerLayout}"></th:block>
+<div id="poll-container"></div>
+<th:block th:replace="~{common/footer::footerLayout}"></th:block>
 
+<script src="/js/vote/update.js"></script>
 </body>
 </html>

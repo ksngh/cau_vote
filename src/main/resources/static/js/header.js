@@ -53,8 +53,11 @@ function checkUserStatus() {
                         menu.innerHTML = `
                             <div class="menu-header">
                                 <button class="close-menu" id="close-menu">&times;</button>
-                            </div>  
-                            <li><a href="/posting">투표 생성하기</a></li>
+                            </div>
+                            <li><a href="/mypage">나의 투표 현황</a></li>
+                            <li><a href="/admin">부원 관리</a></li>  
+                            <li><a href="/post">투표 생성</a></li>
+                            <li><a href="/gear/new">장비 추가</a></li>
                             <li><a href="/logout">로그아웃</a></li>`
                     }
                     const menuContainer = document.querySelector('.menu');
@@ -89,6 +92,29 @@ function checkUserStatus() {
 
 document.addEventListener('DOMContentLoaded', (event) => {
     checkUserStatus();
+});
+
+
+function redirectToPage(page) {
+    if (page === 'train') {
+        window.location.href = "/"; // 훈련 신청 페이지로 이동
+    } else if (page === 'rent') {
+        window.location.href = "/gear"; // 장비 대여 페이지로 이동
+    }
+}
+
+// 현재 페이지에 따라 active 클래스 추가
+document.addEventListener("DOMContentLoaded", function () {
+    const currentPage = window.location.pathname;
+
+    console.log("현재 경로:", currentPage); // 디버깅용 로그
+
+    // "/" 경로는 훈련 신청 페이지로 간주
+    if (currentPage === "/" || currentPage.includes("/post")) {
+        document.getElementById("trainTab").classList.add("active");
+    } else if (currentPage.includes("/gear")) {
+        document.getElementById("rentTab").classList.add("active");
+    }
 });
 
 

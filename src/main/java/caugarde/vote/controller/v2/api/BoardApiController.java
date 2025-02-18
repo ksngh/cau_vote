@@ -65,5 +65,11 @@ public class BoardApiController {
         return CustomApiResponse.OK(ResSuccessCode.READ,response);
     }
 
+    @GetMapping("/board/{boardId}")
+    public CustomApiResponse<BoardInfo.Response> getBoardInfo(@PathVariable Long boardId) {
+        BoardInfo.Response response = BoardInfo.Response.from(boardService.getById(boardId));
+        return CustomApiResponse.OK(ResSuccessCode.READ,response);
+    }
+
 
 }

@@ -178,7 +178,7 @@ function formatDate(date) {
 }
 
 function updateBoard(id) {
-    window.location.href = `/posting/${id}`;
+    window.location.href = `/post/${id}`;
 }
 
 async function deleteBoard(boardId) {

@@ -45,8 +45,19 @@ public class BoardServiceImpl implements BoardService {
     @Transactional
     public void update(BoardUpdate.Request request, Long id, String email) {
         Board board = getById(id);
-        board.update(request, email);
+        board.update(request, email,validateStatus(request));
         boardRepository.save(board);
+    }
+
+    private BoardStatus validateStatus(BoardUpdate.Request request) {
+        LocalDateTime now = LocalDateTime.now();
+        if (now.isBefore(request.getStartDate())){
+            return BoardStatus.PENDING;
+        }else if (now.isAfter(request.getEndDate())){
+            return BoardStatus.INACTIVE;
+        }else {
+            return BoardStatus.ACTIVE;
+        }
     }
 
     @Override

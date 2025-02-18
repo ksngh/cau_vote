@@ -24,7 +24,7 @@ public class VoteRepositoryImpl implements VoteRepository {
 
     @Override
     public Long countVoteByBoard(Board board) {
-        return voteJpaRepository.countVoteByBoard(board);
+        return voteJpaRepository.countVoteByDeletedAtIsNullAndBoard(board);
     }
 
     @Override
@@ -34,7 +34,7 @@ public class VoteRepositoryImpl implements VoteRepository {
 
     @Override
     public List<Vote> findByBoard(Board board) {
-        return voteJpaRepository.findByBoardOrderByCreatedAtAsc(board);
+        return voteJpaRepository.findByBoardAndDeletedAtIsNullOrderByCreatedAtAsc(board);
     }
 
 }

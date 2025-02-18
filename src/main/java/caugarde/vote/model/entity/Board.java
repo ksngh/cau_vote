@@ -74,10 +74,11 @@ public class Board {
         return new Board(request,student);
     }
 
-    public void update(BoardUpdate.Request request,String email){
+    public void update(BoardUpdate.Request request,String email,BoardStatus status) {
         this.title= request.getTitle();
         this.content= request.getContent();
         this.limitPeople = request.getLimitPeople();
+        this.status= status;
         this.startDate = request.getStartDate();
         this.endDate = request.getEndDate();
         this.updatedAt = LocalDateTime.now();

@@ -5,7 +5,7 @@ function formatLocalDateTime(dateString) {
 }
 
 
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function () {
     function makeVote() {
 
         // 폼 데이터 가져오기
@@ -45,11 +45,6 @@ document.addEventListener("DOMContentLoaded", function() {
         const startDate = formatLocalDateTime(startDateInput);
         const endDate = formatLocalDateTime(endDateInput);
 
-// 초를 포함한 올바른 형식으로 변환
-//         const startDate = new Date(startDateInput + ":00").toISOString();
-//         const endDate = new Date(endDateInput + ":00").toISOString();
-
-        console.log(startDate)
         if (startDate >= endDate) {
             alert('시작 날짜는 마감 날짜보다 빨라야 합니다.');
             document.getElementById('startDate').focus();
@@ -74,9 +69,11 @@ document.addEventListener("DOMContentLoaded", function() {
         })
             .then(response => {
                 if (response.ok) {
-                    return response.json(); // JSON 데이터 반환
+                    return response.json(); // 정상 응답인 경우 JSON 데이터를 반환
                 } else {
-                    throw new Error('투표 생성에 실패했습니다: ' + response.statusText);
+                    return response.json().then(errResponse => {
+                        throw new Error(errResponse.errorList[0]); // 첫 번째 에러 메시지 반환
+                    })
                 }
             })
             .then(result => {
@@ -85,9 +82,10 @@ document.addEventListener("DOMContentLoaded", function() {
             })
             .catch(error => {
                 console.error('Error:', error);
-                alert('서버와의 연결에 문제가 발생했습니다.');
+                alert(error.message); // 에러 메시지 alert
             });
     }
+
     const button = document.getElementById("generate-poll");
     button.addEventListener("click", makeVote);
 })
