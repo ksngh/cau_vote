@@ -23,6 +23,8 @@ public interface BoardService {
 
     Slice<BoardInfo.Response> getPages(Long cursorId, int size);
 
+    Slice<BoardInfo.Response> getUserPages(String email, Long cursorId, int size);
+
     void closeExpiredBoards();
 
     void activateBoard();

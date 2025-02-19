@@ -17,11 +17,6 @@ public class GearController {
         return "gear/gear_create";
     }
 
-    @GetMapping("/gear/update/{gearId}")
-    public String gearUpdate(@PathVariable Long gearId) {
-        return "gear/gear_update";
-    }
-
     @GetMapping("/gear/status")
     public String gearStatus()  {
         return "gear/gear_status";

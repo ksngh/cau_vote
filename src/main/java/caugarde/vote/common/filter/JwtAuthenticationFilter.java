@@ -36,9 +36,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                     "/login",
                     "/static",
                     "/ranking",
-                    "/css","/js","/images",
-//                    "/v2/api/gear",
-                    "/v2/api/student");
+                    "/css","/js","/images"
+//                    "/v2/api/gear"
+                    );
     private final StudentService studentService;
     private final JwtUtil jwtUtil;
     private final CookieUtil cookieUtil;

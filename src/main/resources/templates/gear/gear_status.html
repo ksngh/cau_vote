@@ -11,9 +11,24 @@
 <body>
 <th:block th:replace="~{common/header::headerLayout}"></th:block>
 
-
+<table class="rental-table">
+  <thead>
+  <tr>
+    <th>장비 종목</th>
+    <th>장비 번호</th>
+    <th>장비 타입</th>
+    <th>대여자</th>
+    <th>대여 날짜</th>
+  </tr>
+  </thead>
+  <tbody id="rental-gear-list">
+  </tbody>
+</table>
 
 
 <th:block th:replace="~{common/footer::footerLayout}"></th:block>
+
+<script th:src="@{/js/gear/gear-status.js}"></script>
+<script th:src="@{/js/common/vote-gear-tab.js}"></script>
 </body>
 </html>

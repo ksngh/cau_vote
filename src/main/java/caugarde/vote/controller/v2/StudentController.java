@@ -5,7 +5,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/student")
 public class StudentController {
 
     @GetMapping("/signup")
@@ -13,10 +12,13 @@ public class StudentController {
         return "user/sign_up";
     }
 
-    @GetMapping("/my-page")
-    public String myPage() {
-        return "user/my_page";
+    @GetMapping("/mypage/gear")
+    public String myPageGear() {
+        return "gear/gear_mypage";
     }
 
-
+    @GetMapping("/mypage/vote")
+    public String myPageVote() {
+        return "vote/vote_mypage";
+    }
 }

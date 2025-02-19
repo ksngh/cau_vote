@@ -21,7 +21,7 @@ public class AuthApiController {
 
     @GetMapping("/auth")
     public CustomApiResponse<AuthInfo.Response> auth(@AuthenticationPrincipal CustomOAuthUser user) {
-        AuthInfo.Response response = AuthInfo.Response.of((Set<Role>)user.getAuthorities());
+        AuthInfo.Response response = AuthInfo.Response.of((Set<Role>) user.getAuthorities());
         return CustomApiResponse.OK(ResSuccessCode.READ, response);
     }
 

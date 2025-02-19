@@ -2,6 +2,8 @@ package caugarde.vote.service.v2.impls;
 
 import caugarde.vote.common.exception.api.CustomApiException;
 import caugarde.vote.common.response.ResErrorCode;
+import caugarde.vote.model.dto.gear.GearInfo;
+import caugarde.vote.model.dto.rentalgear.RentalGearDetails;
 import caugarde.vote.model.entity.Gear;
 import caugarde.vote.model.entity.RentalGear;
 import caugarde.vote.model.entity.Student;
@@ -11,6 +13,7 @@ import caugarde.vote.service.v2.interfaces.GearService;
 import caugarde.vote.service.v2.interfaces.RentalGearService;
 import caugarde.vote.service.v2.interfaces.StudentService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Slice;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -68,6 +71,16 @@ public class RentalGearServiceImpl implements RentalGearService {
     public RentalGear getByGearId(Long gearId) {
         Gear gear = gearService.getById(gearId);
         return rentalGearRepository.findByGear(gear).orElse(null);
+    }
+
+    @Override
+    public Slice<RentalGearDetails.Response> getPages(Long cursorId, int size) {
+        return rentalGearRepository.getPages(cursorId,size);
+    }
+
+    @Override
+    public Slice<GearInfo.Response> getUserPages(String email, Long cursorId, int size) {
+        return rentalGearRepository.getUserPages(email,cursorId,size);
     }
 
 }

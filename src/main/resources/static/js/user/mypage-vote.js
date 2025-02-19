@@ -3,23 +3,23 @@ let isLoading = false;
 let hasNext = true;   // 다음 페이지가 있는지 여부
 
 // 초기 데이터 로드
-getCardInfo();
+getMyCardInfo();
 
 window.addEventListener('scroll', handleScroll);
 
 function handleScroll() {
     if (isLoading || !hasNext) return; // 요청 중이거나 더 이상 데이터가 없으면 실행 X
     if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 100) {
-        getCardInfo();
+        getMyCardInfo();
     }
 }
 
-async function getCardInfo() {
+async function getMyCardInfo() {
     if (isLoading) return;
     isLoading = true;
-
+    console.log("pend")
     try {
-        const response = await fetch(`/v2/api/board?cursorId=${cursorId || ''}&size=10`, {
+        const response = await fetch(`/v2/api/student/board?cursorId=${cursorId || ''}&size=10`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
@@ -32,21 +32,22 @@ async function getCardInfo() {
 
         const cardInfo = await response.json();
         const cardInfoContents = cardInfo.data.content;
+        console.log(cardInfoContents)
         // 다음 페이지가 있는지 확인
         hasNext = cardInfoContents.length === 10; // `size=10`이면, 데이터가 10개일 때만 다음 페이지 가능
 
         if (cardInfoContents.length === 0) return;
 
-        // 각 아이템에 대해 fetchVoteCount를 병렬로 호출하고, 순서 유지
+        // 각 아이템에 대해 myFetchVoteCount를 병렬로 호출하고, 순서 유지
         const dataWithCounts = await Promise.all(
             cardInfoContents.map(async (item) => {
-                const joinNum = await fetchVoteCount(item.id);
+                const joinNum = await myFetchVoteCount(item.id);
                 return { ...item, joinNum }; // joinNum을 포함한 새로운 객체 반환
             })
         );
 
-        // 정렬된 데이터에 대해 voteCard 호출
-        dataWithCounts.forEach(item => voteCard(item));
+        // 정렬된 데이터에 대해 myVoteCard 호출
+        dataWithCounts.forEach(item => myVoteCard(item));
 
         // 마지막 데이터의 ID를 `cursorId`로 업데이트
         cursorId = cardInfoContents[cardInfoContents.length - 1].id;
@@ -59,10 +60,9 @@ async function getCardInfo() {
 }
 
 // 카드 UI 생성
-function voteCard(data) {
+function myVoteCard(data) {
 
     const endDate = new Date(data.endDate);
-    const startDate = new Date(data.startDate);
 
     let dividerClass = '';
     let isBlurred = false;
@@ -73,13 +73,7 @@ function voteCard(data) {
 
     if (data.status === "ACTIVE") {
         dividerClass = 'ongoingVote';
-        voteInfo = "투표 마감일 : " + formatDate(endDate);
-    } else if (data.status === "PENDING") {
-        dividerClass = 'upcomingVote';
-        isBlurred = true;
-        hideButtons = true;
-        hidePeople = true;
-        voteInfo = "투표 예정일 : " + formatDate(startDate);
+        voteInfo = "투표 마감일 : " + myFormatDate(endDate);
     } else {
         dividerClass = 'finishedVote';
         isBlurred = true;
@@ -90,7 +84,7 @@ function voteCard(data) {
     const card = document.createElement('li');
     card.className = 'card' + (isBlurred ? ' blurred' : '');
     card.setAttribute('data-id', data.id);
-    card.setAttribute('onclick', 'toggleContent(this)');
+    card.setAttribute('onclick', 'myToggleContent(this)');
 
     fetch('/v2/api/auth')
         .then(response => response.json())
@@ -118,8 +112,8 @@ function voteCard(data) {
                         <button onclick=sendVote("${data.id}") style="${hideButtons ? 'display:none;' : ''}">참석</button>
                         <button onclick=cancel("${data.id}") style="${hideButtons ? 'display:none;' : ''}">취소</button>
                         <button onclick=openVoteModal("${data.id}") style="${hidePeople ? 'display:none;' : ''}">참여 인원</button>
-                        <button onclick=deleteBoard('${data.id}')>삭제</button>
-                        <button onclick=updateBoard('${data.id}')>수정</button>
+                        <button onclick=myDeleteBoard('${data.id}')>삭제</button>
+                        <button onclick=myUpdateBoard('${data.id}')>수정</button>
                     </div>
                 `;
             } else {
@@ -153,7 +147,7 @@ function voteCard(data) {
 }
 
 // 개별 투표의 참여 인원 수 가져오기
-async function fetchVoteCount(boardId) {
+async function myFetchVoteCount(boardId) {
     try {
         const response = await fetch(`/v2/api/board/${boardId}/count`);
         if (!response.ok) {
@@ -168,7 +162,7 @@ async function fetchVoteCount(boardId) {
 }
 
 // 날짜 포맷 변환
-function formatDate(date) {
+function myFormatDate(date) {
     const year = date.getFullYear();
     const month = date.getMonth() + 1;
     const day = date.getDate();
@@ -177,11 +171,11 @@ function formatDate(date) {
     return `${year}년 ${month}월 ${day}일 ${hours}시 ${minutes}분`;
 }
 
-function updateBoard(id) {
+function myUpdateBoard(id) {
     window.location.href = `/post/${id}`;
 }
 
-async function deleteBoard(boardId) {
+async function myDeleteBoard(boardId) {
     if (!confirm("투표를 삭제하시겠습니까?")) return;
     try {
         const response = await fetch(`/v2/api/board/${boardId}`, { method: "DELETE" });
@@ -195,7 +189,8 @@ async function deleteBoard(boardId) {
 }
 
 // 카드 내용 토글
-function toggleContent(card) {
+function myToggleContent(card) {
     const content = card.querySelector('.content');
     content.style.display = (content.style.display === 'block') ? 'none' : 'block';
 }
+

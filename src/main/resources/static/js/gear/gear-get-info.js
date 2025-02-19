@@ -69,7 +69,7 @@ document.getElementById("searchBtn").addEventListener("click", function () {
             gearsWithRentalInfo.forEach(gear => gearCard(gear));
         })
         .catch(error => {
-            document.getElementById("gear-result").innerText = "에러 발생: " + error;
+            console.error(error)
         });
 });
 
@@ -192,13 +192,12 @@ function rentGear(gearId){
             console.error('Error:', error);
             alert(error.message); // 에러 메시지 alert
         });
-
 }
 
 async function deleteGear(gearId){
     if (!confirm("장비를 삭제하시겠습니까?")) return;
     try {
-        const response = await fetch(`v2/api/gear/${gearId}`, { method: "DELETE" });
+        const response = await fetch(`/v2/api/gear/${gearId}`, { method: "DELETE" });
         if (!response.ok) throw new Error("삭제 실패");
         alert("투표가 삭제되었습니다.");
         location.reload();
@@ -214,3 +213,4 @@ function formatDate(date) {
     const day = date.getDate();
     return `${year}년 ${month}월 ${day}일`;
 }
+

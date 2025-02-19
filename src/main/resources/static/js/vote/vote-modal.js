@@ -1,5 +1,5 @@
 function getModalInfo(id) {
-    fetch(`v2/api/board/${id}/vote`, {
+    fetch(`/v2/api/board/${id}/vote`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json'
