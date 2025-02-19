@@ -1,5 +1,6 @@
 package caugarde.vote.model.dto.board;
 
+import caugarde.vote.model.entity.Board;
 import caugarde.vote.model.enums.BoardStatus;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -10,7 +11,6 @@ import java.time.LocalDateTime;
 
 public class BoardInfo {
 
-    @NoArgsConstructor(access = AccessLevel.PROTECTED)
     @Getter
     @AllArgsConstructor
     public static class Response {
@@ -21,6 +21,20 @@ public class BoardInfo {
         private Integer limitPeople;
         private LocalDateTime startDate;
         private LocalDateTime endDate;
+
+        private Response(Board board){
+            this.id = board.getId();
+            this.title = board.getTitle();
+            this.content = board.getContent();
+            this.status = board.getStatus();
+            this.limitPeople = board.getLimitPeople();
+            this.startDate = board.getStartDate();
+            this.endDate = board.getEndDate();
+        }
+
+        public static Response from(Board board){
+            return new Response(board);
+        }
     }
 
 }

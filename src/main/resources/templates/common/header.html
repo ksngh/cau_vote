@@ -1,9 +1,25 @@
 <!-- header.html -->
+
 <div th:fragment="headerLayout">
     <nav id="nav-header" class="header-container">
         <h3><a href="/" style="text-decoration: none; color: inherit;">CHUNG-ANG GARDE</a></h3>
         <button id="loginBtn" class="login-button">로그인</button>
+
     </nav>
+    <a class="shiny-text" href="/ranking">
+        <div id="first-grade-banner" class="ranking-box">
+            <div class="ranking-item">
+                순위는 월요일마다 갱신됩니다.
+            </div>
+        </div>
+    </a>
+    <div class="tab-container">
+        <button style="border-radius: 0" class="tab" id="trainTab" onclick="redirectToPage('train')">훈련 신청</button>
+        <button style="border-radius: 0" class="tab" id="rentTab" onclick="redirectToPage('rent')">장비 대여</button>
+    </div>
+    <div>
+
+    </div>
     <div id="overlay" class="overlay"></div>
     <div class="menu">
         <ul id="menu"></ul>
@@ -15,11 +31,6 @@
                 <li style="margin-bottom: 15px;">
                     <a href="/oauth2/authorization/kakao" style="padding: 10px 15px; color: black; text-decoration: none; border-radius: 5px; transition: all 0.3s;">
                         회원가입 / 로그인
-                    </a>
-                </li>
-                <li style="margin-top: 10px">
-                    <a href="/admin/login" style="padding: 10px 15px; color: black; text-decoration: none; border-radius: 5px; transition: all 0.3s;">
-                        관리자 로그인
                     </a>
                 </li>
             </ul>

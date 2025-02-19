@@ -1,6 +1,6 @@
 package caugarde.vote.common.filter;
 
-import caugarde.vote.common.exception.CustomApiException;
+import caugarde.vote.common.exception.api.CustomApiException;
 import caugarde.vote.common.response.ResErrorCode;
 import caugarde.vote.common.util.CookieUtil;
 import caugarde.vote.common.util.JwtUtil;
@@ -30,21 +30,29 @@ import java.util.Map;
 @Slf4j(topic = "JWT 검증 및 인가")
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
-    private static final List<String> EXCLUDED_PATHS = List.of("/", "/login");
+    private static final List<String> EXCLUDED_PATHS =
+            List.of(
+//                    "/ws",
+                    "/login",
+                    "/static",
+                    "/ranking",
+                    "/css","/js","/images",
+//                    "/v2/api/gear",
+                    "/v2/api/student");
     private final StudentService studentService;
     private final JwtUtil jwtUtil;
     private final CookieUtil cookieUtil;
 
     private boolean isExcludedFromFilter(HttpServletRequest request) {
         String requestURI = request.getRequestURI();
-        return EXCLUDED_PATHS.stream().anyMatch(requestURI::equals);
+        return EXCLUDED_PATHS.stream().anyMatch(requestURI::startsWith);
     }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
         if (isExcludedFromFilter(request)) {
-            filterChain.doFilter(request, response); // 공개 경로는 필터 통과
+            filterChain.doFilter(request, response);
             return;
         }
 
@@ -53,7 +61,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             validateAuthorizationCookie(token);
             validateToken(token);
             String email = jwtUtil.getEmail(token);
-            authenticateUser(email, request);
+            authenticateUser(email);
             filterChain.doFilter(request, response);
         } catch (CustomApiException e) {
             handleException(response, e);
@@ -73,14 +81,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
     }
 
-    private void authenticateUser(String email, HttpServletRequest request) {
+    private void authenticateUser(String email) {
         if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             Student student = studentService.getByEmail(email);
             validatePending(student);
             CustomOAuthUser oAuthUser = new CustomOAuthUser(student);
-
             UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(oAuthUser, null, oAuthUser.getAuthorities());
-
             SecurityContextHolder.getContext().setAuthentication(authenticationToken);
         }
     }

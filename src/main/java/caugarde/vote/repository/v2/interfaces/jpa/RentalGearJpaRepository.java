@@ -9,6 +9,8 @@ import java.util.Optional;
 
 public interface RentalGearJpaRepository extends JpaRepository<RentalGear, Long> {
 
-    Optional<RentalGear> findByGearAndStudent(Gear gear, Student student);
+    Optional<RentalGear> findByGearAndStudentAndReturnedAtIsNull(Gear gear, Student student);
+
+    Optional<RentalGear> findByGearAndReturnedAtIsNull(Gear gear);
 
 }

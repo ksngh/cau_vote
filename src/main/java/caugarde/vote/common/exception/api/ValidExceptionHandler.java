@@ -1,4 +1,4 @@
-package caugarde.vote.common.exception;
+package caugarde.vote.common.exception.api;
 
 
 import java.util.List;
@@ -8,6 +8,7 @@ import caugarde.vote.common.response.CustomApiResponse;
 import caugarde.vote.common.response.ResErrorCode;
 import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,7 +33,7 @@ public class ValidExceptionHandler {
         List<String> errors = exception.getBindingResult()
                 .getFieldErrors()
                 .stream()
-                .map(error -> error.getField() + " : " + error.getDefaultMessage())
+                .map(DefaultMessageSourceResolvable::getDefaultMessage)
                 .collect(Collectors.toList());
 
         return ResponseEntity

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>투표 생성</title>
+  <link rel="stylesheet" th:href="@{/css/posting.css}">
+  <link rel="stylesheet" th:href="@{/css/header.css}">
+  <link href="/favicon.ico" rel="icon" type="image/x-icon">
+</head>
+<body>
+<th:block th:replace="~{common/header::headerLayout}"></th:block>
+<h1>투표 생성</h1>
+
+<label for="title">제목:</label>
+<input id="title" name="title" required type="text"><br><br>
+
+<label for="content">내용:</label>
+<textarea id="content" name="content" required></textarea><br><br>
+
+<label for="limitPeople">참여 인원 제한:</label>
+<input id="limitPeople" name="limitPeople" required type="number"><br><br>
+
+<label for="startDate">시작 날짜:</label>
+<input id="startDate" name="startDate" required type="datetime-local"><br><br>
+
+<label for="endDate">마감 날짜:</label>
+<input id="endDate" name="endDate" required type="datetime-local"><br><br>
+
+<div style="text-align: right; margin-right: 15px ">
+  <button id="generate-poll" type="button">생성</button>
+</div>
+<th:block th:replace="~{common/footer::footerLayout}"></th:block>
+
+<script src="/js/vote/posting.js"></script>
+</body>
+</html>

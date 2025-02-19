@@ -1,6 +1,6 @@
 package caugarde.vote.service.v2.impls;
 
-import caugarde.vote.common.exception.CustomApiException;
+import caugarde.vote.common.exception.api.CustomApiException;
 import caugarde.vote.common.response.ResErrorCode;
 import caugarde.vote.model.entity.Gear;
 import caugarde.vote.model.entity.RentalGear;
@@ -62,6 +62,12 @@ public class RentalGearServiceImpl implements RentalGearService {
     public void getOverDueRentals() {
         List<RentalGear> overDueRentals = rentalGearRepository.findOverDueRentals();
         overDueRentals.forEach(RentalGear::imposeLateFee);
+    }
+
+    @Override
+    public RentalGear getByGearId(Long gearId) {
+        Gear gear = gearService.getById(gearId);
+        return rentalGearRepository.findByGear(gear).orElse(null);
     }
 
 }

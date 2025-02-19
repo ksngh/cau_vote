@@ -1,6 +1,7 @@
 package caugarde.vote.model.entity;
 
 import caugarde.vote.common.util.RoleConverter;
+import caugarde.vote.model.dto.student.StudentUpdate;
 import caugarde.vote.model.enums.Role;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -61,31 +62,13 @@ public class Student {
         return new Student(email);
     }
 
-    private Student(String universityId,String name, String majority, String memberType){
-        this.universityId = universityId;
-        this.name = name;
-        this.majority = majority;
-        this.memberType = memberType;
+    public void updateInitialInfo(StudentUpdate.Request request){
+        this.universityId = request.getUniversityId();
+        this.name = request.getName();
+        this.majority = request.getMajority();
+        this.memberType = request.getMemberType();
         this.authorities = EnumSet.of(Role.USER);
         this.updatedAt = LocalDateTime.now();
-    }
-
-    public static Student inputInfo(String universityId, String email, String name, String majority, String memberType){
-        return new Student(universityId, email, name, majority);
-    }
-
-    public void addRole(Role role) {
-        authorities.add(role);
-        this.updatedAt = LocalDateTime.now();
-    }
-
-    public void removeRole(Role role) {
-        authorities.remove(role);
-        this.updatedAt = LocalDateTime.now();
-    }
-
-    public boolean hasRole(Role role) {
-        return authorities.contains(role);
     }
 
     public void delete(){

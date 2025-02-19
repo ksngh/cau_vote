@@ -1,5 +1,5 @@
 function getModalInfo(id) {
-    fetch(`api/student/vote/${id}`, {
+    fetch(`v2/api/board/${id}/vote`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json'
@@ -11,8 +11,9 @@ function getModalInfo(id) {
             throw new Error('투표 생성에 실패했습니다: ' + response.statusText);
         }
     })
-        .then(data => {
-            generateModal(data);
+        .then(attendanceInfo => {
+            console.log(attendanceInfo)
+            voteModal(attendanceInfo);
         })
         .catch(error => {
             console.error('Error:', error);
@@ -20,7 +21,7 @@ function getModalInfo(id) {
         });
 }
 
-function generateModal(data) {
+function voteModal(attendanceInfo) {
     // 이전 모달 내용 제거
     const existingModal = document.querySelector('.modal');
     if (existingModal) {
@@ -34,35 +35,35 @@ function generateModal(data) {
         <div class="modal-content">
             <span class="close">&times;</span>
             <h2>참여 인원</h2>
-            <ul id="voteList"></ul> <!-- 리스트를 추가할 곳 -->
+            <ul id="voteList"></ul>
         </div>
     `;
 
     const voteList = modal.querySelector('#voteList');
 
-    fetch('/api/student')
+    fetch('/v2/api/auth')
         .then(response => response.json())
-        .then(userData => {
-            if (userData && userData.role === "ROLE_ADMIN") {
-
-                data.forEach(item => {
+        .then(authInfo => {
+            const roles = new Set(authInfo.data.role)
+            if (roles.has("ADMIN")) {
+                const attendanceData = attendanceInfo.data
+                attendanceData.forEach(item => {
                     const listItem = document.createElement('li');
-                    listItem.textContent = `${item.studentId} ${item.majority} ${item.name} / ${item.category}`; // 데이터에서 이름 가져오기
+                    listItem.textContent = `${item.universityId} ${item.majority} ${item.name} / ${item.fencingType}`; // 데이터에서 이름 가져오기
                     voteList.appendChild(listItem);
                 });
 
-            } else{
+            } else {
 
-                // data를 통해 리스트 항목 생성
-                data.forEach(item => {
+                attendanceData.forEach(item => {
                     const listItem = document.createElement('li');
-                    listItem.textContent = `${item.majority} ${item.name} / ${item.category}`; // 데이터에서 이름 가져오기
+                    listItem.textContent = `${item.majority} ${item.name} / ${item.fencingType}`; // 데이터에서 이름 가져오기
                     voteList.appendChild(listItem);
                 });
 
             }
         })
-        .catch(error => console.error('Error fetching user status:', error));
+        .catch(error => console.error('투표 모달창 정보를 불러오지 못하였습니다.', error));
 
 
     // 모달을 페이지에 추가
@@ -86,7 +87,8 @@ function generateModal(data) {
 }
 
 // 카드 생성 시 모달 열기
-function openVoteModal(uuid) {
+function openVoteModal(id) {
+    console.log("openModal")
     event.stopPropagation();
-    getModalInfo(uuid); // UUID를 사용하여 데이터 요청
+    getModalInfo(id); // ID를 사용하여 데이터 요청
 }

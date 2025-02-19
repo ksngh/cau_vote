@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>장비 추가</title>
+    <link rel="stylesheet" th:href="@{/css/header.css}">
+    <link rel="stylesheet" th:href="@{/css/gear.css}">
+    <link href="/favicon.ico" rel="icon" type="image/x-icon">
+</head>
+<body>
+<th:block th:replace="~{common/header::headerLayout}"></th:block>
+
+<div class="gear-container">
+    <div class="search-bar">
+        <div class="custom-select">
+            <select id="fencingType">
+                <option value="SABRE" selected>사브르</option>
+                <option value="FLUERET">플뢰레</option>
+                <option value="COMMON">공용</option>
+            </select>
+        </div>
+
+        <div class="custom-select">
+            <select id="gearType">
+                <option value="MASK" selected>마스크</option>
+                <option value="SWORD">검</option>
+                <option value="GLOVE">장갑</option>
+                <option value="METAL">메탈 자켓</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="gear-registration">
+        <input type="number" id="gearNum" placeholder="장비 번호 입력">
+        <button class="register-btn" id="registerBtn">장비 등록</button>
+    </div>
+
+</div>
+<th:block th:replace="~{common/footer::footerLayout}"></th:block>
+
+<script th:src="@{/js/gear/gear-create.js}"></script>
+</body>
+</html>

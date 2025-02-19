@@ -30,4 +30,9 @@ public class StudentRepositoryImpl implements StudentRepository {
         return studentJpaRepository.findByEmail(email);
     }
 
+    @Override
+    public Optional<Student> findById(Long id) {
+        return studentJpaRepository.findById(id);
+    }
+
 }

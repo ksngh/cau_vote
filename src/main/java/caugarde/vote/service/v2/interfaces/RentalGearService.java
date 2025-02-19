@@ -14,4 +14,6 @@ public interface RentalGearService {
 
     void getOverDueRentals();
 
+    RentalGear getByGearId(Long gearId);
+
 }

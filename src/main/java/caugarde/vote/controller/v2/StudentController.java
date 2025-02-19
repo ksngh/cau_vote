@@ -10,12 +10,12 @@ public class StudentController {
 
     @GetMapping("/signup")
     public String signup() {
-        return "signup";
+        return "user/sign_up";
     }
 
     @GetMapping("/my-page")
     public String myPage() {
-        return "my-page";
+        return "user/my_page";
     }
 
 

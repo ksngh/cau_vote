@@ -13,4 +13,6 @@ public interface StudentRepository {
 
     Optional<Student> findByEmail(String email);
 
+    Optional<Student> findById(Long id);
+
 }
