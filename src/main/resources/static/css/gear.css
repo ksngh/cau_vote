@@ -237,3 +237,32 @@ button:disabled {
 .black-text {
     color: gray;
 }
+
+.delete-button {
+
+    right: 7px;
+    background: none;
+    border: none;
+    font-size: 30px;
+    color: #ff4d4d;
+    cursor: pointer;
+}
+
+.delete-button:hover {
+    color: #ff0000;
+}
+
+@media (max-width: 1024px) { /* 태블릿 이하 */
+    .delete-button {
+        position: inherit;
+        font-size: 30px; /* 버튼 크기 축소 */
+    }
+}
+
+@media (max-width: 480px) { /* 작은 모바일 화면 */
+    .delete-button {
+        position: absolute;
+        right: 7px;
+        font-size: 30px;
+    }
+}

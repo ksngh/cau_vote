@@ -116,16 +116,15 @@ function gearCard(data) {
             if (roles.has("ADMIN")) {
                 card.innerHTML = `
                     <div class="gear-info">
-                        <h3 class="gear-num">${data.num}</h3>
+                        <h3 class="gear-num">${data.num} </h3>
                         ${status}
                     </div>
                     <div class="button-container">
                         <button class="rent-button" onclick="rentGear('${data.id}')" ${hideRental ? 'disabled' : ''}>대여</button>
                         <button class="return-button" onclick="returnGear('${data.id}')" ${hideReturn ? 'disabled' : ''}>반납</button>
-<!--                        <button class="delete-button" onclick="deleteBoard('${data.id}')">삭제</button>-->
-<!--                        <button class="update-button" onclick="updateBoard('${data.id}')">수정</button>-->
+                        <button class="delete-button" onclick="deleteGear('${data.id}')">&times;</button>
                     </div>
-                `;
+                    `;
             } else {
                 card.innerHTML = `
                     <div class="gear-info">
@@ -194,6 +193,19 @@ function rentGear(gearId){
             alert(error.message); // 에러 메시지 alert
         });
 
+}
+
+async function deleteGear(gearId){
+    if (!confirm("장비를 삭제하시겠습니까?")) return;
+    try {
+        const response = await fetch(`v2/api/gear/${gearId}`, { method: "DELETE" });
+        if (!response.ok) throw new Error("삭제 실패");
+        alert("투표가 삭제되었습니다.");
+        location.reload();
+    } catch (error) {
+        console.error("삭제 중 오류 발생:", error);
+        alert("삭제 중 오류가 발생했습니다.");
+    }
 }
 
 function formatDate(date) {

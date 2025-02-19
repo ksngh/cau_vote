@@ -47,17 +47,25 @@ function checkUserStatus() {
                             <div class="menu-header">
                                 <button class="close-menu" id="close-menu">&times;</button>
                             </div>
-                            <li><a href="/mypage">나의 투표 현황</a></li>
+                            <li><a href="/mypage">내 투표 및 장비</a></li>
                             <li><a href="/logout">로그아웃</a></li>`
                     } else if (roles.has("ADMIN")) {
                         menu.innerHTML = `
                             <div class="menu-header">
                                 <button class="close-menu" id="close-menu">&times;</button>
                             </div>
-                            <li><a href="/mypage">나의 투표 현황</a></li>
-                            <li><a href="/admin">부원 관리</a></li>  
-                            <li><a href="/post">투표 생성</a></li>
-                            <li><a href="/gear/new">장비 추가</a></li>
+                            <li><a href="/mypage">내 투표 및 장비</a></li>
+                              
+                            
+                            <li class="has-submenu">
+                                <a href="#" id="gear-menu-toggle">관리자 메뉴</a>
+                                <ul class="submenu" id="gear-submenu">
+                                    <li style="margin-top: 15px; padding-left: 5px;"><a href="/post">투표 생성</a></li>
+                                    <li style="padding-left: 5px;"><a href="/gear/new">장비 추가</a></li>
+                                    <li style="padding-left: 5px;"><a href="/gear/status">대여 현황</a></li>
+                                    <li style="padding-left: 5px;"><a href="/admin">부원 관리</a></li>
+                                </ul>
+                            </li>
                             <li><a href="/logout">로그아웃</a></li>`
                     }
                     const menuContainer = document.querySelector('.menu');
@@ -65,6 +73,11 @@ function checkUserStatus() {
 
                     const overlay = document.getElementById('overlay');
                     overlay.classList.toggle('active');
+
+                    document.getElementById("gear-menu-toggle").addEventListener("click", function(event) {
+                        event.preventDefault();  // 기본 링크 동작 방지
+                        document.getElementById("gear-submenu").classList.toggle("show");
+                    });
 
                     const closeMenuButton = document.getElementById('close-menu');
                     closeMenuButton.addEventListener('click', function () {
@@ -89,6 +102,8 @@ function checkUserStatus() {
         })
         .catch(error => console.error('Error fetching user status:', error));
 }
+
+
 
 document.addEventListener('DOMContentLoaded', (event) => {
     checkUserStatus();
