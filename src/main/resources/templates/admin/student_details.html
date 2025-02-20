@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>중앙가르드 훈련 투표</title>
+    <link th:href="@{/css/header.css}" rel="stylesheet">
+    <link th:href="@{/css/signup.css}" rel="stylesheet">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+</head>
+<th:block th:replace="~{common/header::headerLayout}"></th:block>
+<body>
+<div style="max-width: 400px; margin: auto; padding: 20px;">
+    <h2 style="text-align: center; color: #333;">회원 정보</h2>
+
+    <div style="margin: 15px">
+        <label for="studentId" class="info">학번</label>
+        <input type="text" id="studentId" name="studentId" />
+    </div>
+
+    <div style="margin: 15px;">
+        <label for="name" class="info">이름</label>
+        <input type="text" id="name" name="name" />
+    </div>
+
+    <div style="margin: 15px;">
+        <label for="majority" class="info">전공</label>
+        <input type="text" id="majority" name="majority" />
+    </div>
+
+    <div style="margin: 15px;">
+        <label class="info">가입일</label>
+        <input type="text" id="createdAt" disabled/>
+    </div>
+
+    <div style="margin: 15px;">
+        <label class="info">연체료</label>
+        <input type="text" id="overdueFine" disabled/>
+    </div>
+    <div class="radio-group">
+        <label>
+            <input type="radio" name="memberType" value="NEW" > 신입 부원
+        </label>
+        <label>
+            <input type="radio" name="memberType" value="EXISTING" > 기존 부원
+        </label>
+    </div>
+
+</div>
+<th:block th:replace="~{common/footer::footerLayout}"></th:block>
+<script src="/js/admin/update-students.js"></script>
+</body>
+</html>

@@ -34,9 +34,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             List.of(
 //                    "/ws",
                     "/login",
+                    "/",
+                    "/gear",
                     "/static",
                     "/ranking",
-                    "/css","/js","/images"
+                    "/css","/js","/images",
+                    "/sign-up"
 //                    "/v2/api/gear"
                     );
     private final StudentService studentService;
@@ -45,7 +48,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private boolean isExcludedFromFilter(HttpServletRequest request) {
         String requestURI = request.getRequestURI();
-        return EXCLUDED_PATHS.stream().anyMatch(requestURI::startsWith);
+        return EXCLUDED_PATHS.stream().anyMatch(requestURI::contentEquals);
     }
 
     @Override

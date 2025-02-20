@@ -1,7 +1,9 @@
 package caugarde.vote.model.entity;
 
 import caugarde.vote.common.util.RoleConverter;
+import caugarde.vote.model.dto.student.StudentDetailsUpdate;
 import caugarde.vote.model.dto.student.StudentUpdate;
+import caugarde.vote.model.enums.MemberType;
 import caugarde.vote.model.enums.Role;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -41,7 +43,11 @@ public class Student {
     private String majority;
 
     @Column(name = "MEMBER_TYPE", length = 10)
-    private String memberType;
+    @Enumerated(EnumType.STRING)
+    private MemberType memberType;
+
+    @Column(name = "OVERDUE_FINE", nullable = false)
+    private Integer overdueFine;
 
     @Column(name = "CREATED_AT", nullable = false)
     private LocalDateTime createdAt;
@@ -55,6 +61,7 @@ public class Student {
     private Student(String email) {
         this.email = email;
         this.createdAt = LocalDateTime.now();
+        this.overdueFine = 0;
         this.authorities = EnumSet.of(Role.PENDING_USER);
     }
 
@@ -71,8 +78,24 @@ public class Student {
         this.updatedAt = LocalDateTime.now();
     }
 
+    public void updateDetailsInfo(StudentDetailsUpdate.Request request){
+        this.universityId = request.getUniversityId();
+        this.name = request.getName();
+        this.majority = request.getMajority();
+        this.memberType = request.getMemberType();
+        this.authorities = EnumSet.of(request.getRole());
+        this.updatedAt = LocalDateTime.now();
+    }
+
     public void delete(){
         this.deletedAt = LocalDateTime.now();
     }
 
+    public void imposeOverDueFine(int overdueFine){
+        this.overdueFine = overdueFine;
+    }
+
+    public void paidOverDueFine(){
+        this.overdueFine = 0;
+    }
 }

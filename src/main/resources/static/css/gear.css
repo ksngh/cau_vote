@@ -305,3 +305,13 @@ tr:hover {
         font-size: 10px;
     }
 }
+
+#lateFeeContainer {
+    border-radius: 8px; /* 모서리 둥글게 */
+    padding: 15px; /* 내부 여백 */
+    font-size: 15px; /* 글자 크기 */
+    text-align: center; /* 가운데 정렬 */
+    max-width: 400px; /* 최대 너비 제한 */
+    margin-left: auto; /* 가운데 정렬 */
+    margin-right: auto; /* 가운데 정렬 */
+}

@@ -17,7 +17,6 @@ function handleScroll() {
 async function getMyCardInfo() {
     if (isLoading) return;
     isLoading = true;
-    console.log("pend")
     try {
         const response = await fetch(`/v2/api/student/board?cursorId=${cursorId || ''}&size=10`, {
             method: 'GET',
@@ -32,7 +31,6 @@ async function getMyCardInfo() {
 
         const cardInfo = await response.json();
         const cardInfoContents = cardInfo.data.content;
-        console.log(cardInfoContents)
         // 다음 페이지가 있는지 확인
         hasNext = cardInfoContents.length === 10; // `size=10`이면, 데이터가 10개일 때만 다음 페이지 가능
 

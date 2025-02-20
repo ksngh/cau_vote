@@ -1,4 +1,5 @@
 getMyGear();
+fetchLateFee();
 
 function getMyGear(){
     // 1️⃣ 장비 목록 불러오기
@@ -108,3 +109,21 @@ function formatDate(date) {
     return `${year}년 ${month}월 ${day}일`;
 }
 
+function fetchLateFee() {
+    fetch("/v2/api/student/late-fee") // 백엔드 API 호출
+        .then(response => {
+            if (!response.ok) {
+                throw new Error("서버 응답 오류");
+            }
+            return response.json();
+        })
+        .then(info => {
+            displayLateFees(info.data.lateFee); // 화면에 데이터 표시
+        })
+        .catch(error => console.error("연체료 데이터를 가져오는 중 오류 발생:", error));
+}
+
+function displayLateFees(lateFee) {
+    const lateFeeContainer = document.getElementById("lateFeeContainer");
+    lateFeeContainer.textContent = `연체료 : ${lateFee}원`;
+}

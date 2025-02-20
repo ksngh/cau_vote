@@ -94,7 +94,7 @@ function cancel(boardId) {
 
 // 사용자 활동 감지 이벤트 리스너 설정
 function setupUserActivityListeners() {
-    const events = ["mousemove", "keypress", "click", "touchstart", "touchend", "scroll"];
+    const events = ["keypress", "click", "touchstart", "touchend", "scroll"];
     events.forEach(event => window.addEventListener(event, resetInactivityTimer));
 }
 

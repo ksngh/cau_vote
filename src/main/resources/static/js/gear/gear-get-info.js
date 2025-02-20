@@ -180,7 +180,7 @@ function rentGear(gearId){
             return response.json(); // 정상 응답인 경우 JSON 데이터를 반환
         } else {
             return response.json().then(errResponse => {
-                throw new Error(errResponse.errorList[0]); // 첫 번째 에러 메시지 반환
+                throw new Error(errResponse.description); // 첫 번째 에러 메시지 반환
             })
         }
     })
@@ -189,7 +189,6 @@ function rentGear(gearId){
             window.location.href="/gear"
         })
         .catch(error => {
-            console.error('Error:', error);
             alert(error.message); // 에러 메시지 alert
         });
 }
@@ -199,7 +198,7 @@ async function deleteGear(gearId){
     try {
         const response = await fetch(`/v2/api/gear/${gearId}`, { method: "DELETE" });
         if (!response.ok) throw new Error("삭제 실패");
-        alert("투표가 삭제되었습니다.");
+        alert("장비가 삭제되었습니다.");
         location.reload();
     } catch (error) {
         console.error("삭제 중 오류 발생:", error);

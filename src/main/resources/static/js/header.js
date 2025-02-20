@@ -41,7 +41,7 @@ function checkUserStatus() {
                 menuTrigger.addEventListener('click', function (event) {
                     event.preventDefault(); // 링크의 기본 동작 방지
                     const menu = document.getElementById('menu');
-
+                    console.log(roles)
                     if (roles.has("USER")) {
                         menu.innerHTML = ` 
                             <div class="menu-header">
@@ -69,15 +69,21 @@ function checkUserStatus() {
                                 </ul>
                             </li>
                             <li class="has-submenu">
-                                <a href="#" id="gear-menu-toggle">관리자 메뉴</a>
-                                <ul class="submenu" id="gear-submenu">
+                                <a href="#" id="admin-menu-toggle">관리자 메뉴</a>
+                                <ul class="submenu" id="admin-submenu">
                                     <li style="margin-top: 15px; padding-left: 5px;"><a href="/post">투표 생성</a></li>
                                     <li style="padding-left: 5px;"><a href="/gear/new">장비 추가</a></li>
                                     <li style="padding-left: 5px;"><a href="/gear/status">대여 현황</a></li>
-                                    <li style="padding-left: 5px;"><a href="/admin">부원 관리</a></li>
+                                    <li style="padding-left: 5px;"><a href="/admin/student">부원 관리</a></li>
                                 </ul>
                             </li>
                             <li><a href="/logout">로그아웃</a></li>`
+                        document.getElementById("admin-menu-toggle").addEventListener("click", function(event) {
+                            event.preventDefault();  // 기본 링크 동작 방지
+                            document.getElementById("admin-submenu").classList.toggle("show");
+                        });
+                    }else if (roles.has("PENDING_USER")){
+                        window.location.href="/sign-up"
                     }
                     const menuContainer = document.querySelector('.menu');
                     menuContainer.classList.toggle('active'); // 메뉴의 활성화 상태 토글
@@ -85,10 +91,7 @@ function checkUserStatus() {
                     const overlay = document.getElementById('overlay');
                     overlay.classList.toggle('active');
 
-                    document.getElementById("gear-menu-toggle").addEventListener("click", function(event) {
-                        event.preventDefault();  // 기본 링크 동작 방지
-                        document.getElementById("gear-submenu").classList.toggle("show");
-                    });
+
 
                     document.getElementById("my-menu-toggle").addEventListener("click", function(event) {
                         event.preventDefault();  // 기본 링크 동작 방지

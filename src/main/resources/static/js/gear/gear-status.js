@@ -24,7 +24,7 @@ const fencingTypeTranslations = {
 };
 
 let cursorId = null; // 마지막으로 가져온 cursorId
-const size = 10; // 한 번에 불러올 개수
+const size = 15; // 한 번에 불러올 개수
 let isLoading = false; // 현재 데이터 로딩 중 여부
 let hasNext = true; // 다음 페이지 여부
 

@@ -115,6 +115,16 @@ public class RentalGearRepositoryImpl implements RentalGearRepository {
         return new SliceImpl<>(items, PageRequest.of(0, size), hasNext);
     }
 
+    @Override
+    public List<RentalGear> findByStudentAndLateFee(Student student) {
+        return rentalGearJpaRepository.findByStudentAndLateFeeGreaterThan(student,0);
+    }
+
+    @Override
+    public List<RentalGear> findByStudentAndReturnedAtIsNull(Student student) {
+        return rentalGearJpaRepository.findByStudentAndReturnedAtIsNull(student);
+    }
+
     private BooleanExpression isNotReturned(){
         return qRentalGear.returnedAt.isNull();
     }

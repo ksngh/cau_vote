@@ -9,7 +9,6 @@ import caugarde.vote.service.v2.interfaces.RentalGearService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Slice;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -41,9 +40,9 @@ public class RentalGearApiController {
 
     @GetMapping("/rental-gear")
     public CustomApiResponse<Slice<RentalGearDetails.Response>> getRentalGear(@RequestParam(required = false) Long cursorId,
-                                                                       @RequestParam(defaultValue = "10") int size) {
+                                                                              @RequestParam(defaultValue = "15") int size) {
         Slice<RentalGearDetails.Response> responses = rentalGearService.getPages(cursorId, size);
-        return CustomApiResponse.OK(ResSuccessCode.READ,responses);
+        return CustomApiResponse.OK(ResSuccessCode.READ, responses);
     }
 
 }

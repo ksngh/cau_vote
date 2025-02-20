@@ -31,6 +31,7 @@ public class RentalGearServiceImpl implements RentalGearService {
     @Override
     public void create(Long gearId, String email) {
         Student student = studentService.getByEmail(email);
+        validateLateFee(student);
         Gear gear = gearService.getById(gearId);
         gear.rental();
         RentalGear rentalGear = RentalGear.of(student, gear);
@@ -48,9 +49,22 @@ public class RentalGearServiceImpl implements RentalGearService {
         rentalGear.returnGear();
     }
 
+    @Override
+    @Transactional
+    public void returnAllGear(String email) {
+        Student student = studentService.getByEmail(email);
+        rentalGearRepository.findByStudentAndReturnedAtIsNull(student).forEach(RentalGear::returnGear);
+    }
+
+    private void validateLateFee(Student student) {
+        if (student.getOverdueFine() > 0) {
+            throw new CustomApiException(ResErrorCode.BAD_REQUEST, "미납된 연체료가 있습니다.");
+        }
+    }
+
     private void validateRentalStatus(Gear gear) {
-        if (!gear.getStatus().equals(GearStatus.IN_USE)){
-            throw new CustomApiException(ResErrorCode.BAD_REQUEST,"대여 중인 장비가 아닙니다.");
+        if (!gear.getStatus().equals(GearStatus.IN_USE)) {
+            throw new CustomApiException(ResErrorCode.BAD_REQUEST, "대여 중인 장비가 아닙니다.");
         }
     }
 
@@ -65,6 +79,7 @@ public class RentalGearServiceImpl implements RentalGearService {
     public void getOverDueRentals() {
         List<RentalGear> overDueRentals = rentalGearRepository.findOverDueRentals();
         overDueRentals.forEach(RentalGear::imposeLateFee);
+        imposeLateFee(overDueRentals);
     }
 
     @Override
@@ -75,12 +90,29 @@ public class RentalGearServiceImpl implements RentalGearService {
 
     @Override
     public Slice<RentalGearDetails.Response> getPages(Long cursorId, int size) {
-        return rentalGearRepository.getPages(cursorId,size);
+        return rentalGearRepository.getPages(cursorId, size);
     }
 
     @Override
     public Slice<GearInfo.Response> getUserPages(String email, Long cursorId, int size) {
-        return rentalGearRepository.getUserPages(email,cursorId,size);
+        return rentalGearRepository.getUserPages(email, cursorId, size);
+    }
+
+    @Override
+    public void imposeLateFee(List<RentalGear> overDueRentals) {
+        overDueRentals.stream()
+                .map(RentalGear::getStudent)
+                .distinct()
+                .forEach(student -> {
+                    int maxLateFee = overDueRentals.stream()
+                            .filter(rentalGear -> rentalGear.getStudent().equals(student))
+                            .mapToInt(RentalGear::getLateFee)
+                            .max()
+                            .orElse(0);
+                    if (student.getOverdueFine() < maxLateFee) {
+                        student.imposeOverDueFine(maxLateFee);
+                    }
+                });
     }
 
 }

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <link href="/favicon.ico" rel="icon">
+    <title>중앙가르드 학생 정보</title>
+    <link rel="stylesheet" th:href="@{/css/header.css}">
+    <link rel="stylesheet" th:href="@{/css/student.css}">
+</head>
+<body>
+
+<th:block th:replace="~{common/header::headerLayout}"></th:block>
+
+<table class="student-table">
+    <thead>
+    <tr>
+        <th>이름</th>
+        <th>학과</th>
+        <th>학번</th>
+        <th>연체료</th>
+        <th>회원 타입</th>
+    </tr>
+    </thead>
+    <tbody id="student-info-list">
+    </tbody>
+</table>
+
+<th:block th:replace="~{common/footer::footerLayout}"></th:block>
+
+<script th:src="@{/js/admin/get-students.js}"></script>
+</body>
+</html>

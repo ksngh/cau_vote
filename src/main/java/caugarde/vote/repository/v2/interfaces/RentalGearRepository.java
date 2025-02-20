@@ -23,4 +23,8 @@ public interface RentalGearRepository {
     Slice<RentalGearDetails.Response> getPages(Long cursorId, int size);
 
     Slice<GearInfo.Response> getUserPages(String email, Long cursorId, int size);
+
+    List<RentalGear> findByStudentAndLateFee(Student student);
+
+    List<RentalGear> findByStudentAndReturnedAtIsNull(Student student);
 }

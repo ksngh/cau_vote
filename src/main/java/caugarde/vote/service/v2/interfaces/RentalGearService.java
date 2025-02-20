@@ -8,11 +8,15 @@ import caugarde.vote.model.entity.RentalGear;
 import caugarde.vote.model.entity.Student;
 import org.springframework.data.domain.Slice;
 
+import java.util.List;
+
 public interface RentalGearService {
 
     void create(Long gearId,String email);
 
     void returnGear(Long gearId,String email);
+
+    void returnAllGear(String email);
 
     RentalGear getByStudentAndGear(Student student, Gear gear);
 
@@ -24,4 +28,5 @@ public interface RentalGearService {
 
     Slice<GearInfo.Response> getUserPages(String email, Long cursorId, int size);
 
+    void imposeLateFee(List<RentalGear> overDueRentals);
 }
