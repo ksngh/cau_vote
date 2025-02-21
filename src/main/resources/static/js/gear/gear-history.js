@@ -34,7 +34,7 @@ async function fetchRentalGears() {
 
 
     try {
-        const response = await fetch(`/v2/api/rental-gear?cursor=${cursorId || ''}&size=${size+1}`);
+        const response = await fetch(`/v2/api/rental-gear/history?cursor=${cursorId || ''}&size=${size+1}`);
         if (!response.ok) {
             throw new Error('데이터를 불러오지 못했습니다.');
         }
@@ -74,6 +74,7 @@ function renderTable(rentalGears) {
         const fencingTypeKor = fencingTypeTranslations[gear.fencingType] || gear.fencingType;
         const gearTypeKor = gearTypeTranslations[gear.gearType] || gear.gearType;
         const rentalDate = gear.rentalDate ? new Date(gear.rentalDate).toLocaleDateString() : '-';
+        const returnDate = gear.returnDate ? new Date(gear.returnDate).toLocaleDateString() : '-';
 
         const row = `
             <tr>
@@ -82,6 +83,7 @@ function renderTable(rentalGears) {
                 <td>${gearTypeKor}</td>
                 <td>${gear.studentName}</td>
                 <td>${rentalDate}</td>
+                <td>${returnDate}</td>
             </tr>
         `;
         tableBody.innerHTML += row;

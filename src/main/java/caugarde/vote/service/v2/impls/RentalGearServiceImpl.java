@@ -4,6 +4,7 @@ import caugarde.vote.common.exception.api.CustomApiException;
 import caugarde.vote.common.response.ResErrorCode;
 import caugarde.vote.model.dto.gear.GearInfo;
 import caugarde.vote.model.dto.rentalgear.RentalGearDetails;
+import caugarde.vote.model.dto.rentalgear.RentalGearHistory;
 import caugarde.vote.model.entity.Gear;
 import caugarde.vote.model.entity.RentalGear;
 import caugarde.vote.model.entity.Student;
@@ -18,6 +19,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -89,8 +91,13 @@ public class RentalGearServiceImpl implements RentalGearService {
     }
 
     @Override
-    public Slice<RentalGearDetails.Response> getPages(Long cursorId, int size) {
+    public Slice<RentalGearDetails.Response> getPages(LocalDateTime cursorId, int size) {
         return rentalGearRepository.getPages(cursorId, size);
+    }
+
+    @Override
+    public Slice<RentalGearHistory.Response> getHistoryPages(LocalDateTime cursorId, int size) {
+        return rentalGearRepository.getHistoryPages(cursorId, size);
     }
 
     @Override

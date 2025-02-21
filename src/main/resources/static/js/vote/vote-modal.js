@@ -12,7 +12,6 @@ function getModalInfo(id) {
         }
     })
         .then(attendanceInfo => {
-            console.log(attendanceInfo)
             voteModal(attendanceInfo);
         })
         .catch(error => {

@@ -11,12 +11,9 @@ import java.io.Serializable;
 
 @Getter
 @AllArgsConstructor(access= AccessLevel.PROTECTED)
-@RedisHash("studentAttendance:")
-public class StudentAttendanceCount implements Serializable {
+public class StudentAttendanceCount {
 
-    @Id
     private Long studentId;
-
     private String majority;
     private String name;
     private Integer count;

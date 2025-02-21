@@ -41,7 +41,6 @@ function checkUserStatus() {
                 menuTrigger.addEventListener('click', function (event) {
                     event.preventDefault(); // 링크의 기본 동작 방지
                     const menu = document.getElementById('menu');
-                    console.log(roles)
                     if (roles.has("USER")) {
                         menu.innerHTML = ` 
                             <div class="menu-header">
@@ -74,6 +73,7 @@ function checkUserStatus() {
                                     <li style="margin-top: 15px; padding-left: 5px;"><a href="/post">투표 생성</a></li>
                                     <li style="padding-left: 5px;"><a href="/gear/new">장비 추가</a></li>
                                     <li style="padding-left: 5px;"><a href="/gear/status">대여 현황</a></li>
+                                    <li style="padding-left: 5px;"><a href="/gear/history">대여 기록</a></li>
                                     <li style="padding-left: 5px;"><a href="/admin/student">부원 관리</a></li>
                                 </ul>
                             </li>

@@ -22,4 +22,9 @@ public class GearController {
         return "gear/gear_status";
     }
 
+    @GetMapping("/gear/history")
+    public String gearHistory()  {
+        return "gear/gear_history";
+    }
+
 }

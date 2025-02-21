@@ -14,9 +14,17 @@
     <h2 style="text-align: center; color: #333;">회원 정보</h2>
 
     <div style="margin: 15px">
-        <label for="studentId" class="info">학번</label>
-        <input type="text" id="studentId" name="studentId" />
+        <label for="universityId" class="info">학번</label>
+        <input type="text" id="universityId" name="universityId" />
     </div>
+    <div style="margin: 15px;">
+        <label for="role" class="info">역할</label>
+        <select id="role" class="role-dropdown" name="role" >
+            <option value="ADMIN">임원진</option>
+            <option value="USER">부원</option>
+        </select>
+    </div>
+
 
     <div style="margin: 15px;">
         <label for="name" class="info">이름</label>
@@ -35,9 +43,16 @@
 
     <div style="margin: 15px;">
         <label class="info">연체료</label>
-        <input type="text" id="overdueFine" disabled/>
+        <div style="display: flex; align-items: center;">
+            <input style="width: auto" type="text" id="overdueFine" disabled/>
+            <button onclick="payLateFee()" class="pay-button">
+                완납
+            </button>
+        </div>
     </div>
-    <div class="radio-group">
+
+
+    <div style="margin: 15px;" class="radio-group">
         <label>
             <input type="radio" name="memberType" value="NEW" > 신입 부원
         </label>
@@ -45,6 +60,12 @@
             <input type="radio" name="memberType" value="EXISTING" > 기존 부원
         </label>
     </div>
+
+    <div class="button-group">
+        <button onclick="updateStudent()" class="action-button">수정</button>
+        <button onclick="deleteStudent()" class="action-button delete-button">삭제</button>
+    </div>
+
 
 </div>
 <th:block th:replace="~{common/footer::footerLayout}"></th:block>

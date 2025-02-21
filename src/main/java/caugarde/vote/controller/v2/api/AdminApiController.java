@@ -44,4 +44,10 @@ public class AdminApiController {
         Student student = studentService.getById(studentId);
         return CustomApiResponse.OK(ResSuccessCode.READ,StudentDetails.Response.of(student));
     }
+
+    @DeleteMapping("/student/{studentId}")
+    public CustomApiResponse<Void> deleteStudent(@PathVariable Long studentId) {
+        studentService.deleteStudent(studentId);
+        return CustomApiResponse.OK(ResSuccessCode.DELETED);
+    }
 }

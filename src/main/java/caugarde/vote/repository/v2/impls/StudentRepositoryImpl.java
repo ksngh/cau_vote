@@ -60,7 +60,7 @@ public class StudentRepositoryImpl implements StudentRepository {
                         qStudent.authorities
                 ))
                 .from(qStudent)
-                .where((cursorId == null) ? null : qStudent.id.gt(cursorId))
+                .where((cursorId == null) ? null : qStudent.id.gt(cursorId),qStudent.deletedAt.isNull())
                 .orderBy(qStudent.id.asc())  // ID 오름차순 정렬
                 .limit(size + 1)  // 다음 페이지 확인을 위해 size+1 개 조회
                 .fetch();

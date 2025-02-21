@@ -23,4 +23,6 @@ public interface StudentService {
     void paidLateFee(Long studentId);
 
     Slice<StudentInfo.Response> pageStudents(Long cursorId,int size);
+
+    void deleteStudent(Long studentId);
 }

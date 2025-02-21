@@ -1,12 +1,9 @@
 package caugarde.vote.repository.v2.impls;
 
-import caugarde.vote.model.dto.board.BoardInfo;
 import caugarde.vote.model.dto.gear.GearInfo;
 import caugarde.vote.model.dto.rentalgear.RentalGearDetails;
+import caugarde.vote.model.dto.rentalgear.RentalGearHistory;
 import caugarde.vote.model.entity.*;
-import caugarde.vote.model.enums.FencingType;
-import caugarde.vote.model.enums.GearStatus;
-import caugarde.vote.model.enums.GearType;
 import caugarde.vote.repository.v2.interfaces.RentalGearRepository;
 import caugarde.vote.repository.v2.interfaces.jpa.RentalGearJpaRepository;
 import com.querydsl.core.types.Projections;
@@ -39,7 +36,7 @@ public class RentalGearRepositoryImpl implements RentalGearRepository {
 
     @Override
     public Optional<RentalGear> findByStudentAndGear(Student student, Gear gear) {
-        return rentalGearJpaRepository.findByGearAndStudentAndReturnedAtIsNull(gear,student);
+        return rentalGearJpaRepository.findByGearAndStudentAndReturnedAtIsNull(gear, student);
     }
 
     @Override
@@ -59,7 +56,12 @@ public class RentalGearRepositoryImpl implements RentalGearRepository {
     }
 
     @Override
-    public Slice<RentalGearDetails.Response> getPages(Long cursorId, int size) {
+    public Slice<RentalGearDetails.Response> getPages(LocalDateTime cursorRentalDate, int size) {
+        // ✅ rentalDate 기반 커서 조건 (null 처리 개선)
+        BooleanExpression cursorCondition = cursorRentalDate != null
+                ? qRentalGear.rentalDate.lt(cursorRentalDate)
+                : null;
+
         List<RentalGearDetails.Response> items = queryFactory
                 .select(Projections.constructor(
                         RentalGearDetails.Response.class,
@@ -67,23 +69,61 @@ public class RentalGearRepositoryImpl implements RentalGearRepository {
                         qGear.num,
                         qGear.gearType,
                         qStudent.name,
-                        qRentalGear.rentalDate
+                        qRentalGear.rentalDate // ✅ LocalDateTime 유지
                 ))
                 .from(qRentalGear)
                 .join(qRentalGear.gear, qGear)
                 .join(qRentalGear.student, qStudent)
-                .where(cursorId != null ? qRentalGear.id.lt(cursorId) : null, isNotReturned())
-                .orderBy(qRentalGear.rentalDate.desc()) // 최신 대여순 정렬
-                .limit(size + 1)  // 다음 페이지 확인을 위해 요청 개수보다 +1
+                .where(cursorCondition, isNotReturned()) // ✅ null이면 자동으로 전체 조회됨
+                .orderBy(qRentalGear.rentalDate.desc()) // ✅ 최신 대여 순 정렬
+                .limit(size + 1) // ✅ `size + 1`개 요청하여 다음 페이지 확인
                 .fetch();
 
-        boolean hasNext = items.size() > size; // 다음 페이지 여부 확인
+        // ✅ 다음 페이지 여부 확인
+        boolean hasNext = items.size() > size;
 
         if (hasNext) {
-            items.remove(items.size() - 1); // 실제 응답에서는 +1한 데이터 제외
+            items.remove(items.size() - 1); // ✅ 마지막 데이터 삭제 (다음 페이지 커서 역할)
         }
+
         return new SliceImpl<>(items, PageRequest.of(0, size), hasNext);
     }
+
+    @Override
+    public Slice<RentalGearHistory.Response> getHistoryPages(LocalDateTime cursorRentalDate, int size) {
+        // ✅ rentalDate 기반 커서 조건 (null 처리 개선)
+        BooleanExpression cursorCondition = cursorRentalDate != null
+                ? qRentalGear.rentalDate.lt(cursorRentalDate)
+                : null;
+
+        List<RentalGearHistory.Response> items = queryFactory
+                .select(Projections.constructor(
+                        RentalGearHistory.Response.class,
+                        qGear.fencingType,
+                        qGear.num,
+                        qGear.gearType,
+                        qStudent.name,
+                        qRentalGear.rentalDate, // ✅ LocalDateTime 유지
+                        qRentalGear.returnedAt // ✅ LocalDateTime 유지
+                ))
+                .from(qRentalGear)
+                .join(qRentalGear.gear, qGear)
+                .join(qRentalGear.student, qStudent)
+                .where(cursorCondition) // ✅ null이면 자동으로 전체 조회됨
+                .orderBy(qRentalGear.rentalDate.desc()) // ✅ 최신 대여 순 정렬
+                .limit(size + 1) // ✅ `size + 1`개 요청하여 다음 페이지 확인
+                .fetch();
+
+        // ✅ 다음 페이지 여부 확인
+        boolean hasNext = items.size() > size;
+
+        if (hasNext) {
+            items.remove(items.size() - 1); // ✅ 마지막 데이터 삭제 (다음 페이지 커서 역할)
+        }
+
+        return new SliceImpl<>(items, PageRequest.of(0, size), hasNext);
+    }
+
 
     @Override
     public Slice<GearInfo.Response> getUserPages(String email, Long cursorId, int size) {
@@ -117,7 +157,7 @@ public class RentalGearRepositoryImpl implements RentalGearRepository {
 
     @Override
     public List<RentalGear> findByStudentAndLateFee(Student student) {
-        return rentalGearJpaRepository.findByStudentAndLateFeeGreaterThan(student,0);
+        return rentalGearJpaRepository.findByStudentAndLateFeeGreaterThan(student, 0);
     }
 
     @Override
@@ -125,7 +165,7 @@ public class RentalGearRepositoryImpl implements RentalGearRepository {
         return rentalGearJpaRepository.findByStudentAndReturnedAtIsNull(student);
     }
 
-    private BooleanExpression isNotReturned(){
+    private BooleanExpression isNotReturned() {
         return qRentalGear.returnedAt.isNull();
     }
 

@@ -10,6 +10,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -36,7 +37,11 @@ public class AttendanceRepositoryImpl implements AttendanceRepository {
         return queryFactory
                 .select(qVote.student.id, qVote.count())
                 .from(qVote)
-                .where(qVote.student.id.in(studentIds))
+                .where(
+                        qVote.student.id.in(studentIds),
+                        qVote.deletedAt.isNull(),
+                        qVote.createdAt.after(LocalDateTime.now().minusMonths(8)) // 8개월 이내 데이터만 조회
+                )
                 .groupBy(qVote.student.id)
                 .fetch()
                 .stream()
@@ -60,6 +65,11 @@ public class AttendanceRepositoryImpl implements AttendanceRepository {
                 .limit(10)
                 .fetch();
 
+    }
+
+    @Override
+    public Optional<Attendance> findByStudentAndSemester(Student student, String semester) {
+        return attendanceJpaRepository.findByStudentAndSemester(student, semester);
     }
 
 }

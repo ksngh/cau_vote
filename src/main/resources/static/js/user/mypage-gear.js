@@ -1,7 +1,26 @@
+const fencingTypeTranslations = {
+    "SABRE": "사브르",
+    "FLUERET": "플뢰레",
+    "COMMON": "공용"
+};
+
+// 📌 한글 변환 매핑
+const gearTypeTranslations = {
+    "MASK": "마스크",
+    "SWORD": "검",
+    "GLOVE": "장갑",
+    "METAL": "메탈 자켓",
+    "UNIFORM_TOP": "도복 상의",
+    "UNIFORM_BOTTOM": "도복 하의",
+    "BODY_WIRE": "바디 와이어",
+    "MASK_WIRE": "마스크 와이어"
+    // "OTHERS": "기타"
+};
+
 getMyGear();
 fetchLateFee();
 
-function getMyGear(){
+function getMyGear() {
     // 1️⃣ 장비 목록 불러오기
     fetch(`/v2/api/student/gear`)
         .then(response => response.json())
@@ -44,33 +63,33 @@ function gearCard(data) {
     let status = '';
 
 
-        status = `<p class="gear-status in-use">대여 중 <span class="black-text">(대여자 : ${data.studentName})</span></p>
+    status = `<p class="gear-status in-use">대여 중 <span class="black-text">(대여자 : ${data.studentName})</span></p>
           <p class="gear-status">예상 반납일: ${formatDate(new Date(data.dueDate))}</p>`;
-        hideRental = true;
+    hideRental = true;
 
 
     const card = document.createElement('div');
     card.classList.add("gear-card");
     card.setAttribute('data-id', data.id);
 
-    // 📌 사용자 권한 확인
-    fetch('/v2/api/auth')
-        .then(response => response.json())
-        .then(authInfo => {
-            const roles = new Set(authInfo.data.role);
+    const translatedGearType = gearTypeTranslations[data.gearType] || data.gearType;
+    const translatedFencingType = fencingTypeTranslations[data.fencingType] || data.fencingType;
 
-            card.innerHTML = `
+    card.innerHTML = `
                     <div class="gear-info">
-                        <h3 class="gear-num">${data.num} </h3>
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <h3 class="gear-num" style="margin: 0;">${data.num}</h3>
+                            <p style="margin: 0;">${translatedFencingType} ${translatedGearType}</p>
+                        </div>
                         ${status}
+                    </div>
                     </div>
                     <div class="button-container">
                         <button class="rent-button" onclick="rentGear('${data.id}')" ${hideRental ? 'disabled' : ''}>대여</button>
                         <button class="return-button" onclick="returnGear('${data.id}')" ${hideReturn ? 'disabled' : ''}>반납</button>
                     </div>
                     `;
-        })
-        .catch(error => console.error('Error fetching user status:', error));
+
 
     document.querySelector(".gear-list").appendChild(card);
 }

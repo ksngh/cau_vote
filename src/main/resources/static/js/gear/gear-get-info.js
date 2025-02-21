@@ -4,6 +4,13 @@ const gearTypeOptions = {
     "COMMON": ["UNIFORM_TOP", "UNIFORM_BOTTOM", "BODY_WIRE", "MASK_WIRE", "OTHERS"]
 };
 
+const fencingTypeTranslations = {
+    "SABRE": "사브르",
+    "FLUERET": "플뢰레",
+    "COMMON": "공용"
+};
+
+
 // 📌 한글 변환 매핑
 const gearTypeTranslations = {
     "MASK": "마스크",
@@ -106,7 +113,8 @@ function gearCard(data) {
     const card = document.createElement('div');
     card.classList.add("gear-card");
     card.setAttribute('data-id', data.id);
-
+    const translatedGearType = gearTypeTranslations[data.gearType] || data.gearType;
+    const translatedFencingType = fencingTypeTranslations[data.fencingType] || data.fencingType;
     // 📌 사용자 권한 확인
     fetch('/v2/api/auth')
         .then(response => response.json())
@@ -116,7 +124,10 @@ function gearCard(data) {
             if (roles.has("ADMIN")) {
                 card.innerHTML = `
                     <div class="gear-info">
-                        <h3 class="gear-num">${data.num} </h3>
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <h3 class="gear-num" style="margin: 0;">${data.num}</h3>
+                            <p style="margin: 0;">${translatedFencingType} ${translatedGearType}</p>
+                        </div>
                         ${status}
                     </div>
                     <div class="button-container">
@@ -128,7 +139,12 @@ function gearCard(data) {
             } else {
                 card.innerHTML = `
                     <div class="gear-info">
-                        <h3 class="gear-num">${data.num}</h3>
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <h3 class="gear-num" style="margin: 0;">${data.num}</h3>
+                            <p style="margin: 0;">${translatedFencingType} ${translatedGearType}</p>
+                        </div>
+                    </div>
+                    <div>
                         ${status}
                     </div>
                     <div class="button-container">

@@ -63,4 +63,11 @@ public class StudentServiceImpl implements StudentService {
         return studentRepository.pageStudents(cursorId, size);
     }
 
+    @Override
+    @Transactional
+    public void deleteStudent(Long id) {
+        Student student = getById(id);
+        student.delete();
+    }
+
 }

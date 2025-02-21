@@ -36,5 +36,13 @@
             </ul>
         </div>
     </div>
+    <script>
+        function redirectToPage(page) {
+        if (page === 'train') {
+            window.location.href = "/"; // 훈련 신청 페이지로 이동
+        } else if (page === 'rent') {
+            window.location.href = "/gear"; // 장비 대여 페이지로 이동
+        }
+    }</script>
     <script src="/js/header.js"></script>
 </div>
