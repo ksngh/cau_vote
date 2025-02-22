@@ -30,7 +30,7 @@ public class AttendanceServiceImpl implements AttendanceService {
 
     @Override
     @Transactional
-    @Scheduled(cron = "*/10 * * * * *")
+    @Scheduled(cron = "0 0 0 * * *")
     public void createAttendance() {
         List<Student> students = studentService.getAllStudents();
         Map<Long, Integer> voteCounts = attendanceRepository.getStudentVoteCounts(students);

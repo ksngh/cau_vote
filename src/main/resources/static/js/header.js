@@ -64,7 +64,6 @@ function checkUserStatus() {
                                 <ul class="submenu" id="my-submenu">
                                     <li style="margin-top: 15px; padding-left: 5px;"><a href="/mypage/vote">투표 내역</a></li>
                                     <li style="padding-left: 5px;"><a href="/mypage/gear">대여 장비</a></li>
-                                  
                                 </ul>
                             </li>
                             <li class="has-submenu">
