@@ -1,6 +1,7 @@
 package caugarde.vote.service.v2.impls;
 
 import caugarde.vote.common.util.SemesterUtil;
+import caugarde.vote.model.dto.attendance.AttendanceInfo;
 import caugarde.vote.model.entity.Attendance;
 import caugarde.vote.model.entity.Student;
 import caugarde.vote.model.entity.cached.StudentAttendanceCount;
@@ -30,23 +31,20 @@ public class AttendanceServiceImpl implements AttendanceService {
 
     @Override
     @Transactional
-    @Scheduled(cron = "0 0 0 * * *")
+    @Scheduled(cron = "* * 0 * * *")
     public void createAttendance() {
         List<Student> students = studentService.getAllStudents();
         Map<Long, Integer> voteCounts = attendanceRepository.getStudentVoteCounts(students);
 
-// 기존 출석 데이터 가져오기 & Map 변환
         Map<Long, Attendance> attendanceMap = students.stream()
                 .map(student -> attendanceRepository.findByStudentAndSemester(
                                 student, SemesterUtil.getSemester(LocalDate.now()))
                         .orElse(Attendance.of(student, 0)))
                 .collect(Collectors.toMap(attendance -> attendance.getStudent().getId(), attendance -> attendance));
 
-// 출석 횟수 업데이트
         attendanceMap.forEach((studentId, attendance) ->
                 attendance.updateCount(voteCounts.getOrDefault(studentId, 0)));
 
-// 최종 리스트 생성
         List<Attendance> updatedAttendances = new ArrayList<>(attendanceMap.values());
         attendanceRepository.saveAll(updatedAttendances);
 
@@ -56,14 +54,12 @@ public class AttendanceServiceImpl implements AttendanceService {
     }
 
     public List<Attendance> getTop10s(List<Attendance> attendanceList) {
-        // 출석 횟수 내림차순 정렬
         List<Attendance> sortedList = attendanceList.stream()
                 .sorted(Comparator.comparingInt(Attendance::getAttendanceCount).reversed()) // 내림차순 정렬
                 .toList();
 
-        // 상위 10등까지 포함된 리스트 반환
         return sortedList.stream()
-                .limit(getTop10CutoffIndex(sortedList)) // 10등까지 포함한 개수만큼 자름
+                .limit(getTop10CutoffIndex(sortedList))
                 .toList();
     }
 
@@ -73,7 +69,7 @@ public class AttendanceServiceImpl implements AttendanceService {
         }
 
         int cutoffIndex = 10;
-        int cutoffValue = sortedList.get(9).getAttendanceCount(); // 10번째 값
+        int cutoffValue = sortedList.get(9).getAttendanceCount();
 
         while (cutoffIndex < sortedList.size() && sortedList.get(cutoffIndex).getAttendanceCount() == cutoffValue) {
             cutoffIndex++;
@@ -85,6 +81,11 @@ public class AttendanceServiceImpl implements AttendanceService {
     @Override
     public List<Attendance> getTop10Attendances(String semester) {
         return attendanceRepository.findTop10Attendance(semester);
+    }
+
+    @Override
+    public List<AttendanceInfo.Response> getBeforeSemester() {
+        return attendanceRepository.findBeforeSemester().stream().map(AttendanceInfo.Response::fromEntity).toList();
     }
 
 }

@@ -2,6 +2,7 @@ package caugarde.vote.controller.v2.api;
 
 import caugarde.vote.common.response.CustomApiResponse;
 import caugarde.vote.common.response.ResSuccessCode;
+import caugarde.vote.common.util.CookieUtil;
 import caugarde.vote.model.dto.board.BoardInfo;
 import caugarde.vote.model.dto.gear.GearInfo;
 import caugarde.vote.model.dto.rentalgear.RentalGearLateFee;
@@ -12,6 +13,8 @@ import caugarde.vote.service.v2.interfaces.BoardService;
 import caugarde.vote.service.v2.interfaces.GearService;
 import caugarde.vote.service.v2.interfaces.RentalGearService;
 import caugarde.vote.service.v2.interfaces.StudentService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Slice;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -28,6 +31,7 @@ public class StudentApiController {
     private final StudentService studentService;
     private final BoardService boardService;
     private final RentalGearService rentalGearService;
+    private final CookieUtil cookieUtil;
 
     @PatchMapping("/student")
     public CustomApiResponse<Void> initialUpdateStudent(@AuthenticationPrincipal CustomOAuthUser user,
@@ -63,6 +67,13 @@ public class StudentApiController {
     public CustomApiResponse<Void> returnAllGear(@AuthenticationPrincipal CustomOAuthUser user) {
         rentalGearService.returnAllGear(user.getName());
         return CustomApiResponse.OK(ResSuccessCode.UPDATED);
+    }
+
+    @PostMapping("/logout")
+    public CustomApiResponse<Void> logout(HttpServletResponse response) {
+        SecurityContextHolder.clearContext();
+        cookieUtil.deleteCookie(response);
+        return CustomApiResponse.OK(ResSuccessCode.DELETED);
     }
 
 }

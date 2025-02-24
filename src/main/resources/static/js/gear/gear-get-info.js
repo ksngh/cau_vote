@@ -136,20 +136,28 @@ function gearCard(data) {
                         <button class="delete-button" onclick="deleteGear('${data.id}')">&times;</button>
                     </div>
                     `;
-            } else {
+            } else if(roles.has("USER")){
                 card.innerHTML = `
                     <div class="gear-info">
                         <div style="display: flex; align-items: center; gap: 10px;">
                             <h3 class="gear-num" style="margin: 0;">${data.num}</h3>
                             <p style="margin: 0;">${translatedFencingType} ${translatedGearType}</p>
                         </div>
-                    </div>
-                    <div>
                         ${status}
                     </div>
                     <div class="button-container">
                         <button class="rent-button" onclick="rentGear('${data.id}')" ${hideRental ? 'disabled' : ''}>대여</button>
                         <button class="return-button" onclick="returnGear('${data.id}')" ${hideReturn ? 'disabled' : ''}>반납</button>
+                    </div>
+                `;
+            } else{
+                card.innerHTML = `
+                    <div class="gear-info">
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <h3 class="gear-num" style="margin: 0;">${data.num}</h3>
+                            <p style="margin: 0;">${translatedFencingType} ${translatedGearType}</p>
+                        </div>
+                        ${status}
                     </div>
                 `;
             }
@@ -218,7 +226,7 @@ async function deleteGear(gearId){
         location.reload();
     } catch (error) {
         console.error("삭제 중 오류 발생:", error);
-        alert("삭제 중 오류가 발생했습니다.");
+        alert("현재 대여중인 장비입니다.");
     }
 }
 

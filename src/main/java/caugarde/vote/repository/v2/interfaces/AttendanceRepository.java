@@ -19,4 +19,6 @@ public interface AttendanceRepository {
 
     Optional<Attendance> findByStudentAndSemester(Student student, String semester);
 
+    List<Attendance> findBeforeSemester();
+
 }

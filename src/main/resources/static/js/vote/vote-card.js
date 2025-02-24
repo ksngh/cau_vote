@@ -122,7 +122,7 @@ function voteCard(data) {
                         <button onclick=updateBoard('${data.id}')>수정</button>
                     </div>
                 `;
-            } else {
+            } else if(roles.has("USER")){
                 card.innerHTML = `
                     <h3 style="display: inline;">${data.title}</h3>
                     <p>${voteInfo}</p>
@@ -142,6 +142,17 @@ function voteCard(data) {
                             </div>
                         <button onclick=sendVote("${data.id}") style="${hideButtons ? 'display:none;' : ''}">참석</button>
                         <button onclick=cancel("${data.id}") style="${hideButtons ? 'display:none;' : ''}">취소</button>
+                        <button onclick=openVoteModal("${data.id}") style="${hidePeople ? 'display:none;' : ''}">참여 인원</button>
+                    </div>
+                `;
+            }else{
+                card.innerHTML = `
+                    <h3 style="display: inline;">${data.title}</h3>
+                    <p>${voteInfo}</p>
+                    <p id="attendance-number">${attendanceNum}</p>
+                    <div class="content" id="card-content">
+                        <p class="vote">${data.content}</p>
+                       
                         <button onclick=openVoteModal("${data.id}") style="${hidePeople ? 'display:none;' : ''}">참여 인원</button>
                     </div>
                 `;

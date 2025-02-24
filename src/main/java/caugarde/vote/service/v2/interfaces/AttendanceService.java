@@ -11,4 +11,5 @@ public interface AttendanceService {
 
     List<Attendance> getTop10Attendances(String semester);
 
+    List<AttendanceInfo.Response> getBeforeSemester();
 }

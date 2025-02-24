@@ -1,31 +1,19 @@
 // 모달 요소
-const modal = document.getElementById("loginModal");
 const loginBtn = document.getElementById("loginBtn");
 const closeBtn = document.getElementById("closeBtn");
 
 // 로그인 버튼 클릭 시 모달 열기
 loginBtn.onclick = function () {
-    modal.style.display = "block";
+    window.location.href="/oauth2/authorization/kakao";
 }
 
-// 모달 닫기 버튼 클릭 시 모달 닫기
-closeBtn.onclick = function () {
-    modal.style.display = "none";
-}
-
-// 모달 외부 클릭 시 모달 닫기
-window.onclick = function (event) {
-    if (event.target === modal) {
-        modal.style.display = "none";
-    }
-}
 
 function checkUserStatus() {
     fetch('/v2/api/auth')
         .then(response => response.json())
         .then(authInfo => {
             const roles = new Set(authInfo.data.role)
-            if (roles) {
+            if (!roles.has("ANONYMOUS")) {
                 // 로그인한 경우 햄버거 버튼 표시
                 const nav = document.getElementById('nav-header');
 
@@ -53,7 +41,7 @@ function checkUserStatus() {
                                     <li style="padding-left: 5px;"><a href="/mypage/gear">대여 장비</a></li>
                                 </ul>
                             </li>
-                            <li><a href="/logout">로그아웃</a></li>`
+                            <li><a href="#" onclick="logout()">로그아웃</a></li>`
                     } else if (roles.has("ADMIN")) {
                         menu.innerHTML = `
                             <div class="menu-header">
@@ -76,7 +64,7 @@ function checkUserStatus() {
                                     <li style="padding-left: 5px;"><a href="/admin/student">부원 관리</a></li>
                                 </ul>
                             </li>
-                            <li><a href="/logout">로그아웃</a></li>`
+                            <li><a href="#" onclick="logout()">로그아웃</a></li>`
                         document.getElementById("admin-menu-toggle").addEventListener("click", function(event) {
                             event.preventDefault();  // 기본 링크 동작 방지
                             document.getElementById("admin-submenu").classList.toggle("show");
@@ -124,6 +112,20 @@ function checkUserStatus() {
 document.addEventListener('DOMContentLoaded', (event) => {
     checkUserStatus();
 });
+
+function logout() {
+    fetch('/v2/api/logout',{
+        method:'POST',
+        credentials:'include'
+    })
+        .then(response => {
+            alert("정상적으로 로그아웃 되었습니다.");
+            window.location.href = "/";
+        })
+        .catch(error => {
+            console.error("로그아웃 중 오류가 발생했습니다.", error);
+        });
+}
 
 
 

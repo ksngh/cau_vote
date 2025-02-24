@@ -83,7 +83,6 @@ public class BoardServiceImpl implements BoardService {
         return boardRepository.getUserPages(email,cursorId,size);
     }
 
-    //todo: 캐싱 처리 어떻게 할건가요
     @Scheduled(cron = "0 */1 * * * *")
     @Transactional
     public void closeExpiredBoards() {

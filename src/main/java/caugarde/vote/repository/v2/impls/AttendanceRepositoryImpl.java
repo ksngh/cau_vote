@@ -1,5 +1,6 @@
 package caugarde.vote.repository.v2.impls;
 
+import caugarde.vote.common.util.SemesterUtil;
 import caugarde.vote.model.entity.Attendance;
 import caugarde.vote.model.entity.QAttendance;
 import caugarde.vote.model.entity.QVote;
@@ -10,6 +11,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
@@ -70,6 +72,11 @@ public class AttendanceRepositoryImpl implements AttendanceRepository {
     @Override
     public Optional<Attendance> findByStudentAndSemester(Student student, String semester) {
         return attendanceJpaRepository.findByStudentAndSemester(student, semester);
+    }
+
+    @Override
+    public List<Attendance> findBeforeSemester() {
+        return attendanceJpaRepository.findBySemesterIsNot(SemesterUtil.getSemester(LocalDate.now()));
     }
 
 }

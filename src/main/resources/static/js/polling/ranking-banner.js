@@ -1,7 +1,7 @@
 getFirstRankings();
 
 function getFirstRankings() {
-    fetch('/v2/api/attendance/most-active')
+    fetch('/v2/api/attendance/most')
         .then(response => response.json())
         .then(ranking => {
             rankingData = ranking.data;

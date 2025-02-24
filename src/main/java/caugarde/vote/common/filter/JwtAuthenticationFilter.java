@@ -30,47 +30,33 @@ import java.util.Map;
 @Slf4j(topic = "JWT 검증 및 인가")
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
-    private static final List<String> EXCLUDED_PATHS =
-            List.of(
-//                    "/ws",
-                    "/login",
-                    "/",
-                    "/gear",
-                    "/static",
-                    "/ranking",
-                    "/css","/js","/images",
-                    "/sign-up"
-//                    "/v2/api/gear"
-                    );
     private final StudentService studentService;
     private final JwtUtil jwtUtil;
     private final CookieUtil cookieUtil;
 
-    private boolean isExcludedFromFilter(HttpServletRequest request) {
-        String requestURI = request.getRequestURI();
-        return EXCLUDED_PATHS.stream().anyMatch(requestURI::contentEquals);
-    }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
-        if (isExcludedFromFilter(request)) {
-            filterChain.doFilter(request, response);
-            return;
-        }
+        String token = cookieUtil.getAuthCookie(request);
 
         try {
-            String token = cookieUtil.getAuthCookie(request);
-            validateAuthorizationCookie(token);
-            validateToken(token);
-            String email = jwtUtil.getEmail(token);
-            authenticateUser(email);
+            if (token != null) {
+                validateToken(token);
+                String email = jwtUtil.getEmail(token);
+                authenticateUser(email);
+            } else {
+                SecurityContextHolder.clearContext();
+            }
+
             filterChain.doFilter(request, response);
+
         } catch (CustomApiException e) {
             handleException(response, e);
             log.error(e.getMessage(), e);
         }
     }
+
 
     private void validateAuthorizationCookie(String token) {
         if (token == null) {
@@ -87,9 +73,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private void authenticateUser(String email) {
         if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             Student student = studentService.getByEmail(email);
-            validatePending(student);
+//            validatePending(student);
             CustomOAuthUser oAuthUser = new CustomOAuthUser(student);
-            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(oAuthUser, null, oAuthUser.getAuthorities());
+            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(oAuthUser, "", oAuthUser.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(authenticationToken);
         }
     }

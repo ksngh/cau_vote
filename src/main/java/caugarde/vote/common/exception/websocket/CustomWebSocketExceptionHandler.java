@@ -1,8 +1,10 @@
 package caugarde.vote.common.exception.websocket;
 
+import caugarde.vote.common.response.CustomApiResponse;
 import caugarde.vote.common.response.CustomWebSocketResponse;
 import caugarde.vote.common.response.ResCode;
 import caugarde.vote.common.response.ResErrorCode;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.handler.annotation.MessageExceptionHandler;
@@ -38,7 +40,7 @@ public class CustomWebSocketExceptionHandler {
     }
 
     @MessageExceptionHandler(Exception.class)
-    public void handleGeneralException(Exception ex, Principal principal) {
+    public void handleGeneralException(Exception ex, Principal principal, HttpServletResponse response) {
         String username = (principal != null) ? principal.getName() : "UNKNOWN_USER";
 
         log.error("WebSocket 내부 서버 오류: 사용자={} 예외={}", username, ex.getClass().getSimpleName(), ex);

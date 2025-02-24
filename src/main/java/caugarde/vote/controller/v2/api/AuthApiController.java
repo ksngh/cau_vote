@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @RestController
@@ -21,7 +22,12 @@ public class AuthApiController {
 
     @GetMapping("/auth")
     public CustomApiResponse<AuthInfo.Response> auth(@AuthenticationPrincipal CustomOAuthUser user) {
-        AuthInfo.Response response = AuthInfo.Response.of((Set<Role>) user.getAuthorities());
+        AuthInfo.Response response;
+        if (user!=null){
+            response = AuthInfo.Response.of((Set<Role>) user.getAuthorities());
+        }else{
+            response= AuthInfo.Response.of(Set.of(Role.ANONYMOUS));
+        }
         return CustomApiResponse.OK(ResSuccessCode.READ, response);
     }
 
