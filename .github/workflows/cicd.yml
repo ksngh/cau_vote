@@ -68,6 +68,7 @@ jobs:
     needs: build
 
     # 도커 컴포즈 할 수 있는 환경으로 바꿔두기
+    # echo "${{ secrets.KEYSTORE }}" | base64 --decode > ./keystore.p12
     steps:
       - name: SSH and deploy to EC2
         uses: appleboy/ssh-action@v0.1.4
@@ -77,7 +78,6 @@ jobs:
           key: ${{ secrets.EC2_KEY }}
           script: |
             echo "${{ secrets.V2_DOCKER_COMPOSE }}" > ./docker-compose.yml
-            # echo "${{ secrets.KEYSTORE }}" | base64 --decode > ./keystore.p12
             sudo docker pull ksngh/caufencing:latest
             sudo docker stop caufencing || true
             sudo docker rm caufencing || true
