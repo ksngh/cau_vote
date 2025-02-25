@@ -28,6 +28,11 @@ jobs:
         run: |
           echo "${{ secrets.KEYSTORE }}" | base64 --decode > ./keystore.p12
 
+              # 3. ENV 파일 복원
+      - name: Restore .env from GitHub Secrets
+        run: |
+          echo "${{ secrets.ENV }}" > ./.env
+
       # 4. Docker compose 파일 복원
       - name: Restore docker-compose.yml from GitHub Secrets
         run: |
