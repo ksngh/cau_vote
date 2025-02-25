@@ -78,6 +78,7 @@ jobs:
           key: ${{ secrets.EC2_KEY }}
           script: |
             echo "${{ secrets.V2_DOCKER_COMPOSE }}" > ./docker-compose.yml
+            echo "${{ secrets.ENV }}" > ./.env
             sudo docker pull ksngh/caufencing:latest
             sudo docker stop caufencing || true
             sudo docker rm caufencing || true
