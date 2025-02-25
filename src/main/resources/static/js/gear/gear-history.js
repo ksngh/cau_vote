@@ -53,7 +53,7 @@ async function fetchRentalGears() {
     } catch (error) {
         console.error('오류 발생:', error);
         document.getElementById('rental-gear-list').innerHTML =
-            `<tr><td colspan="5" class="empty-message">데이터를 불러오는 중 오류가 발생했습니다.</td></tr>`;
+            `<tr><td colspan="6" class="empty-message">대여 장비 기록이 없습니다.</td></tr>`;
     } finally {
         isLoading = false;
     }
