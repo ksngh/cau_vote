@@ -42,14 +42,14 @@ public class BoardApiController {
     public CustomApiResponse<Void> updateBoard(@RequestBody @Valid BoardUpdate.Request request,
                                                @PathVariable Long boardId,
                                                @AuthenticationPrincipal CustomOAuthUser user) {
-        boardService.update(request,boardId,user.getName());
+        boardService.update(request, boardId, user.getName());
         return CustomApiResponse.OK(ResSuccessCode.UPDATED);
     }
 
     @DeleteMapping("/board/{boardId}")
     public CustomApiResponse<Void> deleteBoard(@PathVariable Long boardId,
                                                @AuthenticationPrincipal CustomOAuthUser user) {
-        boardService.delete(boardId,user.getName());
+        boardService.delete(boardId, user.getName());
         return CustomApiResponse.OK(ResSuccessCode.DELETED);
     }
 
