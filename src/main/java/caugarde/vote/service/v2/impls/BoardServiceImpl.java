@@ -78,7 +78,11 @@ public class BoardServiceImpl implements BoardService {
         return boardRepository.getPages(cursorId,size);
     }
 
-    //todo: 캐싱 처리 어떻게 할건가요
+    @Override
+    public Slice<BoardInfo.Response> getUserPages(String email, Long cursorId, int size) {
+        return boardRepository.getUserPages(email,cursorId,size);
+    }
+
     @Scheduled(cron = "0 */1 * * * *")
     @Transactional
     public void closeExpiredBoards() {

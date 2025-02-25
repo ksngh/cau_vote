@@ -18,6 +18,8 @@ public interface BoardRepository {
 
     Slice<BoardInfo.Response> getPages(Long cursorId, int size);
 
+    Slice<BoardInfo.Response> getUserPages(String email, Long cursorId, int size);
+
     List<Long> closeExpiredBoards();
 
     List<Long> activateBoards();

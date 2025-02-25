@@ -70,7 +70,7 @@ document.getElementById("registerBtn").addEventListener("click", function () {
         })
         .then(result => {
             alert('장비가 생성되었습니다.');
-            window.location.href = "/";
+            window.location.href = "/gear/new";
         })
         .catch(error => {
             console.error('Error:', error);

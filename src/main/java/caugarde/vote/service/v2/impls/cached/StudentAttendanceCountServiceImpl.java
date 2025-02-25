@@ -31,5 +31,10 @@ public class StudentAttendanceCountServiceImpl implements StudentAttendanceCount
         return studentAttendanceCountRepository.findTop10s();
     }
 
+    @Override
+    public void deleteAllCache() {
+        studentAttendanceCountRepository.clearAllCache();
+    }
+
 
 }

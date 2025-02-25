@@ -37,4 +37,8 @@ public class Attendance {
         return new Attendance(student, attendanceCount);
     }
 
+    public void updateCount(Integer attendanceCount){
+        this.attendanceCount = attendanceCount;
+    }
+
 }

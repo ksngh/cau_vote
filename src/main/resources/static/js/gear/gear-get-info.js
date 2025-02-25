@@ -4,6 +4,13 @@ const gearTypeOptions = {
     "COMMON": ["UNIFORM_TOP", "UNIFORM_BOTTOM", "BODY_WIRE", "MASK_WIRE", "OTHERS"]
 };
 
+const fencingTypeTranslations = {
+    "SABRE": "사브르",
+    "FLUERET": "플뢰레",
+    "COMMON": "공용"
+};
+
+
 // 📌 한글 변환 매핑
 const gearTypeTranslations = {
     "MASK": "마스크",
@@ -69,7 +76,7 @@ document.getElementById("searchBtn").addEventListener("click", function () {
             gearsWithRentalInfo.forEach(gear => gearCard(gear));
         })
         .catch(error => {
-            document.getElementById("gear-result").innerText = "에러 발생: " + error;
+            console.error(error)
         });
 });
 
@@ -106,7 +113,8 @@ function gearCard(data) {
     const card = document.createElement('div');
     card.classList.add("gear-card");
     card.setAttribute('data-id', data.id);
-
+    const translatedGearType = gearTypeTranslations[data.gearType] || data.gearType;
+    const translatedFencingType = fencingTypeTranslations[data.fencingType] || data.fencingType;
     // 📌 사용자 권한 확인
     fetch('/v2/api/auth')
         .then(response => response.json())
@@ -116,7 +124,10 @@ function gearCard(data) {
             if (roles.has("ADMIN")) {
                 card.innerHTML = `
                     <div class="gear-info">
-                        <h3 class="gear-num">${data.num} </h3>
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <h3 class="gear-num" style="margin: 0;">${data.num}</h3>
+                            <p style="margin: 0;">${translatedFencingType} ${translatedGearType}</p>
+                        </div>
                         ${status}
                     </div>
                     <div class="button-container">
@@ -125,15 +136,28 @@ function gearCard(data) {
                         <button class="delete-button" onclick="deleteGear('${data.id}')">&times;</button>
                     </div>
                     `;
-            } else {
+            } else if(roles.has("USER")){
                 card.innerHTML = `
                     <div class="gear-info">
-                        <h3 class="gear-num">${data.num}</h3>
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <h3 class="gear-num" style="margin: 0;">${data.num}</h3>
+                            <p style="margin: 0;">${translatedFencingType} ${translatedGearType}</p>
+                        </div>
                         ${status}
                     </div>
                     <div class="button-container">
                         <button class="rent-button" onclick="rentGear('${data.id}')" ${hideRental ? 'disabled' : ''}>대여</button>
                         <button class="return-button" onclick="returnGear('${data.id}')" ${hideReturn ? 'disabled' : ''}>반납</button>
+                    </div>
+                `;
+            } else{
+                card.innerHTML = `
+                    <div class="gear-info">
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <h3 class="gear-num" style="margin: 0;">${data.num}</h3>
+                            <p style="margin: 0;">${translatedFencingType} ${translatedGearType}</p>
+                        </div>
+                        ${status}
                     </div>
                 `;
             }
@@ -180,7 +204,7 @@ function rentGear(gearId){
             return response.json(); // 정상 응답인 경우 JSON 데이터를 반환
         } else {
             return response.json().then(errResponse => {
-                throw new Error(errResponse.errorList[0]); // 첫 번째 에러 메시지 반환
+                throw new Error(errResponse.description); // 첫 번째 에러 메시지 반환
             })
         }
     })
@@ -189,22 +213,20 @@ function rentGear(gearId){
             window.location.href="/gear"
         })
         .catch(error => {
-            console.error('Error:', error);
             alert(error.message); // 에러 메시지 alert
         });
-
 }
 
 async function deleteGear(gearId){
     if (!confirm("장비를 삭제하시겠습니까?")) return;
     try {
-        const response = await fetch(`v2/api/gear/${gearId}`, { method: "DELETE" });
+        const response = await fetch(`/v2/api/gear/${gearId}`, { method: "DELETE" });
         if (!response.ok) throw new Error("삭제 실패");
-        alert("투표가 삭제되었습니다.");
+        alert("장비가 삭제되었습니다.");
         location.reload();
     } catch (error) {
         console.error("삭제 중 오류 발생:", error);
-        alert("삭제 중 오류가 발생했습니다.");
+        alert("현재 대여중인 장비입니다.");
     }
 }
 
@@ -214,3 +236,4 @@ function formatDate(date) {
     const day = date.getDate();
     return `${year}년 ${month}월 ${day}일`;
 }
+

@@ -5,18 +5,17 @@ import jakarta.persistence.Id;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.springframework.data.redis.core.RedisHash;
 
 import java.io.Serializable;
 
 @Getter
 @AllArgsConstructor(access= AccessLevel.PROTECTED)
-@RedisHash("studentAttendance:")
+@NoArgsConstructor
 public class StudentAttendanceCount implements Serializable {
 
-    @Id
     private Long studentId;
-
     private String majority;
     private String name;
     private Integer count;

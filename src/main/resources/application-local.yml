@@ -1,0 +1,51 @@
+spring:
+  application:
+    name: vote
+  datasource:
+    url: jdbc:mariadb://223.130.131.65:3306/cau-vote-db
+    username: cau-vote
+    password: caufencing2022
+    driver-class-name: org.mariadb.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    defer-datasource-initialization: true
+  security:
+    oauth2:
+      client:
+        registration:
+          kakao:
+            client-name: kakao
+            client-id: 4d2d095dd561e075e3de2a8d13853daf
+            client-secret: eEDeNkdBs1bo2bx927AF1ki5RdEH2R6k
+            redirect-uri: http://223.130.131.65:8080/oauth/kakao/callback
+#            redirect-uri: http://192.168.123.105:8080/oauth/kakao/callback
+            authorization-grant-type: authorization_code
+            scope:
+              - profile_nickname
+              - account_email
+            client-authentication-method: client_secret_post
+        provider:
+          kakao:
+            authorization-uri: https://kauth.kakao.com/oauth/authorize
+            token-uri: https://kauth.kakao.com/oauth/token
+            user-info-uri: https://kapi.kakao.com/v2/user/me
+            user-name-attribute: id
+
+
+
+  data:
+    redis:
+      port: 16379
+      host: localhost
+logging:
+  level:
+    org:
+      springframework:
+        security: DEBUG
+        web:
+          socket: DEBUG
+        messaging: DEBUG
+
+jwtSecret :
+  ${jwt-secret}

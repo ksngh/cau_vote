@@ -6,14 +6,13 @@
   <title>중앙가르드 랭킹</title>
   <link rel="stylesheet" th:href="@{/css/header.css}">
   <link rel="stylesheet" th:href="@{/css/ranking.css}">
-  <link href="/favicon.ico" rel="icon" fencingType="image/x-icon">
+  <link href="/favicon.ico" rel="icon" type="image/x-icon">
 </head>
 
 <body>
 <th:block th:replace="~{common/header::headerLayout}"></th:block>
-<h3 style="text-align: center">중앙가르드 훈련 참여 횟수</h3>
 <div class="rankings-list" id="rankings-container"></div>
-<!--<script src="/js/user/ranking.js"></script>-->
+<script src="/js/user/ranking.js"></script>
 </body>
 <th:block th:replace="~{common/footer :: footerLayout}"></th:block>
 </html>

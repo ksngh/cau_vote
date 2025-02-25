@@ -97,4 +97,16 @@ public class ValidExceptionHandler {
                 ));
     }
 
+    @ExceptionHandler(NullPointerException.class)
+    public ResponseEntity<Object> handleNullPointerException(NullPointerException exception) {
+
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .body(CustomApiResponse.ERROR(
+                        ResErrorCode.NOT_FOUND,
+                        "Missing parameter: " + exception.getMessage(),
+                        null
+                ));
+    }
+
 }

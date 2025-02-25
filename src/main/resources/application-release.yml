@@ -1,0 +1,41 @@
+spring:
+  application:
+    name: ${SPRING_APPLICATION_NAME}
+
+  datasource:
+    url: ${SPRING_DATASOURCE_URL}
+    username: ${SPRING_DATASOURCE_USERNAME}
+    password: ${SPRING_DATASOURCE_PASSWORD}
+    driver-class-name: ${SPRING_DATASOURCE_DRIVER_CLASS_NAME}
+
+  jpa:
+    hibernate:
+      ddl-auto: ${SPRING_JPA_HIBERNATE_DDL_AUTO}
+    defer-datasource-initialization: ${SPRING_JPA_DEFER_DATASOURCE_INITIALIZATION}
+
+  security:
+    oauth2:
+      client:
+        registration:
+          kakao:
+            client-name: ${KAKAO_CLIENT_NAME}
+            client-id: ${KAKAO_CLIENT_ID}
+            client-secret: ${KAKAO_CLIENT_SECRET}
+            redirect-uri: ${KAKAO_REDIRECT_URI}
+            authorization-grant-type: ${KAKAO_AUTHORIZATION_GRANT_TYPE}
+            scope: ${KAKAO_SCOPE}
+            client-authentication-method: ${KAKAO_CLIENT_AUTHENTICATION_METHOD}
+        provider:
+          kakao:
+            authorization-uri: ${KAKAO_AUTHORIZATION_URI}
+            token-uri: ${KAKAO_TOKEN_URI}
+            user-info-uri: ${KAKAO_USER_INFO_URI}
+            user-name-attribute: ${KAKAO_USER_NAME_ATTRIBUTE}
+
+  data:
+    redis:
+      host: ${SPRING_REDIS_HOST}
+      port: ${SPRING_REDIS_PORT}
+
+jwtSecret :
+  ${jwt-secret}

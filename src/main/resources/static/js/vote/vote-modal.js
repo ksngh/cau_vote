@@ -1,5 +1,5 @@
 function getModalInfo(id) {
-    fetch(`v2/api/board/${id}/vote`, {
+    fetch(`/v2/api/board/${id}/vote`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json'
@@ -12,7 +12,6 @@ function getModalInfo(id) {
         }
     })
         .then(attendanceInfo => {
-            console.log(attendanceInfo)
             voteModal(attendanceInfo);
         })
         .catch(error => {
@@ -44,9 +43,10 @@ function voteModal(attendanceInfo) {
     fetch('/v2/api/auth')
         .then(response => response.json())
         .then(authInfo => {
+
             const roles = new Set(authInfo.data.role)
+            const attendanceData = attendanceInfo.data
             if (roles.has("ADMIN")) {
-                const attendanceData = attendanceInfo.data
                 attendanceData.forEach(item => {
                     const listItem = document.createElement('li');
                     listItem.textContent = `${item.universityId} ${item.majority} ${item.name} / ${item.fencingType}`; // 데이터에서 이름 가져오기
@@ -54,7 +54,6 @@ function voteModal(attendanceInfo) {
                 });
 
             } else {
-
                 attendanceData.forEach(item => {
                     const listItem = document.createElement('li');
                     listItem.textContent = `${item.majority} ${item.name} / ${item.fencingType}`; // 데이터에서 이름 가져오기
@@ -88,7 +87,6 @@ function voteModal(attendanceInfo) {
 
 // 카드 생성 시 모달 열기
 function openVoteModal(id) {
-    console.log("openModal")
     event.stopPropagation();
     getModalInfo(id); // ID를 사용하여 데이터 요청
 }

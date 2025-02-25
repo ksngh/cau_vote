@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>대여 장비</title>
+    <link rel="stylesheet" th:href="@{/css/header.css}">
+    <link rel="stylesheet" th:href="@{/css/gear.css}">
+    <link href="/favicon.ico" rel="icon" type="image/x-icon">
+</head>
+<body>
+<th:block th:replace="~{common/header::headerLayout}"></th:block>
+<div id="lateFeeContainer"></div>
+<div class="gear-container">
+    <div class="gear-list"></div>
+</div>
+
+
+<th:block th:replace="~{common/footer::footerLayout}"></th:block>
+<script th:src="@{/js/user/mypage-tab.js}"></script>
+<script th:src="@{/js/user/mypage-gear.js}"></script>
+</body>
+</html>

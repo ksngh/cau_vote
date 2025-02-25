@@ -1,7 +1,9 @@
 package caugarde.vote.model.dto.student;
 
 import caugarde.vote.model.entity.Student;
+import caugarde.vote.model.enums.Role;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 
