@@ -71,7 +71,7 @@ jobs:
     # echo "${{ secrets.KEYSTORE }}" | base64 --decode > ./keystore.p12
     steps:
       - name: SSH and deploy to EC2
-        uses: appleboy/ssh-action@v0.1.4
+        uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USER }}
