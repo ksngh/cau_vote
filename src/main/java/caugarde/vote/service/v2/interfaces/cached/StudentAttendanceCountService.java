@@ -12,4 +12,5 @@ public interface StudentAttendanceCountService {
 
     List<StudentAttendanceCount> getTop10();
 
+    void deleteAllCache();
 }

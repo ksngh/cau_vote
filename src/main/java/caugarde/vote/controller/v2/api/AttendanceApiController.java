@@ -17,19 +17,25 @@ import java.util.List;
 @RequestMapping("/v2/api")
 public class AttendanceApiController {
 
-    private final AttendanceService attendanceService;
     private final StudentAttendanceCountService studentAttendanceCountService;
+    private final AttendanceService attendanceService;
 
-    @GetMapping("/attendance/most-active")
-    public CustomApiResponse<List<AttendanceInfo.Response>> getAttendanceTop(){
+    @GetMapping("/attendance/most")
+    public CustomApiResponse<List<AttendanceInfo.Response>> getAttendanceTop() {
         List<AttendanceInfo.Response> responses = studentAttendanceCountService.getTop1().stream().map(AttendanceInfo.Response::from).toList();
         return CustomApiResponse.OK(ResSuccessCode.READ, responses);
     }
 
-    @GetMapping("/attendance/top-ten")
-    public CustomApiResponse<List<AttendanceInfo.Response>> getAttendanceTopTen(){
+    @GetMapping("/attendance/ranking")
+    public CustomApiResponse<List<AttendanceInfo.Response>> getAttendanceTopTen() {
         List<AttendanceInfo.Response> responses = studentAttendanceCountService.getTop10().stream().map(AttendanceInfo.Response::from).toList();
-        return CustomApiResponse.OK(ResSuccessCode.READ,responses);
+        return CustomApiResponse.OK(ResSuccessCode.READ, responses);
+    }
+
+    @GetMapping("/attendance/before-all")
+    public CustomApiResponse<List<AttendanceInfo.Response>> getAttendanceBeforeAll() {
+        List<AttendanceInfo.Response> responses = attendanceService.getBeforeSemester();
+        return CustomApiResponse.OK(ResSuccessCode.READ, responses);
     }
 
 }

@@ -36,25 +36,10 @@ public class CustomApiResponse<T> {
         return new CustomApiResponse<>(resCode, null, null, data);
     }
 
-    public static CustomApiResponse<Void> OK(ResCode resCode, String description) {
-        return new CustomApiResponse<>(resCode, description, null, null);
-    }
-
-    public static <T> CustomApiResponse<T> OK(ResCode resCode, T data, String description) {
-        return new CustomApiResponse<>(resCode, description, null, data);
-    }
 
     // 에러 응답 생성
-    public static CustomApiResponse<Void> ERROR(ResCode resCode) {
-        return new CustomApiResponse<>(resCode, null, null, null);
-    }
-
     public static CustomApiResponse<Void> ERROR(ResCode resCode, String description) {
         return new CustomApiResponse<>(resCode, description, null, null);
-    }
-
-    public static CustomApiResponse<Void> ERROR(ResCode resCode, List<String> errorList) {
-        return new CustomApiResponse<>(resCode, null, errorList, null);
     }
 
     public static CustomApiResponse<Void> ERROR(ResCode resCode, String description, List<String> errorList) {

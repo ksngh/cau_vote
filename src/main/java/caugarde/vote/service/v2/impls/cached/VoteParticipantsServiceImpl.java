@@ -1,7 +1,9 @@
 package caugarde.vote.service.v2.impls.cached;
 
-import caugarde.vote.common.exception.CustomApiException;
+import caugarde.vote.common.exception.api.CustomApiException;
+import caugarde.vote.common.exception.websocket.CustomWebSocketException;
 import caugarde.vote.common.response.ResErrorCode;
+import caugarde.vote.model.entity.Board;
 import caugarde.vote.model.entity.cached.VoteParticipants;
 import caugarde.vote.repository.v2.interfaces.cached.VoteParticipantsRepository;
 import caugarde.vote.service.v2.interfaces.cached.VoteParticipantsService;
@@ -15,7 +17,7 @@ public class VoteParticipantsServiceImpl implements VoteParticipantsService {
     private final VoteParticipantsRepository voteParticipantsRepository;
 
     private VoteParticipants getByBoardId(Long boardId) {
-        return voteParticipantsRepository.findByBoardId(boardId).orElseThrow(()->new CustomApiException(ResErrorCode.NOT_FOUND,"투표 참여자를 찾을 수 없습니다."));
+        return voteParticipantsRepository.findByBoardId(boardId).orElseThrow(() -> new CustomApiException(ResErrorCode.NOT_FOUND, "투표 참여자를 찾을 수 없습니다."));
     }
 
     @Override
@@ -24,16 +26,17 @@ public class VoteParticipantsServiceImpl implements VoteParticipantsService {
     }
 
     @Override
-    public void create(Long boardId, VoteParticipants voteParticipants) {
-        voteParticipantsRepository.save(boardId, voteParticipants);
+    public void create(Long boardId) {
+        voteParticipantsRepository.create(boardId);
     }
 
     @Override
-    public void vote(Long boardId,int limitPeople) {
+    public void vote(Board board) {
+        Long boardId = board.getId();
         Long count = voteParticipantsRepository.incrementVoteCount(boardId);
-        if (limitPeople < count){
+        if (board.getLimitPeople() < count) {
             voteParticipantsRepository.decrementVoteCount(boardId);
-            throw new CustomApiException(ResErrorCode.SERVICE_UNAVAILABLE,"제한 인원을 초과하였습니다.");
+            throw new CustomWebSocketException(ResErrorCode.SERVICE_UNAVAILABLE, "투표 인원을 초과하였습니다.");
         }
     }
 
@@ -44,9 +47,10 @@ public class VoteParticipantsServiceImpl implements VoteParticipantsService {
     }
 
     private void validateMinCount(Long boardId) {
-        if (0 == getByBoardId(boardId).getParticipantsCount()){
-            throw new CustomApiException(ResErrorCode.SERVICE_UNAVAILABLE,"투표 내역이 존재하지 않습니다.");
+        if (0 == getByBoardId(boardId).getParticipantsCount()) {
+            throw new CustomWebSocketException(ResErrorCode.SERVICE_UNAVAILABLE, "투표 내역이 존재하지 않습니다.");
         }
     }
+
 
 }

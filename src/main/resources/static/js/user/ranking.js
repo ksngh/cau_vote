@@ -1,68 +1,133 @@
-// 서버에서 받아온 데이터로 학기별 랭킹을 표시하는 함수
-function displaySemesterRankings(semesterRankingMap) {
+// semester 문자열을 숫자로 변환하는 함수
+function parseSemester(semesterStr) {
+    const match = semesterStr.match(/(\d+)학년도 (\d+)학기/);
+    if (!match) return { year: 0, term: 0 };
+    return { year: parseInt(match[1]), term: parseInt(match[2]) };
+}
+
+// 🏆 랭킹 데이터 화면에 표시 (버튼 중복 방지 포함)
+function displayRankings(groupedData, sortedSemesters, append = false, showMoreLink = true) {
     const container = document.getElementById("rankings-container");
 
-    // 학기별로 데이터 처리
-    Object.keys(semesterRankingMap).forEach(semester => {
-        // 학기별 섹션 생성
-        const semesterSection = document.createElement("div");
-        semesterSection.classList.add("semester-section");
+    if (!append) {
+        container.innerHTML = ""; // 처음 로딩 시 초기화
+    }
 
-        // 학기 제목 추가
+    sortedSemesters.forEach(semester => {
         const semesterTitle = document.createElement("h3");
-        semesterTitle.innerHTML = `<hr class="divider"> ${semester} </hr>`;
-        semesterSection.appendChild(semesterTitle);
+        semesterTitle.textContent = semester;
+        container.appendChild(semesterTitle);
 
         let rank = 1;
-        let previousAttendance = null;
+        let previousCount = null;
 
-        // 학기별 랭킹 리스트 가져오기
-        let rankingList = semesterRankingMap[semester];
-
-        rankingList.forEach((ranking, index) => {
-            // 출석 횟수가 다를 경우에만 새로운 순위로 갱신
-            if (previousAttendance !== ranking.attendance) {
+        groupedData[semester].forEach((item, index) => {
+            if (previousCount !== item.count) {
                 rank = index + 1;
             }
 
-            // 순위 정보 추가
             const rankText = document.createElement("p");
             rankText.classList.add("rank");
 
-            let medal;
-            if (rank === 1) {
-                medal = '🥇';  // 금메달
-            } else if (rank === 2) {
-                medal = '🥈';  // 은메달
-            } else if (rank === 3 || rank === 4) {
-                medal = '🥉';  // 동메달
-            } else {
-                medal = '';  // 4등 이후에는 메달 없음
-            }
+            let medal = '';
+            if (rank === 1) medal = '🥇';
+            else if (rank === 2) medal = '🥈';
+            else if (rank === 3) medal = '🥉';
 
-            rankText.innerText = `${medal} ${ranking.majorName} ${ranking.studentName} : ${ranking.attendance}회`;
-            semesterSection.appendChild(rankText);
+            const majorName = item.majority || "미확인 학과";
+            const studentName = item.name || "이름 없음";
 
-            // 현재 출석 횟수를 다음 순위 비교를 위해 저장
-            previousAttendance = ranking.attendance;
+            rankText.innerText = `${medal} ${majorName} ${studentName} : ${item.count}회`;
+            container.appendChild(rankText);
+
+            previousCount = item.count;
         });
-
-        // 학기 섹션을 컨테이너에 추가
-        container.appendChild(semesterSection);
     });
+
+    // ✅ showMoreLink가 true일 때만 더보기 버튼 추가
+    if (showMoreLink) {
+        const moreLink = document.createElement("div");
+        moreLink.textContent = "이전학기 더보기";
+        moreLink.style.color = "#888";
+        moreLink.style.fontSize = "14px";
+        moreLink.style.textAlign = "center";
+        moreLink.style.cursor = "pointer";
+        moreLink.style.padding = "10px 0";
+
+        moreLink.onclick = () => {
+            moreLink.remove(); // 클릭 후 버튼 삭제
+            getBeforeAll();    // 이전 학기 데이터 불러오기
+        };
+        container.appendChild(moreLink);
+    }
 }
 
-// 서버에서 학기별 랭킹 데이터를 받아오는 함수
+// 📌 현재학기 데이터 로딩
 function getRankings() {
-    fetch('/api/ranking/')
+    fetch('/v2/api/attendance/ranking')
         .then(response => response.json())
-        .then(data => {
-            displaySemesterRankings(data);
+        .then(ranking => {
+            const data = ranking.data;
+
+            const groupedData = {};
+            data.forEach(item => {
+                if (!groupedData[item.semester]) {
+                    groupedData[item.semester] = [];
+                }
+                groupedData[item.semester].push(item);
+            });
+
+            const sortedSemesters = Object.keys(groupedData).sort((a, b) => {
+                const semA = parseSemester(a);
+                const semB = parseSemester(b);
+                return semB.year - semA.year || semB.term - semA.term;
+            });
+
+            sortedSemesters.forEach(sem => {
+                groupedData[sem].sort((a, b) => b.count - a.count);
+                groupedData[sem] = groupedData[sem].slice(0, 10);
+            });
+
+            // ✅ 최초 로딩: 더보기 버튼 보이기 (true)
+            displayRankings(groupedData, sortedSemesters, false, true);
         })
         .catch(error => console.error('Error fetching rankings:', error));
 }
 
-// 페이지 로드 시 랭킹 데이터 불러오기
+// 🔥 이전학기 데이터 로딩 (더보기 버튼을 없애고 추가만 하기)
+function getBeforeAll() {
+    fetch('/v2/api/attendance/before-all')
+        .then(response => response.json())
+        .then(ranking => {
+            const data = ranking.data;
+
+            const groupedData = {};
+            data.forEach(item => {
+                if (!groupedData[item.semester]) {
+                    groupedData[item.semester] = [];
+                }
+                groupedData[item.semester].push(item);
+            });
+
+            const sortedSemesters = Object.keys(groupedData).sort((a, b) => {
+                const semA = parseSemester(a);
+                const semB = parseSemester(b);
+                return semB.year - semA.year || semB.term - semA.term;
+            });
+
+            sortedSemesters.forEach(sem => {
+                groupedData[sem].sort((a, b) => b.count - a.count);
+                groupedData[sem] = groupedData[sem].slice(0, 10);
+            });
+
+            // ✅ 추가 데이터 로딩: 더보기 버튼 제거 (false)
+            displayRankings(groupedData, sortedSemesters, true, false);
+        })
+        .catch(error => console.error('Error fetching previous rankings:', error));
+}
+
+// 🚀 초기 페이지 로딩
 document.addEventListener("DOMContentLoaded", () => {
     getRankings();
+    document.querySelector(".tab-container").style.display = "none";
 });

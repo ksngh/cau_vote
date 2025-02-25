@@ -1,6 +1,6 @@
 package caugarde.vote.common.util;
 
-import caugarde.vote.common.exception.CustomApiException;
+import caugarde.vote.common.exception.api.CustomApiException;
 import caugarde.vote.common.response.ResErrorCode;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;

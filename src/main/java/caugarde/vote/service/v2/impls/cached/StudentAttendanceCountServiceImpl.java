@@ -1,9 +1,7 @@
 package caugarde.vote.service.v2.impls.cached;
 
-import caugarde.vote.model.entity.Attendance;
 import caugarde.vote.model.entity.cached.StudentAttendanceCount;
 import caugarde.vote.repository.v2.interfaces.cached.StudentAttendanceCountRepository;
-import caugarde.vote.service.v2.interfaces.AttendanceService;
 import caugarde.vote.service.v2.interfaces.cached.StudentAttendanceCountService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -29,6 +27,11 @@ public class StudentAttendanceCountServiceImpl implements StudentAttendanceCount
     @Override
     public List<StudentAttendanceCount> getTop10() {
         return studentAttendanceCountRepository.findTop10s();
+    }
+
+    @Override
+    public void deleteAllCache() {
+        studentAttendanceCountRepository.clearAllCache();
     }
 
 

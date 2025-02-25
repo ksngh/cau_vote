@@ -1,6 +1,6 @@
 package caugarde.vote.common.filter;
 
-import caugarde.vote.common.exception.CustomApiException;
+import caugarde.vote.common.exception.api.CustomApiException;
 import caugarde.vote.common.response.ResErrorCode;
 import caugarde.vote.common.util.CookieUtil;
 import caugarde.vote.common.util.JwtUtil;
@@ -30,36 +30,33 @@ import java.util.Map;
 @Slf4j(topic = "JWT 검증 및 인가")
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
-    private static final List<String> EXCLUDED_PATHS = List.of("/", "/login");
     private final StudentService studentService;
     private final JwtUtil jwtUtil;
     private final CookieUtil cookieUtil;
 
-    private boolean isExcludedFromFilter(HttpServletRequest request) {
-        String requestURI = request.getRequestURI();
-        return EXCLUDED_PATHS.stream().anyMatch(requestURI::equals);
-    }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
-        if (isExcludedFromFilter(request)) {
-            filterChain.doFilter(request, response); // 공개 경로는 필터 통과
-            return;
-        }
+        String token = cookieUtil.getAuthCookie(request);
 
         try {
-            String token = cookieUtil.getAuthCookie(request);
-            validateAuthorizationCookie(token);
-            validateToken(token);
-            String email = jwtUtil.getEmail(token);
-            authenticateUser(email, request);
+            if (token != null) {
+                validateToken(token);
+                String email = jwtUtil.getEmail(token);
+                authenticateUser(email);
+            } else {
+                SecurityContextHolder.clearContext();
+            }
+
             filterChain.doFilter(request, response);
+
         } catch (CustomApiException e) {
             handleException(response, e);
             log.error(e.getMessage(), e);
         }
     }
+
 
     private void validateAuthorizationCookie(String token) {
         if (token == null) {
@@ -73,14 +70,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
     }
 
-    private void authenticateUser(String email, HttpServletRequest request) {
+    private void authenticateUser(String email) {
         if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             Student student = studentService.getByEmail(email);
-            validatePending(student);
+//            validatePending(student);
             CustomOAuthUser oAuthUser = new CustomOAuthUser(student);
-
-            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(oAuthUser, null, oAuthUser.getAuthorities());
-
+            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(oAuthUser, "", oAuthUser.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(authenticationToken);
         }
     }

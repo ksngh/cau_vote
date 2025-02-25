@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>중앙가르드 훈련 투표</title>
+    <link th:href="@{/css/header.css}" rel="stylesheet">
+    <link th:href="@{/css/signup.css}" rel="stylesheet">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+</head>
+<th:block th:replace="~{common/header::headerLayout}"></th:block>
+<body>
+<div style="max-width: 400px; margin: auto; padding: 20px;">
+    <h2 style="text-align: center; color: #333;">회원 정보</h2>
+
+    <div style="margin: 15px">
+        <label for="universityId" class="info">학번</label>
+        <input style="box-sizing: border-box;" type="text" id="universityId" name="universityId" />
+    </div>
+    <div style="margin: 15px;">
+        <label for="role" class="info">역할</label>
+        <select id="role" class="role-dropdown" name="role" >
+            <option value="ADMIN">임원진</option>
+            <option value="USER">부원</option>
+        </select>
+    </div>
+
+
+    <div style="margin: 15px;">
+        <label for="name" class="info">이름</label>
+        <input style="box-sizing: border-box;" type="text" id="name" name="name" />
+    </div>
+
+    <div style="margin: 15px;">
+        <label for="majority" class="info">전공</label>
+        <input style="box-sizing: border-box;" type="text" id="majority" name="majority" />
+    </div>
+
+    <div style="margin: 15px;">
+        <label class="info">가입일</label>
+        <input style="box-sizing: border-box;" type="text" id="createdAt" disabled/>
+    </div>
+
+    <div style="margin: 15px;">
+        <label class="info">연체료</label>
+        <div style="display: flex; align-items: center;">
+            <input style="width: auto" type="text" id="overdueFine" disabled/>
+            <button onclick="payLateFee()" class="pay-button">
+                완납
+            </button>
+        </div>
+    </div>
+
+
+    <div style="margin: 15px;" class="radio-group">
+        <label>
+            <input type="radio" name="memberType" value="NEW" > 신입 부원
+        </label>
+        <label>
+            <input type="radio" name="memberType" value="EXISTING" > 기존 부원
+        </label>
+    </div>
+
+    <div class="button-group">
+        <button onclick="updateStudent()" class="action-button">수정</button>
+        <button onclick="deleteStudent()" class="action-button delete-button">삭제</button>
+    </div>
+
+
+</div>
+<th:block th:replace="~{common/footer::footerLayout}"></th:block>
+<script src="/js/admin/update-students.js"></script>
+</body>
+</html>

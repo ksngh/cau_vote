@@ -10,6 +10,6 @@ public class HomeController {
 
     @GetMapping()
     public String poll() {
-        return "polling";
+        return "vote/vote_index";
     }
 }

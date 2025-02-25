@@ -9,12 +9,12 @@ import org.springframework.stereotype.Component;
 public class CookieUtil {
 
     private static final String AUTH_COOKIE_NAME = "Authorization";
-    private int expiration = 60*60*24*7;
+    private static final int expiration = 60*60*24*7;
 
     public void createCookie(HttpServletResponse response, String token) {
         Cookie cookie = new Cookie(AUTH_COOKIE_NAME, token);
         cookie.setHttpOnly(true);
-        cookie.setSecure(true);
+//        cookie.setSecure(true);
         cookie.setPath("/");
         cookie.setMaxAge(expiration);
 
@@ -39,7 +39,6 @@ public class CookieUtil {
         cookie.setSecure(true);
         cookie.setPath("/");
         cookie.setMaxAge(0);
-
         response.addCookie(cookie);
     }
 }

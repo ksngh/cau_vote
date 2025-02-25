@@ -2,11 +2,12 @@ package caugarde.vote.repository.v2.impls.cached;
 
 import caugarde.vote.model.entity.cached.VoteParticipants;
 import caugarde.vote.repository.v2.interfaces.cached.VoteParticipantsRepository;
-import caugarde.vote.repository.v2.interfaces.redis.VoteParticipantsRedisRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 @Repository
@@ -14,37 +15,49 @@ import java.util.Optional;
 public class VoteParticipantsRepositoryImpl implements VoteParticipantsRepository {
 
     private final RedisTemplate<String, Object> redisTemplate;
-    private final VoteParticipantsRedisRepository voteParticipantsRedisRepository;
-    private final static String voteCacheKey = "voteParticipants:";
+    private static final String voteParticipantsKey = "voteParticipants:";
 
-    @Override
-    public Optional<VoteParticipants> findByBoardId(Long boardId) {
-        return voteParticipantsRedisRepository.findById(getKey(boardId))
-                .or(() -> Optional.of(new VoteParticipants(boardId, 0)));
+    private String getKey(Long boardId) {
+        return "voteParticipants:" + boardId;
     }
 
     @Override
-    public void save(Long boardId, VoteParticipants voteParticipants) {
-        voteParticipantsRedisRepository.save(voteParticipants);
+    public Optional<VoteParticipants> findByBoardId(Long boardId) {
+        Map<Object, Object> entries = redisTemplate.opsForHash().entries(voteParticipantsKey + boardId);
+
+        if (entries.isEmpty()) {
+            return Optional.empty();
+        }
+
+        VoteParticipants voteParticipants = VoteParticipants.of(
+                boardId,
+                (Integer) entries.getOrDefault("participantsCount", 0)
+        );
+
+        return Optional.of(voteParticipants);
+    }
+
+    @Override
+    public void create(Long boardId) {
+        Map<String, Object> hashValues = new HashMap<>();
+        hashValues.put(getKey(boardId), boardId);
+        hashValues.put("participantsCount",0);
+        redisTemplate.opsForHash().putAll(getKey(boardId), hashValues);
     }
 
     @Override
     public void delete(Long boardId) {
-        voteParticipantsRedisRepository.deleteById(getKey(boardId));
+        redisTemplate.delete(getKey(boardId)); // Hash Key 전체 삭제
     }
 
     @Override
     public Long incrementVoteCount(Long boardId) {
-        return redisTemplate.opsForValue().increment(getKey(boardId));
+        return redisTemplate.opsForHash().increment(getKey(boardId), "participantsCount", 1);
     }
 
     @Override
     public void decrementVoteCount(Long boardId) {
-        redisTemplate.opsForValue().decrement(getKey(boardId));
-    }
-
-    private String getKey(Long boardId){
-        return voteCacheKey + boardId;
+        redisTemplate.opsForHash().increment(getKey(boardId), "participantsCount", -1);
     }
 
 }

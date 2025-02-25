@@ -22,4 +22,5 @@ public enum ResErrorCode implements ResCode {
     private final Integer httpStatusCode;
     private final Integer code;
     private final String message;
+
 }

@@ -8,6 +8,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ZSetOperations;
 import org.springframework.stereotype.Repository;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -34,9 +35,15 @@ public class StudentAttendanceCountRepositoryImpl implements StudentAttendanceCo
         }
         double topScore = Optional.ofNullable(redisTemplate.opsForZSet().score(attendanceKey, top1Objects.iterator().next()))
                 .orElse(0.0);
-        return Optional.ofNullable(
-                redisTemplate.opsForZSet().reverseRangeByScore(attendanceKey, topScore, topScore)).stream().map(this::convertToStudentAttendanceCount).toList();
 
+        Set<Object> result = redisTemplate.opsForZSet().reverseRangeByScore(attendanceKey, topScore, topScore);
+        if (result == null || result.isEmpty()) {
+            return Collections.emptyList();
+        }
+
+        return result.stream()
+                .map(this::convertToStudentAttendanceCount)
+                .toList();
     }
 
     @Override

@@ -2,12 +2,10 @@ package caugarde.vote.repository.v2.interfaces;
 
 import caugarde.vote.model.dto.board.BoardInfo;
 import caugarde.vote.model.entity.Board;
-import caugarde.vote.model.enums.BoardStatus;
+import org.springframework.data.domain.Slice;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 public interface BoardRepository {
 
@@ -15,7 +13,11 @@ public interface BoardRepository {
 
     Optional<Board> findById(Long id);
 
-    List<BoardInfo.Response> searchBoard(Set<BoardStatus> statusSet);
+    Slice<BoardInfo.Response> getPages(Long cursorId, int size);
 
-    List<Long> closeExpiredBoards(LocalDateTime now);
+    Slice<BoardInfo.Response> getUserPages(String email, Long cursorId, int size);
+
+    List<Long> closeExpiredBoards();
+
+    List<Long> activateBoards();
 }

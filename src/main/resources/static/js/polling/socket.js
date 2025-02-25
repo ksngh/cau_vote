@@ -1,3 +1,4 @@
+
 let socket;  // SockJS 객체
 let stompClient;  // Stomp 클라이언트 객체
 const inactivityTimeout = 600000; // 10분 (600,000 ms)
@@ -5,7 +6,7 @@ let inactivityTimer; // 타이머 변수
 
 // WebSocket 연결 설정 함수
 function openWebSocket() {
-    if (!stompClient || !stompClient.connected) {
+    if (typeof stompClient === "undefined" || !stompClient || !stompClient.connected) {
         socket = new SockJS("/ws");
         stompClient = Stomp.over(socket);
         stompClient.debug = null; // 로그 비활성화
@@ -23,7 +24,8 @@ function onConnected(frame) {
     stompClient.subscribe(`/topic/vote/count`, onVoteCountUpdated);
 
     stompClient.subscribe('/user/topic/errors', (errorMessage) => {
-        const errorContent = errorMessage.body;
+        const response = JSON.parse(errorMessage.body);
+        const errorContent = response.message;
         alert(errorContent); // 사용자에게 에러 메시지 표시
     });
 }
@@ -37,18 +39,19 @@ function onError(error) {
 
 // 투표 결과 메시지를 처리하는 함수
 function onVoteResultReceived(messageDTO) {
-    alert(messageDTO.body);  // 결과 메시지를 사용자에게 알림
+    const data = JSON.parse(messageDTO.body);
+    alert(data.message);  // 결과 메시지를 사용자에게 알림
 }
 
 // 투표 수 업데이트 메시지를 처리하는 함수
 function onVoteCountUpdated(numberDTO) {
     const data = JSON.parse(numberDTO.body);
-    const card = document.querySelector(`[data-id="${data.votePk}"]`);
+    const card = document.querySelector(`[data-id="${data.boardId}"]`);
     // card 요소에서 id가 "attendance-number"인 요소를 찾아 텍스트 업데이트
     if (card) {
         const attendanceElement = card.querySelector("#attendance-number");
         if (attendanceElement) {
-            attendanceElement.innerText = `참여 인원 : ${data.number}/${data.limitPeople}`;
+            attendanceElement.innerText = `참여 인원 : ${data.count}/${data.limitPeople}`;
         }
     }
 }
@@ -72,26 +75,26 @@ function resetInactivityTimer() {
 }
 
 // 투표 요청 전송 함수
-function sendVote(voteId) {
-    const selectedCategory = document.querySelector('input[name="category"]:checked').value;
+function sendVote(boardId) {
+    const selectedFencingType = document.querySelector('input[name="fencing-type"]:checked').value;
     const attendanceData = {
-        category: selectedCategory  // 선택된 카테고리 정보 추가
+        fencingType: selectedFencingType  // 선택된 카테고리 정보 추가
     };
 
     if (stompClient && stompClient.connected) {
-        stompClient.send(`/app/vote/${voteId}`, {}, JSON.stringify(attendanceData));
+        stompClient.send(`/app/board/${boardId}/vote`, {}, JSON.stringify(attendanceData));
     }
 }
 
-function cancel(voteId) {
+function cancel(boardId) {
     if (stompClient && stompClient.connected) {
-        stompClient.send(`/app/vote/cancel/${voteId}`, {}, JSON.stringify({}));
+        stompClient.send(`/app/board/${boardId}/vote/cancel`, {}, JSON.stringify({}));
     }
 }
 
 // 사용자 활동 감지 이벤트 리스너 설정
 function setupUserActivityListeners() {
-    const events = ["mousemove", "keypress", "click", "touchstart", "touchend", "scroll"];
+    const events = ["keypress", "click", "touchstart", "touchend", "scroll"];
     events.forEach(event => window.addEventListener(event, resetInactivityTimer));
 }
 
