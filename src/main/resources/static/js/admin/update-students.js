@@ -23,6 +23,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         // 📌 데이터 매핑 (각 ID에 값 넣기)
         document.getElementById("universityId").value = studentData.universityId;
         document.getElementById("name").value = studentData.name;
+        document.getElementById("email").value = studentData.email;
         // document.getElementById("role").value = studentData.role;
         document.getElementById("majority").value = studentData.majority;
         document.getElementById("createdAt").value = formatDate(studentData.createdAt);

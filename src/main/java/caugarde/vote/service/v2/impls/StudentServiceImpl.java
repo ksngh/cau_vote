@@ -33,8 +33,8 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<Student> getAllStudents() {
-        return studentRepository.findAll();
+    public List<Student> getNotPendingStudents() {
+        return studentRepository.findNotPending();
     }
 
     @Override

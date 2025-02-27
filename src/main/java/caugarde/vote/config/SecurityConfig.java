@@ -27,6 +27,7 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(AbstractHttpConfigurer::disable)
+                .formLogin(AbstractHttpConfigurer::disable)
                 .sessionManagement(session ->
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS) // 👈 세션 끄기
                 )
@@ -37,7 +38,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET,"/v2/api/student/late-fee").hasAnyRole(Role.USER.name(), Role.ADMIN.name())
                         .requestMatchers(HttpMethod.PATCH,"/v2/api/student").hasRole(Role.PENDING_USER.name())
                         .requestMatchers(HttpMethod.GET,"/v2/api/student/board").hasAnyRole(Role.ADMIN.name(),Role.USER.name())
-                        .requestMatchers(HttpMethod.GET,"/v2/api/student/gear").hasRole(Role.ADMIN.name())
+                        .requestMatchers(HttpMethod.GET,"/v2/api/student/gear").hasAnyRole(Role.ADMIN.name(),Role.USER.name())
 
                         //static
                         .requestMatchers(HttpMethod.GET,"/css/**").permitAll()
@@ -57,7 +58,7 @@ public class SecurityConfig {
                         //gear
                         .requestMatchers(HttpMethod.GET,"/v2/api/gear").permitAll()
                         .requestMatchers(HttpMethod.POST,"/v2/api/gear").hasRole(Role.ADMIN.name())
-                        .requestMatchers(HttpMethod.DELETE,"/v2/api/gear/*").hasRole(Role.ADMIN.name())
+                        .requestMatchers(HttpMethod.DELETE,"/v2/api/gear/*").hasAnyRole(Role.ADMIN.name(),Role.USER.name())
 
                         //board
                         .requestMatchers(HttpMethod.POST,"/v2/api/board").hasRole(Role.ADMIN.name())

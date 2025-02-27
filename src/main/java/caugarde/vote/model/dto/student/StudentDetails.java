@@ -17,6 +17,7 @@ public class StudentDetails {
     @AllArgsConstructor
     public static class Response{
         private String name;
+        private String email;
         private String majority;
         private Set<Role> role;
         private String universityId;
@@ -26,6 +27,7 @@ public class StudentDetails {
 
         private Response(Student student) {
             this.name = student.getName();
+            this.email = student.getEmail();
             this.majority = student.getMajority();
             this.role =student.getAuthorities();
             this.universityId = student.getUniversityId();

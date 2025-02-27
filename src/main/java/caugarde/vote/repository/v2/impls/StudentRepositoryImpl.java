@@ -31,8 +31,8 @@ public class StudentRepositoryImpl implements StudentRepository {
     }
 
     @Override
-    public List<Student> findAll() {
-        return studentJpaRepository.findAll();
+    public List<Student> findNotPending() {
+        return studentJpaRepository.findAllByNameIsNotNull();
     }
 
     @Override

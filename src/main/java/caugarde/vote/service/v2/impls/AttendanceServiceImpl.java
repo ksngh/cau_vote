@@ -33,7 +33,7 @@ public class AttendanceServiceImpl implements AttendanceService {
     @Transactional
     @Scheduled(cron = "* * 0 * * *")
     public void createAttendance() {
-        List<Student> students = studentService.getAllStudents();
+        List<Student> students = studentService.getNotPendingStudents();
         Map<Long, Integer> voteCounts = attendanceRepository.getStudentVoteCounts(students);
 
         Map<Long, Attendance> attendanceMap = students.stream()

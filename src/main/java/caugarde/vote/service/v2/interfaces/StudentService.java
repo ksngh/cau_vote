@@ -14,7 +14,7 @@ public interface StudentService {
 
     Student getById(Long id);
 
-    List<Student> getAllStudents();
+    List<Student> getNotPendingStudents();
 
     void update(String email, StudentUpdate.Request request);
 

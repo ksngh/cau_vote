@@ -11,7 +11,7 @@ public interface StudentRepository {
 
     void save (Student student);
 
-    List<Student> findAll();
+    List<Student> findNotPending();
 
     Optional<Student> findByEmail(String email);
 

@@ -306,6 +306,15 @@ tr:hover {
     }
 }
 
+@media (max-width: 480px) { /* 모바일 화면 */
+
+    th, td {
+        padding: 8px;
+        font-size: 7px;
+    }
+
+}
+
 #lateFeeContainer {
     border-radius: 8px; /* 모서리 둥글게 */
     padding: 15px; /* 내부 여백 */
