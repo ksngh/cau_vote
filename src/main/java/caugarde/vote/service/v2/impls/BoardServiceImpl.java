@@ -88,7 +88,7 @@ public class BoardServiceImpl implements BoardService {
         boardIds.forEach(voteParticipantsService::delete);
     }
 
-    @Scheduled(cron = "*/1 * * * * *")
+    @Scheduled(cron = "0 */1 * * * *")
     @Transactional
     public void activateBoard() {
         List<Long> boardIds = boardRepository.activateBoards();
