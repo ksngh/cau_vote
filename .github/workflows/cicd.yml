@@ -56,6 +56,7 @@ jobs:
           file: Dockerfile
           push: true
           tags: ksngh/caufencing:latest
+          no-cache: true
 
   deploy:
     runs-on: ubuntu-latest
@@ -73,6 +74,7 @@ jobs:
           script: |
             cd /home/ubuntu/cau_vote
             echo "${{ secrets.ENV }}" > ./.env
+            sudo docker rmi ksngh/caufencing:latest || true
             sudo docker pull ksngh/caufencing:latest
             sudo docker stop vote-app || true
             sudo docker rm vote-app || true
