@@ -1,6 +1,7 @@
 package caugarde.vote.config;
 
 import caugarde.vote.common.filter.JwtAuthenticationFilter;
+import caugarde.vote.common.handler.CustomStudentSuccessHandler;
 import caugarde.vote.model.enums.Role;
 import caugarde.vote.service.v2.impls.OAuthUserService;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +22,7 @@ public class SecurityConfig {
 
     private final OAuthUserService oAuthUserService;
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
+    private final CustomStudentSuccessHandler studentSuccessHandler;
 
 
     @Bean
@@ -99,7 +101,8 @@ public class SecurityConfig {
                         .userInfoEndpoint(userInfo -> userInfo
                                 .userService(oAuthUserService)
                         )
-                        .defaultSuccessUrl("/", true)
+                        .successHandler(studentSuccessHandler)
+//                        .defaultSuccessUrl("/", true)
                 );
 
         return http.build();

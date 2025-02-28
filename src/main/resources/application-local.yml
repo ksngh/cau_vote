@@ -18,8 +18,8 @@ spring:
             client-name: kakao
             client-id: 4d2d095dd561e075e3de2a8d13853daf
             client-secret: eEDeNkdBs1bo2bx927AF1ki5RdEH2R6k
-#            redirect-uri: http://localhost:8080/oauth/kakao/callback
-            redirect-uri: http://192.168.123.104:8080/oauth/kakao/callback
+            redirect-uri: http://localhost:8080/oauth/kakao/callback
+#            redirect-uri: http://192.168.123.104:8080/oauth/kakao/callback
             authorization-grant-type: authorization_code
             scope:
               - profile_nickname
