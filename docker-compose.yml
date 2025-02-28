@@ -1,5 +1,3 @@
-version: "3.8"
-
 services:
   vote_db:
     image: mariadb:latest
@@ -12,9 +10,9 @@ services:
     ports:
       - "3306:3306"
     volumes:
-      - ${VOTE_DATA_VOLUME}:/var/lib/mysql
+      - vote-data:/var/lib/mysql
     networks:
-      - ${NETWORK_NAME}
+      - vote-network
 
   vote_redis:
     image: redis:latest
@@ -22,7 +20,7 @@ services:
     ports:
       - "${REDIS_PORT}:6379"
     networks:
-      - ${NETWORK_NAME}
+      - vote-network
 
   vote_spring:
     build:
@@ -34,11 +32,11 @@ services:
     env_file:
       - .env
     networks:
-      - ${NETWORK_NAME}
+      - vote-network
 
 volumes:
-  ${VOTE_DATA_VOLUME}:
+  vote-data:
 
 networks:
-  ${NETWORK_NAME}:
+  vote-network:
     driver: bridge
