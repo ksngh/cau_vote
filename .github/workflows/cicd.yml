@@ -81,11 +81,11 @@ jobs:
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_KEY }}
           script: |
-            cd /home/ubuntu/cau_vote
-            echo "${{ secrets.ENV }}" > ./.env
             sudo docker stop caufencing-vote-app || true
             sudo docker rm caufencing-vote-app || true
             sudo docker rmi ksngh/caufencing:latest || true
             sudo docker pull ksngh/caufencing:latest
+            cd /home/ubuntu/cau_vote
+            echo "${{ secrets.ENV }}" > ./.env
             sudo docker-compose --project-name caufencing up
             exit 0
