@@ -10,6 +10,12 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # GitHub Actions 캐시 강제 삭제
+      - name: Remove GitHub Actions cache
+        run: |
+          rm -rf ~/.gradle/caches
+          rm -rf ~/.gradle/wrapper
+          
       # 1. 코드 체크아웃
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -39,7 +45,7 @@ jobs:
 
       # 4. Gradle 빌드
       - name: Build with Gradle
-        run: ./gradlew build -x test
+        run: ./gradlew clean build -x test --no-daemon --refresh-dependencies
 
       # 5. Docker 로그인
       - name: Log in to Docker Hub
