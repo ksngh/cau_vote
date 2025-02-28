@@ -30,6 +30,6 @@ RUN chmod +x ./wait-for-it.sh
 COPY --from=build /app/build/libs/vote-0.0.1-SNAPSHOT.jar app.jar
 
 # 컨테이너 실행 명령어 (Redis, MariaDB 둘 다 기다리는 방식 권장)
-ENTRYPOINT ["./wait-for-it.sh", "mariadb:3306", "-t", "60", "--", \
+ENTRYPOINT ["./wait-for-it.sh", "vote_db:3306", "-t", "60", "--", \
             "./wait-for-it.sh", "vote_redis:6379", "-t", "60", "--", \
             "java", "-jar", "/app/app.jar"]
