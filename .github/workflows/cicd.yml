@@ -74,7 +74,7 @@ jobs:
             cd /home/ubuntu/cau_vote
             echo "${{ secrets.ENV }}" > ./.env
             sudo docker pull ksngh/caufencing:latest
-            sudo docker stop caufencing || true
-            sudo docker rm caufencing || true
+            sudo docker stop vote-app || true
+            sudo docker rm vote-app || true
             sudo docker-compose --project-name caufencing up
             exit 0
