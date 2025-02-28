@@ -50,23 +50,6 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew clean build -x test --no-daemon --refresh-dependencies
 
-      # 5. Docker 로그인
-      - name: Log in to Docker Hub
-        uses: docker/login-action@v2
-        with:
-          username: ${{ secrets.DOCKER_USERNAME }}  # Docker Hub 사용자명
-          password: ${{ secrets.DOCKER_PASSWORD }}  # Docker Hub 비밀번호 또는 액세스 토큰
-
-      # 6. Docker 이미지 빌드 및 푸시
-      - name: Build and push Docker image
-        uses: docker/build-push-action@v3
-        with:
-          context: .
-          file: Dockerfile
-          push: true
-          tags: ksngh/caufencing:latest
-          no-cache: true
-
   deploy:
     runs-on: ubuntu-latest
     needs: build
@@ -83,8 +66,8 @@ jobs:
           script: |
             sudo docker stop caufencing-vote-app || true
             sudo docker rm caufencing-vote-app || true
-            sudo docker rmi ksngh/caufencing:latest || true
-            sudo docker pull ksngh/caufencing:latest
+            cd /home/ubuntu/cau_vote
+            git pull origin v2/dev || true
             echo "${{ secrets.ENV }}" > ./.env
             sudo docker-compose --project-name caufencing up
             exit 0
