@@ -38,4 +38,4 @@ spring:
       port: ${SPRING_REDIS_PORT}
 
 jwtSecret :
-  ${jwt-secret}
+  ${JWT_SECRET}

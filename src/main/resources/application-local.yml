@@ -48,4 +48,4 @@ logging:
         messaging: DEBUG
 
 jwtSecret :
-  ${jwt-secret}
+  ${JWT_SECRET}
