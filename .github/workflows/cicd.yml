@@ -10,14 +10,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # GitHub Actions 캐시 강제 삭제
-      - name: Remove GitHub Actions cache
-        run: |
-          rm -rf ~/.gradle/caches
-          rm -rf ~/.gradle/wrapper
-          rm -rf ~/.gradle/daemon
-          rm -rf ~/.gradle/native
-          rm -rf ~/.gradle/task-cache
           
       # 1. 코드 체크아웃
       - name: Checkout repository
@@ -48,7 +40,7 @@ jobs:
 
       # 4. Gradle 빌드
       - name: Build with Gradle
-        run: ./gradlew clean build -x test --no-daemon --refresh-dependencies
+        run: ./gradlew build -x test
 
   deploy:
     runs-on: ubuntu-latest
