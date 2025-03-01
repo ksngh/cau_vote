@@ -22,6 +22,8 @@ FROM openjdk:21-jdk-bullseye
 ENV TZ=Asia/Seoul
 WORKDIR /app
 
+COPY ./keystore.p12 /app/resources/keystore.p12
+
 # wait-for-it.sh 추가 및 권한 부여
 ADD https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.sh ./wait-for-it.sh
 RUN chmod +x ./wait-for-it.sh
