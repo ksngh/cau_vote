@@ -1,0 +1,37 @@
+<!-- header.html -->
+
+<div th:fragment="headerLayout">
+    <nav id="nav-header" class="header-container">
+        <h3><a href="/" style="text-decoration: none; color: inherit;">CHUNG-ANG GARDE</a></h3>
+        <button id="loginBtn" class="login-button">로그인</button>
+
+    </nav>
+    <a class="shiny-text" href="/ranking">
+        <div id="first-grade-banner" class="ranking-box">
+            <div class="ranking-item">
+                순위는 자정에 갱신됩니다.
+            </div>
+        </div>
+    </a>
+    <div class="tab-container">
+        <button style="border-radius: 0" class="tab" id="trainTab" onclick="redirectToPage('train')">훈련 신청</button>
+        <button style="border-radius: 0" class="tab" id="rentTab" onclick="redirectToPage('rent')">장비 대여</button>
+    </div>
+    <div>
+
+    </div>
+    <div id="overlay" class="overlay"></div>
+    <div class="menu">
+        <ul id="menu"></ul>
+    </div>
+    <script>
+        function redirectToPage(page) {
+        if (page === 'train') {
+            window.location.href = "/"; // 훈련 신청 페이지로 이동
+        } else if (page === 'rent') {
+            window.location.href = "/gear"; // 장비 대여 페이지로 이동
+        }
+    }</script>
+    <script src="/js/header.js"></script>
+    <script src="/js/polling/ranking-banner.js"></script>
+</div>

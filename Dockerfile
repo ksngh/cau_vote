@@ -1,27 +1,35 @@
-# 1. 베이스 이미지 설정 (OpenJDK 21)
-FROM openjdk:21-jdk-bullseye
+# === 빌드 스테이지 ===
+FROM openjdk:21-jdk-bullseye AS build
 ENV TZ=Asia/Seoul
-# 2. 필요한 패키지 설치
-RUN apt-get update && \
-    apt-get install -y git fonts-nanum && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/*
-
-# 3. 작업 디렉토리 설정
 WORKDIR /app
 
-# 4. 소스 코드 및 빌드 파일 복사
-# GitHub Actions에서 가져온 소스 코드를 컨테이너로 복사
-COPY . /app
+# Gradle 관련 파일 복사
+COPY gradlew .
+COPY gradle gradle
+COPY build.gradle settings.gradle ./
 
-COPY ./keystore.p12 ./src/main/resources/
-COPY ./application.properties ./src/main/resources/
+# 의존성 미리 다운로드 (캐싱 활용)
+RUN chmod +x ./gradlew && ./gradlew dependencies
 
-# 5. Gradle 및 wait-for-it.sh 파일에 실행 권한 부여
-RUN chmod +x ./gradlew ./wait-for-it.sh
+# 애플리케이션 소스코드 복사
+COPY src src
 
-# 6. Gradle 빌드 (테스트 생략)
+# 빌드 수행 (테스트 제외)
 RUN ./gradlew build -x test
 
-# 7. 애플리케이션 실행 (wait-for-it.sh 사용)
-ENTRYPOINT ["./wait-for-it.sh", "redis:6379", "--", "java", "-jar", "./build/libs/vote-0.0.1-SNAPSHOT.jar"]
+# === 런타임 스테이지 ===
+FROM openjdk:21-jdk-bullseye
+ENV TZ=Asia/Seoul
+WORKDIR /app
+
+# wait-for-it.sh 추가 및 권한 부여
+ADD https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.sh ./wait-for-it.sh
+RUN chmod +x ./wait-for-it.sh
+
+# 이전 빌드 단계에서 jar파일만 복사
+COPY --from=build /app/build/libs/vote-0.0.1-SNAPSHOT.jar app.jar
+
+# 컨테이너 실행 명령어 (Redis, MariaDB 둘 다 기다리는 방식 권장)
+ENTRYPOINT ["./wait-for-it.sh", "vote_db:3306", "-t", "60", "--", \
+            "./wait-for-it.sh", "vote_redis:6379", "-t", "60", "--", \
+            "java", "-jar", "/app/app.jar"]

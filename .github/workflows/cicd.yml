@@ -1,0 +1,65 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+          
+      # 1. 코드 체크아웃
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # 2. 자바 다운로드
+      - name: Set up JDK 21 (Amazon Corretto)
+        uses: actions/setup-java@v3
+        with:
+          java-version: 21
+          distribution: 'corretto'  # Amazon Corretto 배포판을 사용
+          java-package: jdk
+          check-latest: false
+
+      # 2. keystore.p12 파일 복원
+      - name: Restore keystore.p12 from GitHub Secrets
+        run: |
+          echo "${{ secrets.KEYSTORE }}" | base64 --decode > ./keystore.p12
+
+      # 3. ENV 파일 복원
+      - name: Restore .env from GitHub Secrets
+        run: |
+          echo "${{ secrets.ENV }}" > ./.env
+
+      # 3. Gradle 실행 파일에 권한 부여
+      - name: Grant execute permission for Gradle
+        run: chmod +x ./gradlew
+
+      # 4. Gradle 빌드
+      - name: Build with Gradle
+        run: ./gradlew build -x test
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+
+    # 도커 컴포즈 할 수 있는 환경으로 바꿔두기
+    # echo "${{ secrets.KEYSTORE }}" | base64 --decode > ./keystore.p12
+    steps:
+      - name: SSH and deploy to EC2
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_KEY }}
+          script: |
+            sudo docker stop vote_spring || true
+            sudo docker rm vote_spring || true
+            cd /home/ubuntu/cau_vote
+            git pull origin main || true
+            echo "${{ secrets.ENV }}" > ./.env
+            sudo docker-compose up -d
+            exit 0

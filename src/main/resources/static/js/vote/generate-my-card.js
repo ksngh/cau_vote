@@ -25,7 +25,7 @@ async function getMyCardInfo() {
             })
         );
 
-        // 정렬된 데이터에 대해 generateCard 호출
+        // 정렬된 데이터에 대해 voteCard 호출
         dataWithCounts.forEach(item => generateMyCard(item));
 
     } catch (error) {

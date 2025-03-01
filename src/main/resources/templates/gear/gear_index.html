@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <link href="/favicon.ico" rel="icon">
+    <title>중앙가르드 장비 대여</title>
+    <link rel="stylesheet" th:href="@{/css/header.css}">
+    <link rel="stylesheet" th:href="@{/css/gear.css}">
+</head>
+<body>
+
+<th:block th:replace="~{common/header::headerLayout}"></th:block>
+<div class="gear-container">
+    <div class="search-bar">
+        <div class="custom-select">
+            <select id="fencingType">
+                <option value="SABRE" selected>사브르</option>
+                <option value="FLUERET">플뢰레</option>
+                <option value="COMMON">공용</option>
+            </select>
+        </div>
+
+        <div class="custom-select">
+            <select id="gearType">
+                <option value="MASK" selected>마스크</option>
+                <option value="SWORD">검</option>
+                <option value="GLOVE">장갑</option>
+                <option value="METAL">메탈 자켓</option>
+            </select>
+        </div>
+
+        <button class="search-btn" id="searchBtn">검색</button>
+    </div>
+
+    <div class="gear-list"></div>
+</div>
+
+<th:block th:replace="~{common/footer::footerLayout}"></th:block>
+
+<script th:src="@{/js/gear/gear-get-info.js}"></script>
+<script th:src="@{/js/common/vote-gear-tab.js}"></script>
+</body>
+</html>
+
+
+

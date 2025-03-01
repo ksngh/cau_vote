@@ -1,0 +1,326 @@
+.gear-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: start;
+    width: 100%;
+    max-width: 600px; /* 웹에서 보기 좋은 크기 */
+    margin: 0 auto;
+}
+.search-bar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px; /* 간격 약간 조정 */
+    flex-wrap: nowrap; /* 모바일에서도 한 줄 유지 */
+    margin-top: 15px;
+    width: 100%;
+    overflow: hidden;
+}
+.custom-select {
+    position: relative;
+    display: inline-block;
+    width: 160px; /* 기본 크기 증가 */
+    max-width: 100%;
+    min-width: 120px; /* 너무 작아지지 않도록 */
+}
+select {
+    width: 100%;
+    padding: 12px;
+    font-size: 15px;
+    /*border: 1px solid rgb(94, 94, 94);*/
+    border-radius: 8px;
+    background-color: #fcfcfc;
+    appearance: none; /* 기본 UI 제거 */
+    cursor: pointer;
+    /*color: rgb(50, 50, 50);*/
+    font-weight: bold;
+    text-align: center;
+    transition: all 0.3s ease-in-out;
+}
+select:hover {
+    border-color: #0056a6;
+}
+select:focus {
+    border-color: #004080;
+    outline: none;
+    box-shadow: 0 0 6px rgba(0, 64, 128, 0.5);
+}
+/* 화살표 아이콘 추가 */
+.custom-select::after {
+    content: "\25BC"; /* ▼ Unicode */
+    font-size: 12px;
+    color: rgb(124, 124, 124);
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    pointer-events: none; /* 클릭 방지 */
+}
+#gear-result {
+    margin-top: 15px;
+    font-weight: bold;
+}
+
+/* 버튼 스타일 개선 */
+.search-btn {
+    width: 100px;
+    padding: 10px;
+    font-size: 14px;
+    border: none;
+    background-color: #4eb0e9; /* 쨍한 파란색 대신 부드러운 파란색 */
+    color: white;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: 0.3s;
+    font-weight: bold;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+}
+.search-btn:hover {
+    background-color: #1688ca;
+    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* 📌 반응형 조정 */
+@media (max-width: 600px) {
+    .search-bar {
+        flex-wrap: nowrap; /* 모바일에서도 한 줄 유지 */
+        gap: 10px;
+    }
+    .custom-select {
+        width: 100px; /* 모바일에서 select 크기 조정 */
+    }
+    .search-btn {
+        width: 60px;
+        font-size: 14px;
+        padding: 10px;
+        margin-left: 10px;
+    }
+}
+
+/* 📌 장비 등록 UI */
+.gear-registration {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 20px;
+    gap: 10px;
+}
+
+.gear-registration input {
+    width: 160px;
+    padding: 10px;
+    margin: 10px;
+    font-size: 16px;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    text-align: center;
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+.gear-registration input:focus {
+    border-color: #007bff;
+}
+
+.register-btn {
+    width: 100px;
+    padding: 10px;
+    font-size: 14px;
+    border: none;
+    background-color: #4eb0e9; /* 쨍한 파란색 대신 부드러운 파란색 */
+    color: white;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: 0.3s;
+    font-weight: bold;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.register-btn:hover {
+    background-color: #0056b3;
+}
+
+
+/* 장비 목록을 감싸는 컨테이너 */
+.gear-list {
+    width: 80%;
+    margin: 20px auto;
+    font-family: 'Arial', sans-serif;
+}
+
+/* 장비 카드 스타일 */
+.gear-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    border: 2px solid #ddd;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    background-color: #fff;
+    transition: 0.3s;
+}
+
+/* 호버 효과 */
+.gear-card:hover {
+    background-color: #f9f9f9;
+}
+
+/* 장비 정보 */
+.gear-info {
+    flex: 2;
+    display: flex;
+    flex-direction: column;
+}
+
+/* 장비 번호 */
+.gear-num {
+    font-size: 20px;
+    font-weight: bold;
+    color: #333;
+}
+
+/* 장비 상태 */
+.gear-status {
+    font-size: 14px;
+    color: #555;
+}
+
+/* 대여 가능 여부에 따른 색상 변경 */
+.gear-status.available {
+    color: green;
+}
+
+.gear-status.in-use {
+    color: red;
+}
+
+.gear-status.unavailable {
+    color: gray;
+}
+
+/* 버튼 컨테이너 */
+.button-container {
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+/* 대여 버튼 */
+.rent-button {
+    background-color: #007bff;
+    color: white;
+}
+
+.rent-button:hover {
+    background-color: #0056b3;
+}
+
+/* 반납 버튼 */
+.return-button {
+    background-color: #28a745;
+    color: white;
+}
+
+.return-button:hover {
+    background-color: #1e7e34;
+}
+
+/* 비활성화 버튼 */
+button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+.black-text {
+    color: gray;
+}
+
+.delete-button {
+
+    right: 7px;
+    background: none;
+    border: none;
+    font-size: 30px;
+    color: #ff4d4d;
+    cursor: pointer;
+}
+
+.delete-button:hover {
+    color: #ff0000;
+}
+
+@media (max-width: 1024px) { /* 태블릿 이하 */
+    .delete-button {
+        position: inherit;
+        font-size: 30px; /* 버튼 크기 축소 */
+    }
+}
+
+@media (max-width: 480px) { /* 작은 모바일 화면 */
+    .delete-button {
+        position: absolute;
+        right: 7px;
+        font-size: 30px;
+    }
+}
+
+
+.rental-table {
+    width: 90%;
+    max-width: 800px;
+    margin: 20px auto;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+th, td {
+    padding: 12px;
+    border-bottom: 1px solid #ddd;
+    text-align: center;
+}
+
+th {
+    background-color: #ffffff;
+    color: black;
+}
+
+tr:hover {
+    background-color: #f1f1f1;
+}
+
+.rented {
+    background-color: #ffeb3b;
+    font-weight: bold;
+}
+
+@media (max-width: 600px) {
+    th, td {
+        padding: 10px;
+        font-size: 10px;
+    }
+}
+
+@media (max-width: 480px) { /* 모바일 화면 */
+
+    th, td {
+        padding: 8px;
+        font-size: 7px;
+    }
+
+}
+
+#lateFeeContainer {
+    border-radius: 8px; /* 모서리 둥글게 */
+    padding: 15px; /* 내부 여백 */
+    font-size: 15px; /* 글자 크기 */
+    text-align: center; /* 가운데 정렬 */
+    max-width: 400px; /* 최대 너비 제한 */
+    margin-left: auto; /* 가운데 정렬 */
+    margin-right: auto; /* 가운데 정렬 */
+}

@@ -27,33 +27,36 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
-	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 	implementation 'org.mariadb.jdbc:mariadb-java-client:3.4.1'
 	implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
-
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'org.springframework.data:spring-data-jpa:3.3.3'
-
-	implementation 'org.apache.maven.plugins:maven-compiler-plugin:3.13.0'
 
 	implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect'
 	implementation 'org.springframework.security:spring-security-oauth2-client:6.3.3'
 	implementation 'org.springframework.boot:spring-boot-starter-security:3.3.3'
 
+	//querydsl
+	// JPA 및 QueryDSL 관련 의존성
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'com.querydsl:querydsl-jpa:5.0.0:jakarta'
+
+	// Jakarta Persistence API (필수)
+	annotationProcessor 'com.querydsl:querydsl-apt:5.0.0:jakarta'
+	annotationProcessor 'jakarta.annotation:jakarta.annotation-api:2.1.1'
+	annotationProcessor 'jakarta.persistence:jakarta.persistence-api:3.1.0'
+
 	// Spring WebSocket
 	implementation 'org.springframework.boot:spring-boot-starter-websocket'
 
-	// JSON 파싱을 위한 Jackson
-	implementation 'com.fasterxml.jackson.core:jackson-databind'
-
-	// 테스트와 모킹을 위한 라이브러리
-	testImplementation 'org.mockito:mockito-core'
-	testImplementation 'org.mockito:mockito-junit-jupiter'
-
-	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+	implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
+	runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
+	runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5'
 
 
 

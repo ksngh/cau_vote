@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="중앙가르드 훈련 투표">
+    <meta property="og:description" content="한국의 중앙에서 세계의 중앙으로!">
+    <meta property="og:image" content="https://caufencing.com/images/puang.jpg">
+    <meta property="og:url" content="https://caufencing.com/">
+    <meta property="og:site_name" content="중앙가르드">
+    <meta property="og:locale" content="ko_KR">
+    <title>중앙가르드 훈련 투표</title>
+    <link rel="stylesheet" th:href="@{/css/header.css}"> <!-- Header 관련 CSS -->
+    <link rel="stylesheet" th:href="@{/css/polling.css}"> <!-- Polling 페이지 관련 CSS -->
+    <link href="/favicon.ico" rel="icon"> <!-- 파비콘 -->
+    <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1.5.1/dist/sockjs.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
+</head>
+<body>
+
+<th:block th:replace="~{common/header::headerLayout}"></th:block>
+
+<ul id="voteContainer">
+    <div id="ongoingVote">
+        <h3 style="text-align: center">진행중인 투표</h3>
+    </div>
+    <hr class="divider">
+    <div id="upcomingVote">
+        <h3 style="text-align: center">예정된 투표</h3>
+    </div>
+    <hr class="divider">
+    <div id="finishedVote">
+        <h3 style="text-align: center">마감된 투표</h3>
+    </div>
+</ul>
+
+
+<th:block th:replace="~{common/footer::footerLayout}"></th:block>
+
+<script th:src="@{/js/vote/vote-card.js}"></script>
+<script th:src="@{/js/vote/vote-modal.js}"></script>
+<script th:src="@{/js/polling/socket.js}"></script>
+<script th:src="@{/js/common/vote-gear-tab.js}"></script>
+<!--<script th:src="@{/js/polling/ranking-banner.js}"></script>-->
+</body>
+</html>

@@ -1,55 +1,54 @@
 package caugarde.vote.model.entity;
 
+import caugarde.vote.model.enums.FencingType;
 import jakarta.persistence.*;
-import lombok.*;
-import org.hibernate.annotations.CreationTimestamp;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
 
 @Entity
-@Table(name = "VOTE")
-@NoArgsConstructor
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Vote {
 
     @Id
-    @Column(name = "VOTE_PK", nullable = false)
-    private UUID votePk;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ID", nullable = false)
+    private Long id;
 
-    @Column(name = "TITLE")
-    private String title;
+    @JoinColumn(name = "STUDENT", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Student student;
 
-    @Column(name = "CONTENT", length = 1000)
-    private String content;
+    @JoinColumn(name = "BOARD", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Board board;
 
-    @Column(name = "START_DATE")
-    private Timestamp startDate;
+    @Column(name = "TYPE", nullable = false, length = 10)
+    @Enumerated(EnumType.STRING)
+    private FencingType fencingType;
 
-    @Column(name = "SUBMIT_DATE")
-    private Timestamp submitDate;
-
-    @Column(name = "LIMIT_PEOPLE")
-    private int limitPeople;
-
-    @CreationTimestamp
-    @Column(name = "CREATED_AT")
+    @Column(name = "CREATED_AT", nullable = false)
     private LocalDateTime createdAt;
 
-    @OneToMany(mappedBy = "vote",fetch = FetchType.LAZY)
-    private Set<StudentVote> studentVotes;
+    @Column(name = "DELETED_AT")
+    private LocalDateTime deletedAt;
 
-    @Builder
-    public Vote(UUID votePk, String title, String content, Timestamp startDate, Timestamp submitDate, int limitPeople) {
-        this.votePk = votePk;
-        this.title = title;
-        this.content = content;
-        this.startDate = startDate;
-        this.submitDate = submitDate;
-        this.limitPeople = limitPeople;
+    private Vote(Student student, Board board, FencingType fencingType) {
+        this.student = student;
+        this.board = board;
+        this.fencingType = fencingType;
+        this.createdAt = LocalDateTime.now();
+    }
+
+    public static Vote of(Student student, Board board, FencingType fencingType) {
+        return new Vote(student, board, fencingType);
+    }
+
+    public void softDelete(){
+        this.deletedAt = LocalDateTime.now();
     }
 
 }

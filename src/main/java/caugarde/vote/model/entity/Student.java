@@ -1,74 +1,100 @@
 package caugarde.vote.model.entity;
 
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import caugarde.vote.common.util.RoleConverter;
+import caugarde.vote.model.dto.student.StudentDetailsUpdate;
+import caugarde.vote.model.dto.student.StudentUpdate;
+import caugarde.vote.model.enums.MemberType;
+import caugarde.vote.model.enums.Role;
 import jakarta.persistence.*;
-import lombok.Builder;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.EnumSet;
 import java.util.Set;
-import java.util.UUID;
-
 
 @Entity
 @Table(name = "STUDENT")
-@NoArgsConstructor
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Student {
 
     @Id
-    @Column(name = "STUDENT_PK", nullable = false)
-    private UUID studentPk;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ID", nullable = false)
+    private Long id;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "AUTHORITY_FK", nullable = false)
-    private Authority authority;
+    @Column(name = "AUTHORITY", nullable = false)
+    @Convert(converter = RoleConverter.class)
+    private Set<Role> authorities;
 
-    @Column(name = "STUDENT_ID")
-    private String studentId;
+    @Column(name = "UNIVERSITY_ID", length = 30)
+    private String universityId;
 
-    @Column(name = "EMAIL")
+    @Column(name = "EMAIL", nullable = false, length = 50)
     private String email;
 
-    @Column(name = "NAME")
+    @Column(name = "NAME", length = 30)
     private String name;
 
-    @Column(name = "MAJORITY")
+    @Column(name = "MAJORITY", length = 50)
     private String majority;
 
-    @Column(name = "MEMBER_TYPE")
-    private String memberType;
+    @Column(name = "MEMBER_TYPE", length = 10)
+    @Enumerated(EnumType.STRING)
+    private MemberType memberType;
 
-    @CreationTimestamp
-    @Column(name = "CREATED_AT")
+    @Column(name = "OVERDUE_FINE", nullable = false)
+    private Integer overdueFine;
+
+    @Column(name = "CREATED_AT", nullable = false)
     private LocalDateTime createdAt;
 
-    @OneToMany(mappedBy = "student",cascade = CascadeType.ALL)
-    @JsonIgnore
-    private Set<StudentVote> studentVotes;
+    @Column(name = "UPDATED_AT")
+    private LocalDateTime updatedAt;
 
-    @OneToMany(mappedBy = "student",cascade = CascadeType.ALL)
-    @JsonIgnore
-    private Set<Ranking> rankings;
+    @Column(name = "DELETED_AT")
+    private LocalDateTime deletedAt;
 
-    public Student(UUID studentPk, String email) {
-        this.studentPk = studentPk;
+    private Student(String email) {
         this.email = email;
+        this.createdAt = LocalDateTime.now();
+        this.overdueFine = 0;
+        this.authorities = EnumSet.of(Role.PENDING_USER);
     }
 
-    @Builder
-    public Student(UUID studentPk, String studentId, String email, String majority, String name, Authority authority, String memberType) {
-        this.studentPk = studentPk;
-        this.studentId = studentId;
-        this.email = email;
-        this.majority = majority;
-        this.name = name;
-        this.authority = authority;
-        this.memberType = memberType;
+    public static Student create(String email) {
+        return new Student(email);
     }
 
+    public void updateInitialInfo(StudentUpdate.Request request) {
+        this.universityId = request.getUniversityId();
+        this.name = request.getName();
+        this.majority = request.getMajority();
+        this.memberType = request.getMemberType();
+        this.authorities = EnumSet.of(Role.USER);
+        this.updatedAt = LocalDateTime.now();
+    }
+
+    public void updateDetailsInfo(StudentDetailsUpdate.Request request) {
+        this.universityId = request.getUniversityId();
+        this.name = request.getName();
+        this.majority = request.getMajority();
+        this.memberType = request.getMemberType();
+        this.authorities = EnumSet.of(request.getRole());
+        this.updatedAt = LocalDateTime.now();
+    }
+
+    public void delete() {
+        this.deletedAt = LocalDateTime.now();
+    }
+
+    public void imposeOverDueFine(int overdueFine) {
+        this.overdueFine = overdueFine;
+    }
+
+    public void paidOverDueFine() {
+        this.overdueFine = 0;
+    }
 }

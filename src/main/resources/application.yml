@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: vote
+  profiles:
+#    active: local
+    active: release
+#    active: test
+

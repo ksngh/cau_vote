@@ -8,15 +8,15 @@ document.addEventListener("DOMContentLoaded", function() {
 
         // studentData 객체 생성
         const studentData = {
-            studentId: studentId,
+            universityId: studentId,
             name: name,
             majority: majority,
             memberType: memberType
         };
 
         // API 요청
-        fetch("/api/student", {
-            method: "POST",
+        fetch("/v2/api/student", {
+            method: "PATCH",
             headers: {
                 "Content-Type": "application/json"
             },
@@ -29,7 +29,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 return response.json();
             })
             .then(data => {
-                window.location.href = "../../../.."; // 원하는 URL로 이동
+                window.location.href = "/"; // 원하는 URL로 이동
             })
             .catch(error => {
                 console.error('Error:', error);

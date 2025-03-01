@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>투표 내역</title>
+  <link rel="stylesheet" th:href="@{/css/header.css}">
+  <link rel="stylesheet" th:href="@{/css/polling.css}">
+  <link href="/favicon.ico" rel="icon" type="image/x-icon">
+  <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1.5.1/dist/sockjs.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
+</head>
+<body>
+<th:block th:replace="~{common/header::headerLayout}"></th:block>
+<ul id="voteContainer">
+  <div id="ongoingVote">
+    <h3 style="text-align: center">진행중인 투표</h3>
+  </div>
+  <hr class="divider">
+  <div id="finishedVote">
+    <h3 style="text-align: center">마감된 투표</h3>
+  </div>
+</ul>
+
+<th:block th:replace="~{common/footer::footerLayout}"></th:block>
+<script th:src="@{/js/user/mypage-tab.js}"></script>
+<script th:src="@{/js/vote/vote-modal.js}"></script>
+<script th:src="@{/js/user/mypage-vote.js}"></script>
+<script th:src="@{/js/polling/socket.js}"></script>
+</body>
+</html>

@@ -1,10 +1,11 @@
 getFirstRankings();
 
 function getFirstRankings() {
-    fetch('/api/ranking/first')
+    fetch('/v2/api/attendance/most')
         .then(response => response.json())
-        .then(data => {
-            data.forEach(ranking => generateRankingBanner(ranking));
+        .then(ranking => {
+            rankingData = ranking.data;
+            rankingData.forEach(ranking => generateRankingBanner(ranking));
         })
         .catch(error => console.error('Error fetching rankings:', error));
 }
@@ -12,7 +13,7 @@ function getFirstRankings() {
 function generateRankingBanner(ranking) {
     const banner = document.getElementById('first-grade-banner');
     const text = `
-        <div class="ranking-item">${ranking.majorName} ${ranking.studentName} : ${ranking.attendance}회</div>
+        <div class="ranking-item">${ranking.majority} ${ranking.name} : ${ranking.count}회</div>
     `;
     banner.insertAdjacentHTML('beforeend', text);  // span 안에 삽입
 
