@@ -1,7 +1,7 @@
 server:
   port: ${SERVER_PORT}
   ssl:
-    keystore: /etc/letsencrtypt/live/www.caufencing.com/keystore.p12
+    keystore: ${KEY_STORE_DIRECTORY}
     key-store-type: PKCS12
     key-store-password: ${KEY_STORE_PASSWORD}
     enabled: true
