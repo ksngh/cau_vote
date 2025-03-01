@@ -40,7 +40,7 @@ spring:
 server:
   port: 443
   ssl:
-    keystore: classpath:keystore.p12
+    keystore: /etc/letsencrtypt/live/www.caufencing.com/keystore.p12
     key-store-type: PKCS12
     key-store-password: ${KEY_STORE_PASSWORD}
 
