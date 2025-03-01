@@ -28,7 +28,7 @@ services:
       dockerfile: Dockerfile
     container_name: vote_spring
     ports:
-      - "443:${SPRING_PORT}"
+      - "443:443"
     env_file:
       - .env
     networks:

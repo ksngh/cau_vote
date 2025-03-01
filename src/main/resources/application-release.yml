@@ -38,7 +38,7 @@ spring:
       port: ${SPRING_REDIS_PORT}
 
 server:
-  port: ${SPRING_PORT}
+  port: 443
   ssl:
     keystore: classpath:keystore.p12
     key-store-type: PKCS12
