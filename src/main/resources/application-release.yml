@@ -43,6 +43,7 @@ server:
     keystore: /etc/letsencrtypt/live/www.caufencing.com/keystore.p12
     key-store-type: PKCS12
     key-store-password: ${KEY_STORE_PASSWORD}
+    enabled: true
 
 jwtSecret :
   ${JWT_SECRET}
