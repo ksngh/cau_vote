@@ -25,6 +25,6 @@ jobs:
             cd /home/ubuntu/cau_vote
             git pull origin main || true
             echo "${{ secrets.ENV }}" > ./.env
-            echo "${{ secrets.KEYSTORE }}" | base64 --decode > ./keystore.p12
+            sudo echo "${{ secrets.KEYSTORE }}" | base64 --decode > ./keystore.p12
             sudo docker-compose up -d
             exit 0
