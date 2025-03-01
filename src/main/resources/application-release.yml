@@ -1,10 +1,10 @@
 server:
   port: ${SERVER_PORT}
   ssl:
-    keystore: ${KEY_STORE_DIRECTORY}
-    key-store-type: ${KEY_STORE_TYPE}
-    key-store-password: ${KEY_STORE_PASSWORD}
-    enabled: true
+    keystore: ${SERVER_SSL_KEYSTORE}
+    key-store-type: ${SERVER_SSL_KEY_STORE_TYPE}
+    key-store-password: ${SERVER_KEY_STORE_PASSWORD}
+    enabled: ${SERVER_SSL_ENABLED}
 
 
 spring:
