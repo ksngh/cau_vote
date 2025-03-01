@@ -15,7 +15,7 @@ RUN chmod +x ./gradlew && ./gradlew dependencies
 COPY src src
 
 # 빌드 수행 (테스트 제외)
-RUN ./gradlew build -x test
+RUN ./gradlew clean build -x test
 
 # === 런타임 스테이지 ===
 FROM openjdk:21-jdk-bullseye
