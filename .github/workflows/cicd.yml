@@ -56,8 +56,8 @@ jobs:
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_KEY }}
           script: |
-            sudo docker stop vote-app || true
-            sudo docker rm vote-app || true
+            sudo docker stop vote_spring || true
+            sudo docker rm vote_spring || true
             cd /home/ubuntu/cau_vote
             git pull origin main || true
             echo "${{ secrets.ENV }}" > ./.env
