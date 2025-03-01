@@ -1,5 +1,5 @@
 server:
-  port: 443
+  port: ${SERVER_PORT}
   ssl:
     keystore: /etc/letsencrtypt/live/www.caufencing.com/keystore.p12
     key-store-type: PKCS12
