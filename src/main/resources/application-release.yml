@@ -2,7 +2,7 @@ server:
   port: ${SERVER_PORT}
   ssl:
     keystore: ${KEY_STORE_DIRECTORY}
-    key-store-type: PKCS12
+    key-store-type: ${KEY_STORE_TYPE}
     key-store-password: ${KEY_STORE_PASSWORD}
     enabled: true
 
