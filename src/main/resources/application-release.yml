@@ -37,5 +37,12 @@ spring:
       host: ${SPRING_REDIS_HOST}
       port: ${SPRING_REDIS_PORT}
 
+server:
+  port: 443
+  ssl:
+    keystore: classpath:keystore.p12
+    key-store-type: PKCS12
+    key-store-password: ${KEY_STORE_PASSWORD}
+
 jwtSecret :
   ${JWT_SECRET}

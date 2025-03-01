@@ -3,7 +3,7 @@ name: CI/CD Pipeline
 on:
   push:
     branches:
-      - v2/dev
+      - main
 
 jobs:
   build:
@@ -59,7 +59,7 @@ jobs:
             sudo docker stop vote-app || true
             sudo docker rm vote-app || true
             cd /home/ubuntu/cau_vote
-            git pull origin v2/dev || true
+            git pull origin main || true
             echo "${{ secrets.ENV }}" > ./.env
             sudo docker-compose up -d
             exit 0
