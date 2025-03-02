@@ -1,7 +1,7 @@
 # CAU VOTE
 
 ### (24.09.09~) **배포 중**
-[**배포 주소**](https://caufencing.com)
+[**배포 주소**](https://www.caufencing.com)
 
 <p align="center">
   <img src="https://github.com/user-attachments/assets/6fc65b6b-7073-4a09-9c44-fb63cc8e18b9" alt="Image 1" width="45%">
