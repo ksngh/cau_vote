@@ -3,9 +3,9 @@ server:
   ssl:
     keystore: ${SERVER_SSL_KEYSTORE}
     key-store-type: ${SERVER_SSL_KEY_STORE_TYPE}
-    key-store-password: ${SERVER_KEY_STORE_PASSWORD}
+    key-store-password: ${SERVER_SSL_KEY_STORE_PASSWORD}
     enabled: ${SERVER_SSL_ENABLED}
-
+    key-alias: ${SERVER_SSL_KEY_ALIAS}
 
 spring:
   application:

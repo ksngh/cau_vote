@@ -26,8 +26,11 @@ WORKDIR /app
 ADD https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.sh ./wait-for-it.sh
 RUN chmod +x ./wait-for-it.sh
 
-# 이전 빌드 단계에서 jar파일만 복사
+# 이전 빌드 단계에서 JAR 파일 복사
 COPY --from=build /app/build/libs/vote-0.0.1-SNAPSHOT.jar app.jar
+
+# keystore.p12 복사 (JAR과 같은 디렉토리에 저장)
+COPY keystore.p12 keystore.p12
 
 # 컨테이너 실행 명령어 (Redis, MariaDB 둘 다 기다리는 방식 권장)
 ENTRYPOINT ["./wait-for-it.sh", "vote_db:3306", "-t", "60", "--", \

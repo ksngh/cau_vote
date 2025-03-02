@@ -31,6 +31,8 @@ services:
       - "443:443"
     env_file:
       - .env
+    volumes:
+      - ./keystore.p12:/app/keystore.p12
     networks:
       - vote-network
 
