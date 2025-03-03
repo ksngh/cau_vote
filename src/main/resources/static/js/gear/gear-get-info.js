@@ -1,7 +1,7 @@
 const gearTypeOptions = {
     "SABRE": ["MASK", "SWORD", "GLOVE", "METAL"],
     "FLUERET": ["MASK", "SWORD", "GLOVE", "METAL"],
-    "COMMON": ["UNIFORM_TOP", "UNIFORM_BOTTOM", "BODY_WIRE", "MASK_WIRE","CHEST_PROTECTOR","INNER_PROTECTOR", "OTHERS"]
+    "COMMON": ["UNIFORM_TOP", "UNIFORM_BOTTOM", "BODY_WIRE", "MASK_WIRE","CHEST_PROTECTOR","INNER_PROTECTOR"]
 };
 
 // 📌 한글 변환 매핑
@@ -16,7 +16,7 @@ const gearTypeTranslations = {
     "MASK_WIRE": "마스크 와이어",
     "CHEST_PROTECTOR": "가슴 보호대",
     "INNER_PROTECTOR": "속 프로텍터",
-    "OTHERS": "기타"
+    // "OTHERS": "기타"
 };
 const fencingTypeTranslations = {
     "SABRE": "사브르",

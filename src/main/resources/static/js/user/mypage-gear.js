@@ -16,7 +16,7 @@ const gearTypeTranslations = {
     "MASK_WIRE": "마스크 와이어",
     "CHEST_PROTECTOR": "가슴 보호대",
     "INNER_PROTECTOR": "속 프로텍터",
-    "OTHERS": "기타"
+    // "OTHERS": "기타"
 };
 
 getMyGear();

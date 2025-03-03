@@ -22,6 +22,7 @@ jobs:
           script: |
             sudo docker stop vote_spring || true
             sudo docker rm vote_spring || true
+            sudo docker rmi cau_vote-vote_spring || true
             cd /home/ubuntu/cau_vote
             git pull origin main || true
             echo "${{ secrets.ENV }}" > ./.env
