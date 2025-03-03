@@ -1,6 +1,8 @@
 package caugarde.vote.common.util;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.Month;
 
 public class SemesterUtil {
 
@@ -18,6 +20,20 @@ public class SemesterUtil {
                 return year-1 +"년도 2학기";
             }
         }
+    }
+
+    public static LocalDateTime getSemesterStartDate(LocalDateTime now) {
+        int year = now.getYear();
+        Month month = now.getMonth();
+
+        int startYear = year;
+        int startMonth = (month.getValue() >= 3 && month.getValue() <= 8) ? 3 : 9;
+
+        if (month.getValue() <= 2) {
+            startYear = year - 1;
+        }
+
+        return LocalDateTime.of(startYear, startMonth, 1, 0, 0, 0);
     }
 
     public static int compare(String semester1, String semester2) {

@@ -42,7 +42,7 @@ public class AttendanceRepositoryImpl implements AttendanceRepository {
                 .where(
                         qVote.student.id.in(studentIds),
                         qVote.deletedAt.isNull(),
-                        qVote.createdAt.after(LocalDateTime.now().minusMonths(8)) // 8개월 이내 데이터만 조회
+                        qVote.createdAt.after(SemesterUtil.getSemesterStartDate(LocalDateTime.now())) // 8개월 이내 데이터만 조회
                 )
                 .groupBy(qVote.student.id)
                 .fetch()

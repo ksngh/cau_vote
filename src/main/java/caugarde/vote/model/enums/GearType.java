@@ -9,5 +9,7 @@ public enum GearType {
     METAL,
     BODY_WIRE,
     MASK_WIRE,
+    CHEST_PROTECTOR,
+    INNER_PROTECTOR,
     OTHERS
 }

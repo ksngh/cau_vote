@@ -13,8 +13,10 @@ const gearTypeTranslations = {
     "UNIFORM_TOP": "도복 상의",
     "UNIFORM_BOTTOM": "도복 하의",
     "BODY_WIRE": "바디 와이어",
-    "MASK_WIRE": "마스크 와이어"
-    // "OTHERS": "기타"
+    "MASK_WIRE": "마스크 와이어",
+    "CHEST_PROTECTOR": "가슴 보호대",
+    "INNER_PROTECTOR": "속 프로텍터",
+    "OTHERS": "기타"
 };
 
 getMyGear();
