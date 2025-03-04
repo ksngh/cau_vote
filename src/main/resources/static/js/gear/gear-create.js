@@ -66,7 +66,7 @@ document.getElementById("registerBtn").addEventListener("click", function () {
                 return response.json(); // 정상 응답인 경우 JSON 데이터를 반환
             } else {
                 return response.json().then(errResponse => {
-                    throw new Error(errResponse.errorList[0]); // 첫 번째 에러 메시지 반환
+                    throw new Error(errResponse.description); // 첫 번째 에러 메시지 반환
                 })
             }
         })
