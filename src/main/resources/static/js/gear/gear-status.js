@@ -36,7 +36,7 @@ async function fetchRentalGears() {
 
 
     try {
-        const response = await fetch(`/v2/api/rental-gear?cursor=${cursorId || ''}&size=${size+1}`);
+        const response = await fetch(`/v2/api/rental-gear?cursor=${cursorId || ''}&size=${size}`);
         if (!response.ok) {
             throw new Error('데이터를 불러오지 못했습니다.');
         }
@@ -44,8 +44,10 @@ async function fetchRentalGears() {
         const rentalGearList = await response.json();
         let rentGearDetails = rentalGearList.data.content;
 
-        hasNext = rentGearDetails.length > size;
-        cursorId = rentGearDetails[rentGearDetails.length-1].rentalDate; // 🚨 변경된 커서 적용
+        hasNext = !rentalGearList.data.last;
+        if (rentGearDetails.length > 0) {
+            cursorId = rentGearDetails[rentGearDetails.length - 1].rentalDate;
+        }
 
         if (!hasNext) {
             window.removeEventListener('scroll', handleScroll);
@@ -54,8 +56,10 @@ async function fetchRentalGears() {
         renderTable(rentGearDetails);
     } catch (error) {
         console.error('오류 발생:', error);
-        document.getElementById('rental-gear-list').innerHTML =
-            `<tr><td colspan="5" class="empty-message">대여중인 장비가 없습니다.</td></tr>`;
+        if (!cursorId) {
+            document.getElementById('rental-gear-list').innerHTML =
+                `<tr><td colspan="5" class="empty-message">대여중인 장비가 없습니다.</td></tr>`;
+        }
     } finally {
         isLoading = false;
     }

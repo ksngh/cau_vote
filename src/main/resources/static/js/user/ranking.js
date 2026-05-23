@@ -1,6 +1,6 @@
 // semester 문자열을 숫자로 변환하는 함수
 function parseSemester(semesterStr) {
-    const match = semesterStr.match(/(\d+)학년도 (\d+)학기/);
+    const match = semesterStr.match(/(\d+)(?:학)?년도\s*(\d+)학기/);
     if (!match) return { year: 0, term: 0 };
     return { year: parseInt(match[1]), term: parseInt(match[2]) };
 }
