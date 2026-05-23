@@ -1,5 +1,5 @@
 # === 빌드 스테이지 ===
-FROM openjdk:21-jdk-bullseye AS build
+FROM eclipse-temurin:21-jdk AS build
 ENV TZ=Asia/Seoul
 WORKDIR /app
 
@@ -18,7 +18,7 @@ COPY src src
 RUN ./gradlew clean build -x test
 
 # === 런타임 스테이지 ===
-FROM openjdk:21-jdk-bullseye
+FROM eclipse-temurin:21-jdk
 ENV TZ=Asia/Seoul
 WORKDIR /app
 
