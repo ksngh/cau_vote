@@ -31,6 +31,7 @@ public class RentalGearServiceImpl implements RentalGearService {
     private final StudentService studentService;
 
     @Override
+    @Transactional
     public void create(Long gearId, String email) {
         Student student = studentService.getByEmail(email);
         validateLateFee(student);
