@@ -7,11 +7,23 @@ import org.springframework.core.annotation.Order;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 @Slf4j(topic = "GlobalExceptionHandler")
 @RestControllerAdvice
 @Order(value = Integer.MAX_VALUE)
 public class GlobalExceptionHandler {
+
+    @ExceptionHandler(NoResourceFoundException.class)
+    public ResponseEntity<CustomApiResponse<Void>> handleNoResourceFoundException(
+            NoResourceFoundException exception) {
+
+        log.warn("Static resource not found: {}", exception.getResourcePath());
+
+        return ResponseEntity
+                .status(404)
+                .body(CustomApiResponse.ERROR(ResErrorCode.NOT_FOUND, exception.getMessage()));
+    }
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<CustomApiResponse<Void>> handleGenericException(Exception exception) {
